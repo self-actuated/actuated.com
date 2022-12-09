@@ -62,6 +62,8 @@ export default function Solutions() {
                     <p>Many teams that we interviewed told us that they have 5-30 people committing regularly throughout the day, with a 20-30 minute build team time. That delay made their team frustrated and distracted as they task switched.</p>
                     
                     <p>The first thing you'll notice when you switch to actuated, is just how fast your jobs launch, followed up by the processing power of bare-metal, which is several times faster than GitHub's hosted runners.</p>
+
+                    <p>If you deal with large base images for Docker builds, then you'll benefit from our pull through cache solution, that'll mean common images can be pulled directly from localhost instead of the public Internet.</p>
                 </dd>
               </div>
           </dl>
