@@ -143,7 +143,8 @@ export default function Solutions() {
                 </dt>
                 <dd className="mt-2 text-base leading-7 text-gray-600">
                     <p>Most small teams we spoke to were already spending 1000-1500 USD/mo on overages charges on GitHub Actions for the slower hosted runners.</p>
-                    <p>With actuated, you can use as many build minutes as you need, with a predictable flat-rate charge once per month. And there's no commitment beyond a month, so you can cancel at any time.</p>
+                    <p>This doesn't factor in the long delays that your team is facing, and with engineering salaries at an all time high, we're talking about 100-300 USD / hour for every hour wasted, per person within your team.</p>
+                    <p>With actuated, you can use as many build minutes as you need, with a predictable flat-rate charge once per month. And there's no commitment beyond a month, so you can cancel at any time. On top of that, your team will be less distracted by task switching.</p>
                 </dd>
               </div>
           </dl>
