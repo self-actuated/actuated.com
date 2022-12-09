@@ -42,7 +42,7 @@ export default function Solutions() {
                 All about speed and efficiency.
             </p>
             <p className='mt-6 mx-10 text-base leading-7 text-gray-600'>
-                Looking for a technical details? <a className='text-blue-500 underline' href='https://blog.alexellis.io/blazing-fast-ci-with-microvms/'>Read the announcement</a>
+              Learn who we built actuated for and how it compares to other solutions: <a className='text-blue-500 underline' href='https://blog.alexellis.io/blazing-fast-ci-with-microvms/'>Read the announcement</a>
             </p>
             </div>
 

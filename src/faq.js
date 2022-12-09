@@ -41,6 +41,11 @@ const faqs = [
     answer: "For pilot customers, we have unmetered billing, which means you can use as many build minutes as you like, with one flat fee. The initial tier comes with 5 concurrent builds across one host, and as you increase, you get more RAM/CPU per job, more build agents and more parallel jobs.",
   },
   {
+    question: "How mature is actuated?",
+    answer:
+      "Actuated is built on battle tested technology that's run in production at huge scale by Amazon Web Services (AWS) and GitHub. Our solution is already being used by us and our customers to save time and increase efficiency.",
+  },
+  {
     question: "Where can I find detailed information about actuated?",
     answer: "We cover most common questions in much more detail over in the FAQ in the docs.",
     link: 'https://docs.actuated.dev/faq'
