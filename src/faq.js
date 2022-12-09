@@ -5,7 +5,7 @@ const faqs = [
   {
     question: "How much time do I need to invest to try actuated?",
     answer:
-      "You probably need to set aside 10-30 minutes to follow our quickstart guide and get your builds running on actuated. For regular Intel/AMD builds, edit your workflow YAML and change the runs-on field to either \"actuated\" or \"actuated-aarch64\".",
+      "You probably need to set aside 30 minutes to follow our quickstart guide and get your builds running on actuated. For regular Intel/AMD builds, edit your workflow YAML and change the runs-on field to either \"actuated\" or \"actuated-aarch64\".",
   },
   {
     question: "What kind of support do you offer?",
