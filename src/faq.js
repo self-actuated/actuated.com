@@ -8,6 +8,10 @@ const faqs = [
       "You probably need to set aside 30 minutes to follow our quickstart guide and get your builds running on actuated. For regular Intel/AMD builds, edit your workflow YAML and change the runs-on field to either \"actuated\" or \"actuated-aarch64\".",
   },
   {
+    question: "Why do I have to register interest?",
+    answer:"Whilst we have customers live in production and use actuated ourselves at OpenFaaS Ltd, we want to make sure we can support your team and rank which features you want to see coming on the roadmap. If you budget for our service, we'll very likely be able to work with you.",
+  },
+  {
     question: "What kind of support do you offer?",
     answer:
       "For the pilot, every customer is invited to a Slack channel for collaboration and fast support. We have quite a bit of operational experience with GitHub Actions, Docker and Kubernetes and we're making time to help you tune your builds up to get the most out of them.",
