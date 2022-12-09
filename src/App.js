@@ -112,7 +112,7 @@ export default function App() {
                           <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8 lg:grid-cols-2">
                             {solutions.map((item) => (
     
-                          <Popover.Button key={item.name} className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50 items-left justify-left">
+                          <Popover.Button key={item.name + "-button"} className="text-left align-left items-left">
                                <a
                                 key={item.name}
                                 href={item.href}
@@ -248,7 +248,7 @@ export default function App() {
                   </h1>
                   <p className="mx-auto mt-6 max-w-lg text-center text-xl text-indigo-200 sm:max-w-3xl">
                     Task switching is a productivity killer, slash those 30 minute builds times for your 
-                    monorepo by switching to actuated for blazing fast CI times.
+                    repos by switching to actuated for blazing fast CI times.
                   </p>
                   <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                     <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
