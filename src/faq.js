@@ -23,6 +23,11 @@ const faqs = [
     link: "https://docs.actuated.dev/add-agent/"
   },
   {
+    question: "Can we turn machines off overnight to save money?",
+    answer:
+      "If you have little to no activity overnight, and want to optimise your costs, you can power cycle your agents with a cron schedule. Actuated will launch VMs for your jobs when the agents are available again.",
+  },
+  {
     question: "How does actuated compare to Actions Runtime Controller or the stand-alone self-hosted runner?",
     answer:
       "You can find a detailed comparison in the FAQ in the docs.",

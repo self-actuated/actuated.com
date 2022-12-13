@@ -9,7 +9,7 @@ export default function Cta() {
                 <span className="block">Ready to go faster?</span>
               </h2>
               <p className="mt-4 text-lg leading-6 text-indigo-200">
-                The minimum commitment is one month. Cancel anytime if you don't like saving engineering time.
+                The minimum commitment is one month. You can cancel any time if you don't see a benefit to productivity.
               </p>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"

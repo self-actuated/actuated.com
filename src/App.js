@@ -16,6 +16,7 @@ import Solutions from './solutions'
 import Cta from './cta'
 import Testimonial from './testimonial'
 import Footer from './footer'
+import GitHubQuote from './GitHubQuote'
 
 const solutions = [
   {
@@ -296,6 +297,7 @@ export default function App() {
 
       <Faq></Faq>
 
+      <GitHubQuote></GitHubQuote>
 
       <Cta></Cta>
 
