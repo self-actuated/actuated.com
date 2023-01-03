@@ -1,3 +1,4 @@
+import Layout from '../components/layout'
 import '../styles/globals.css'
 
 // See: https://nextjs.org/docs/advanced-features/measuring-performance#web-vitals
@@ -8,5 +9,9 @@ export function reportWebVitals(metric) {
 }
 
 export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  )
 }
