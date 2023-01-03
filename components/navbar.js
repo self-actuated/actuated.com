@@ -1,4 +1,6 @@
 import { Fragment } from 'react'
+import Link from 'next/link';
+
 import { Popover, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -11,36 +13,29 @@ import { CommandLineIcon} from '@heroicons/react/20/solid'
 import {FireIcon} from '@heroicons/react/20/solid'
 import {CpuChipIcon} from '@heroicons/react/20/solid'
 
-import Faq from './faq'
-import Solutions from './solutions'
-import Cta from './cta'
-import Testimonial from './testimonial'
-import Footer from './footer'
-import GitHubQuote from './GitHubQuote'
-
 const solutions = [
   {
     name: 'Faster E2E',
     description: 'Keep your team focused by slashing CI times with bare-metal performance.',
-    href: '#solutions',
+    href: '/#solutions',
     icon: FireIcon,
   },
   {
     name: 'Completely private CI',
     description: "Bring your own machines or cloud instances, for full privacy.",
-    href: '#solutions',
+    href: '/#solutions',
     icon: KeyIcon,
   },
   {
     name: 'ARM from dev to production',
     description: 'Build with Apple M1/M2 locally, and in CI.',
-    href: '#solutions',
+    href: '/#solutions',
     icon: CpuChipIcon,
   },
   {
     name: 'Live debugging',
     description: 'Debug slow and tricky builds via SSH.',
-    href: '#solutions',
+    href: '/#solutions',
     icon: CommandLineIcon,
   },
 ]
@@ -54,21 +49,20 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function App() {
+export default function NavBar({ children }) {
   return (
-    <div className="bg-white">
-      <header>
+    <header>
         <Popover className="relative bg-white">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
             <div className="flex justify-start lg:w-0 lg:flex-1">
-              <a href="#">
+              <Link href="/">
                 <span className="sr-only">Actuated</span>
                 <img
                   className="h-8 w-auto sm:h-10"
                   src="/images/actuated.png"
                   alt="Actuated logo"
                 />
-              </a>
+              </Link>
             </div>
             <div className="-my-2 -mr-2 md:hidden">
               <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -111,7 +105,7 @@ export default function App() {
                             {solutions.map((item) => (
     
                           <Popover.Button key={item.name + "-button"} className="text-left align-left items-left">
-                               <a
+                               <Link
                                 key={item.name}
                                 href={item.href}
                                 className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
@@ -123,7 +117,7 @@ export default function App() {
                                   <p className="text-base font-medium text-gray-900">{item.name}</p>
                                   <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                                 </div>
-                              </a>
+                              </Link>
                             </Popover.Button>
                             ))}
                           </div>
@@ -135,18 +129,18 @@ export default function App() {
               </Popover>
 
               {navigation.map((item) => (
-                <a key={item.name} href={item.href} className="text-base font-medium text-gray-500 hover:text-gray-900">
+                <Link key={item.name} href={item.href} className="text-base font-medium text-gray-500 hover:text-gray-900">
                   {item.name}
-                </a>
+                </Link>
               ))}
             </Popover.Group>
             <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-              <a
+              <Link
                 href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
                 className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
               >
                 Register interest
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -183,7 +177,7 @@ export default function App() {
                   <div className="mt-6">
                     <nav className="grid grid-cols-1 gap-7">
                       {solutions.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
                           href={item.href}
                           className="-m-3 flex items-center rounded-lg p-3 hover:bg-gray-50"
@@ -192,7 +186,7 @@ export default function App() {
                             <item.icon className="h-6 w-6" aria-hidden="true" />
                           </div>
                           <div className="ml-4 text-base font-medium text-gray-900">{item.name}</div>
-                        </a>
+                        </Link>
                       ))}
                     </nav>
                   </div>
@@ -200,22 +194,22 @@ export default function App() {
                 <div className="py-6 px-5">
                   <div className="grid grid-cols-2 gap-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className="text-base font-medium text-gray-900 hover:text-gray-700"
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                   <div className="mt-6">
-                    <a
+                    <Link
                       href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
                       className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                     >
                       Register interest
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -223,90 +217,5 @@ export default function App() {
           </Transition>
         </Popover>
       </header>
-
-      <main>
-        <div>
-          {/* Hero card */}
-          <div className="relative">
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gray-100" />
-            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-              <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
-                <div className="absolute inset-0">
-                  <img
-                    className="h-full w-full object-cover"
-                    src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2830&q=80&sat=-100"
-                    alt="People working on laptops"
-                  />
-                  <div className="absolute inset-0 bg-indigo-700 mix-blend-multiply" />
-                </div>
-                <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
-                  <h1 className="text-center text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                    <span className="block text-white">Blazing fast build times</span>
-                    <span className="block text-indigo-200">means a focused team.</span>
-                  </h1>
-                  <p className="mx-auto mt-6 max-w-lg text-center text-xl text-indigo-200 sm:max-w-3xl">
-                    Task switching is a productivity killer, slash those 30 minute builds times for your 
-                    repos by switching to actuated for blazing fast CI times.
-                  </p>
-                  <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
-                    <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                      <a
-                        href="https://docs.actuated.dev/register/"
-                        className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8"
-                      >
-                        Get started
-                      </a>
-                      <a
-                        href="https://www.youtube.com/watch?v=2o28iUC-J1w"
-                        className="flex items-center justify-center rounded-md border border-transparent bg-indigo-500 bg-opacity-60 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-opacity-70 sm:px-8"
-                      >
-                        Live demo
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Logo cloud */}
-          <div className="bg-gray-100">
-       
-            <div className="mx-auto max-w-7xl py-10 px-4 sm:px-6 lg:px-8">
-              <p className="text-center text-base font-semibold text-gray-500 ">
-                Trusted by a growing number of companies
-              </p>
-              <div className="mt-6 justify-center grid grid-cols-12 gap-8 md:grid-cols-12 lg:grid-cols-12">
-                <div className="col-span-12 flex justify-center md:col-span-6 lg:col-span-6">
-                  <img className="h-12" src="./images/Riskfuel-logo-blue.png" alt="Riskfuel" />
-                </div>
-                <div className="col-span-12 flex justify-center md:col-span-6 lg:col-span-6">
-                  <img className="h-12" src="./images/openfaas_light.png" alt="OpenFaaS" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-    
-        {/* More main page content here... */}
-
-      <Solutions></Solutions>
-
-      <Testimonial></Testimonial>
-
-      <Faq></Faq>
-
-      <GitHubQuote></GitHubQuote>
-
-      <Cta></Cta>
-
-    <Footer>  </Footer>
-
-      </main>
-    </div>
   )
 }
-
-
-
