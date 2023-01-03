@@ -43,6 +43,7 @@ const solutions = [
 const navigation = [
   { name: 'Docs', href: 'https://docs.actuated.dev/' },
   { name: 'Announcement', href: 'https://blog.alexellis.io/blazing-fast-ci-with-microvms/' },
+  { name: 'Blog', href: '/blog' }
 ]
 
 function classNames(...classes) {
