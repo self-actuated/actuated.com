@@ -8,7 +8,7 @@ export function reportWebVitals(metric) {
   }
 }
 
-export default function MyApp({ Component, pageProps }) {
+export default function Actuated({ Component, pageProps }) {
   return (
     <Layout>
       <Component {...pageProps} />
