@@ -1,4 +1,4 @@
-import { getSortedPostsData } from '../../lib/posts';
+import { getSortedPostsData, generateRssFeed } from '../../lib/posts';
 
 import Link from 'next/link';
 import Date from '../../components/date';
@@ -73,6 +73,8 @@ export default function Blog({ posts }) {
 }
 
 export async function getStaticProps() {
+  await generateRssFeed();
+
   const posts = getSortedPostsData();
   return {
     props: {

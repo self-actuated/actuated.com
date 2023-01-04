@@ -8,6 +8,7 @@
     "@heroicons/react": "^2.0.13",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "date-fns": "^2.29.3",
+    "feed": "^4.2.2",
     "gray-matter": "^4.0.3",
     "headlessui": "^0.0.0",
     "heroicons": "^2.0.13",
