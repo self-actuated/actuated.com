@@ -41,9 +41,9 @@ const solutions = [
 ]
 
 const navigation = [
-  { name: 'Docs', href: 'https://docs.actuated.dev/' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Announcement', href: 'https://blog.alexellis.io/blazing-fast-ci-with-microvms/' },
-  { name: 'Blog', href: '/blog' }
+  { name: 'Docs', href: 'https://docs.actuated.dev/' },
 ]
 
 function classNames(...classes) {
