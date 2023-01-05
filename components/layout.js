@@ -26,6 +26,9 @@ export default function Layout({ children }) {
         {/* Tailwind UI font */}
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
 
+        {/* Highlightjs theme */}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css"></link>
+
         <link rel="apple-touch-icon" href="/images/actuated.png" />
 
         {/* manifest.json provides metadata used when your web app is installed on a
