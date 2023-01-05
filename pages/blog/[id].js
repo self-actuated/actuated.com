@@ -1,6 +1,9 @@
+import path from 'path';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import Head from 'next/head';
 import Date from '../../components/date';
+
+const siteURL = process.env.PUBLIC_URL
 
 export default function Post({ post }) {
   return (
@@ -22,6 +25,13 @@ export default function Post({ post }) {
           content={post.description}
           key="og_description"
         />
+
+        {post.image &&
+          <>
+            <meta name="twitter:image:src" content={path.join(siteURL, post.image)} /> 
+            <meta property="og:image" content={path.join(siteURL, post.image)} />
+          </>
+        }
       </Head>
       <div className="container mx-auto max-w-4xl bg-white mt-4 px-4 sm:px-6">
         <h1 id="post_title" className="text-3xl mb-3 leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
@@ -56,21 +66,6 @@ export default function Post({ post }) {
           dangerouslySetInnerHTML={{ __html: post.contentHtml }}
         />
       </div>
-      {/* <div className="mx-auto px-4 sm:px-6 lg:px-8 padding-bottom-10">
-        <div className="bg-white overflow-hidden">
-          <div className="container px-4 sm:px-6 lg:px-8">
-            <div className="text-lg max-w-prose mx-auto mb-6">
-              <h1 className="mt-2 mb-8 text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
-                {post.title}
-              </h1>
-            </div>
-            
-            <div className="container">
-              
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 }
