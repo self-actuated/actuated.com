@@ -8,8 +8,10 @@ tags:
 - kubernetes
 - DevOps
 - linux
-- fireckracker
+- firecracker
 author_img: alex
+image: /images/2022-11-10-blazing-fast-ci-with-microvms/actuated-pilot.png
+canonical: https://blog.alexellis.io/blazing-fast-ci-with-microvms/
 date: "2022-11-10"
 ---
 
