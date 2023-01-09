@@ -1,6 +1,6 @@
 # Usage
 
-You will need node.js
+You will need Node.js LTS installed on your machine.
 
 Install npm packages:
 
