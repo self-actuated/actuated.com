@@ -26,7 +26,7 @@ export default function Home() {
               <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
                 <h1 className="text-center text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
                   <span className="block text-white">Blazing fast build times</span>
-                  <span className="block text-indigo-200">means a focused team.</span>
+                  <span className="block text-indigo-200">keeps the team focused.</span>
                 </h1>
                 <p className="mx-auto mt-6 max-w-lg text-center text-xl text-indigo-200 sm:max-w-3xl">
                   Task switching is a productivity killer, slash those 30 minute builds times for your 
