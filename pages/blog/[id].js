@@ -38,7 +38,7 @@ export default function Post({ post }) {
         }
       </Head>
       <div className="container mx-auto max-w-4xl bg-white mt-4 px-4 sm:px-6">
-        <h1 id="post_title" className="text-3xl mb-3 leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
+        <h1 id="post_title" className="text-3xl mb-3 leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 text-center">
           {post.title}
         </h1>
       </div>
