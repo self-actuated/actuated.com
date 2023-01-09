@@ -37,6 +37,7 @@ Builds the app for production to the `build` folder.
 
 It runs `next build && next export` to export the Next.js application to static HTML.
 
-### `gh-pages -d build`
+### `npm run deploy`
 
-Deploy to the CDN and the live site.
+Deploy to the CDN and the live site using the `gh-pages -d build` command.
+
