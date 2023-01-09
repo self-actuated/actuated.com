@@ -33,5 +33,10 @@ Runs `next start` to start a Next.js production server
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `build` folder.
+
 It runs `next build && next export` to export the Next.js application to static HTML.
+
+### `gh-pages -d build`
+
+Deploy to the CDN and the live site.
