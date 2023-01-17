@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 17 Jan 2023 10:29:30 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 17 Jan 2023 10:34:32 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -27,6 +27,11 @@
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">This morning <a href="https://twitter.com/fredbrancz?ref_src=twsrc%5Etfw">@fredbrancz</a> said that his ARM64 build was taking 33 minutes using QEMU in a GitHub Action and a hosted runner.<br><br>I ran it on <a href="https://twitter.com/selfactuated?ref_src=twsrc%5Etfw">@selfactuated</a> using an ARM64 machine and a microVM.<br><br>That took the time down to 1m 26s!! About a 22x speed increase. <a href="https://t.co/zwF3j08vEV">https://t.co/zwF3j08vEV</a> <a href="https://t.co/ps21An7B9B">pic.twitter.com/ps21An7B9B</a></p>&mdash; Alex Ellis (@alexellisuk) <a href="https://twitter.com/alexellisuk/status/1583089248084729856?ref_src=twsrc%5Etfw">October 20, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>You can see the results here:</p>
 <p><a href="https://twitter.com/alexellisuk/status/1583089248084729856/photo/1"><img src="https://pbs.twimg.com/media/FfhC5z1XkAAoYjn?format=jpg&#x26;name=large" alt="Results from the test, side-by-side"></a></p>
+<p>As a general rule, the download speed is going to be roughly the same with a hosted runner, it may even be slightly faster due to the connection speed of Azure's network.</p>
+<p>But the compilation times speak for themselves - in the Parca build, <code>go test</code> was being run with QEMU. Moving it to run on the ARM64 host directly, resulted in the marked increase in speed. In fact, the team had introduced lots of complicated code to try and set up a Docker container to use QEMU, all that could be stripped out, replacing it with a very standard looking test step:</p>
+<pre><code class="hljs language-yaml">  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">the</span> <span class="hljs-string">go</span> <span class="hljs-string">tests</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">go</span> <span class="hljs-string">test</span> <span class="hljs-string">./...</span>
+</code></pre>
 <h2>Can't I just install the self-hosted runner on an ARM VM?</h2>
 <p>There are relatively cheap ARM VMs available from Oracle OCI, Google and Azure based upon the Ampere Altra CPU. AWS have their own ARM VMs available in the Graviton line.</p>
 <p>So why shouldn't you just go ahead and install the runner and add them to your repos?</p>
@@ -53,7 +58,7 @@
 <li>a1.metal on AWS - 16 cores / 32GB RAM - 300 USD / mo</li>
 <li>c3.large.arm64 from <a href="https://metal.equinix.com/product/servers/c3-large-arm64/">Equinix Metal</a> with 80 Cores and 256GB RAM - 2.5 USD / hr</li>
 <li><a href="https://www.hetzner.com/dedicated-rootserver/matrix-rx">RX-Line</a> from <a href="https://hetzner.com">Hetzner</a> with 128GB / 256GB RAM, NVMe &#x26; 80 cores for approx 200-250 EUR / mo.</li>
-<li>[Mac Mini M1]https://www.apple.com/uk/shop/buy-mac/mac-mini/apple-m1-chip-with-8-core-cpu-and-8-core-gpu-256gb) - 8 cores / 16GB RAM - tested with Asahi Linux - one-time payment of ~ 1500 USD</li>
+<li><a href="https://amzn.to/3WiSDE7">Mac Mini M1</a> - 8 cores / 16GB RAM - tested with Asahi Linux - one-time payment of ~ 1500 USD</li>
 </ul>
 <p>I even tried Frederic's Parca job <a href="https://twitter.com/alexellisuk/status/1585228202087415808?s=20&#x26;t=kW-cfn44pQTzUsRiMw32kQ">on my 8GB Raspberry Pi with a USB NVMe</a>. Why even bother, do I hear you say? Well for a one-time payment of 80 USD, it was 26m30s quicker than a hosted runner with QEMU!</p>
 <p><a href="https://alexellisuk.medium.com/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-d9ab4e8aa3c2">Learn how to connect an NVMe over USB-C to your Raspberry Pi 4</a></p>
