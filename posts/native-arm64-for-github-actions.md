@@ -30,6 +30,15 @@ You can see the results here:
 
 [![Results from the test, side-by-side](https://pbs.twimg.com/media/FfhC5z1XkAAoYjn?format=jpg&name=large)](https://twitter.com/alexellisuk/status/1583089248084729856/photo/1)
 
+As a general rule, the download speed is going to be roughly the same with a hosted runner, it may even be slightly faster due to the connection speed of Azure's network.
+
+But the compilation times speak for themselves - in the Parca build, `go test` was being run with QEMU. Moving it to run on the ARM64 host directly, resulted in the marked increase in speed. In fact, the team had introduced lots of complicated code to try and set up a Docker container to use QEMU, all that could be stripped out, replacing it with a very standard looking test step:
+
+```yaml
+  - name: Run the go tests
+    run: go test ./...
+```
+
 ## Can't I just install the self-hosted runner on an ARM VM?
 
 There are relatively cheap ARM VMs available from Oracle OCI, Google and Azure based upon the Ampere Altra CPU. AWS have their own ARM VMs available in the Graviton line.
@@ -64,7 +73,7 @@ microVMs on ARM require a bare-metal server, and we have tested all the options 
 * a1.metal on AWS - 16 cores / 32GB RAM - 300 USD / mo
 * c3.large.arm64 from [Equinix Metal](https://metal.equinix.com/product/servers/c3-large-arm64/) with 80 Cores and 256GB RAM - 2.5 USD / hr
 * [RX-Line](https://www.hetzner.com/dedicated-rootserver/matrix-rx) from [Hetzner](https://hetzner.com) with 128GB / 256GB RAM, NVMe & 80 cores for approx 200-250 EUR / mo.
-* [Mac Mini M1]https://www.apple.com/uk/shop/buy-mac/mac-mini/apple-m1-chip-with-8-core-cpu-and-8-core-gpu-256gb) - 8 cores / 16GB RAM - tested with Asahi Linux - one-time payment of ~ 1500 USD
+* [Mac Mini M1](https://amzn.to/3WiSDE7) - 8 cores / 16GB RAM - tested with Asahi Linux - one-time payment of ~ 1500 USD
 
 I even tried Frederic's Parca job [on my 8GB Raspberry Pi with a USB NVMe](https://twitter.com/alexellisuk/status/1585228202087415808?s=20&t=kW-cfn44pQTzUsRiMw32kQ). Why even bother, do I hear you say? Well for a one-time payment of 80 USD, it was 26m30s quicker than a hosted runner with QEMU!
 
