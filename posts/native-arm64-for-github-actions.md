@@ -76,6 +76,8 @@ microVMs on ARM require a bare-metal server, and we have tested all the options 
 * [RX-Line](https://www.hetzner.com/dedicated-rootserver/matrix-rx) from [Hetzner](https://hetzner.com) with 128GB / 256GB RAM, NVMe & 80 cores for approx 200-250 EUR / mo.
 * [Mac Mini M1](https://amzn.to/3WiSDE7) - 8 cores / 16GB RAM - tested with Asahi Linux - one-time payment of ~ 1500 USD
 
+If you're already an AWS customer, the a1.metal is a good place to start. If you need expert support, networking and a high speed uplink, you can't beat Equinix Metal (we have access to hardware there and can help you get started) - you can even pay per minute and provision machines via API. The Mac Mini <1 has a really fast NVMe and we're running one of these with Asahi Linux for our own Kernel builds for actuated. The RX Line from Hetzner has serious power and is really quite affordable, but just be aware that you're limited to a 1Gbps connection, a setup fee and monthly commitment, unless you pay significantly more.
+
 I even tried Frederic's Parca job [on my 8GB Raspberry Pi with a USB NVMe](https://twitter.com/alexellisuk/status/1585228202087415808?s=20&t=kW-cfn44pQTzUsRiMw32kQ). Why even bother, do I hear you say? Well for a one-time payment of 80 USD, it was 26m30s quicker than a hosted runner with QEMU!
 
 [Learn how to connect an NVMe over USB-C to your Raspberry Pi 4](https://alexellisuk.medium.com/upgrade-your-raspberry-pi-4-with-a-nvme-boot-drive-d9ab4e8aa3c2)
