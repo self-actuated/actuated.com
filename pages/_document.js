@@ -20,6 +20,18 @@ export default function Document() {
         user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/ */}
         <link rel="manifest" href="/manifest.json" />
 
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-M5YNDNX7VT"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-M5YNDNX7VT');
+          `,
+        }} />
+
         <link rel="apple-touch-icon" href="/images/actuated.png" />
       </Head>
       <body>
