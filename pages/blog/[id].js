@@ -6,6 +6,8 @@ import Date from '../../components/date';
 const siteURL = process.env.PUBLIC_URL
 
 export default function Post({ post }) {
+  let imageURL = post.image ? new URL(post.image, siteURL).toString(): ""
+
   return (
     <>
       <Head>
@@ -28,8 +30,8 @@ export default function Post({ post }) {
 
         {post.image &&
           <>
-            <meta name="twitter:image:src" content={path.join(siteURL, post.image)} /> 
-            <meta property="og:image" content={path.join(siteURL, post.image)} />
+            <meta name="twitter:image:src" content={imageURL} /> 
+            <meta property="og:image" content={imageURL} />
           </>
         }
 
