@@ -7,6 +7,7 @@ tags:
 - githubactions
 - arm
 - arm64
+- multiarch
 author_img: alex
 image: /images/2023-native-arm64-for-oss/in-progress-dashboard.png
 date: "2023-01-17"
