@@ -28,6 +28,11 @@ const faqs = [
       "If you have little to no activity overnight, and want to optimise your costs, you can power cycle your agents with a cron schedule. Actuated will launch VMs for your jobs when the agents are available again.",
   },
   {
+    question: "Won't GitHub just offer faster runners?",
+    answer:
+      "GitHub do already offer faster runners at a greatly increased cost, but there is currently no Arm support. With actuated's flat-rate billing, you can get much faster speeds for a flat rate price.",
+  },
+  {
     question: "How does actuated compare to Actions Runtime Controller or the stand-alone self-hosted runner?",
     answer:
       "You can find a detailed comparison in the FAQ in the docs.",
@@ -36,8 +41,8 @@ const faqs = [
   {
     question: "How much faster is an ARM build than using hosted runners?",
     answer:
-      "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute simply by changing to a real ARM runner instead of using QEMU.",
-    link: 'https://twitter.com/alexellisuk/status/1583089248084729856?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1583089248084729856%7Ctwgr%5Ed0015583075c1d7969e167fa1e94c534bc0da4c4%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fblog.alexellis.io%2Fblazing-fast-ci-with-microvms%2F'
+      "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to a real ARM runner instead of using QEMU.",
+    link: '/blog/native-arm64-for-github-actions'
   },
   {
     question: "How do I launch jobs in parallel?",

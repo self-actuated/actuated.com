@@ -3,7 +3,8 @@ import { KeyIcon} from '@heroicons/react/20/solid'
 import { CommandLineIcon} from '@heroicons/react/20/solid'
 import {FireIcon} from '@heroicons/react/20/solid'
 import {CpuChipIcon,BanknotesIcon} from '@heroicons/react/20/solid'
-  
+import {ServerStackIcon} from '@heroicons/react/20/solid'
+
 export default function Solutions() {
     return (
         
@@ -36,6 +37,29 @@ export default function Solutions() {
                     <p className="mb-2">The first thing you'll notice when you switch to actuated, is just how fast your jobs launch, followed up by the processing power of bare-metal, which is several times faster than GitHub's hosted runners.</p>
 
                     <p>If you deal with large base images for Docker builds, then you'll benefit from our pull through cache solution, that'll mean common images can be pulled directly from localhost instead of the public Internet.</p>
+                </dd>
+              </div>
+          </dl>
+        </div>
+
+        <div className="mx-auto max-w-xl px-6 lg:max-w-7xl lg:px-8">
+        
+          <h2 className="sr-only">Run directly within your datacenter.</h2>
+          <dl className="grid grid-cols-1 lg:grid-cols-1">
+              <div className='mx-10' key="fast-feature">
+                <dt>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
+                    <ServerStackIcon className="h-8 w-8" aria-hidden="true" />
+                  </div>
+                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Run directly within your datacenter</p>
+
+                </dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
+                    <p className="mb-2">If you work with large container images or datasets, then you'll benefit from having your CI run with direct local network access to your internal network.</p>
+                    
+                    <p className="mb-2">This is not possible with hosted runners, and this is crucial for one of our customers who can regularly saturate a 10GbE link during GitHub Actions runs.</p>
+
+                    <p className="mb-2">Any use of VPNs will incur significant bandwidth costs along with being capped on speed.</p>
                 </dd>
               </div>
           </dl>
