@@ -11,17 +11,18 @@ export default function Layout({ children }) {
 
         <meta
           name="description"
-          content="Keep your team productive &amp; focused with blazing fast CI"
+          content="Blazing fast CI for containers and Kubernetes"
           key="description"
         />
 
         <meta property="twitter:title" content="Actuated - Blazing fast CI" key="tw_title"/>
-        <meta property="twitter:description" content="Keep your team productive &amp; focused with blazing fast CI" key="tw_description"></meta>
+        <meta property="twitter:description" content="Keep your team productive &amp; focused with blazing fast CI" key="tw_description"/>
         
         <meta property="og:title" content="Actuated - Blazing fast CI" key="og_title"/>
-        <meta property="og:description" content="Keep your team productive &amp; focused with blazing fast CI" key="og_description"></meta>
+        <meta property="og:description" content="Keep your team productive &amp; focused with blazing fast CI" key="og_description"/>
+        <meta property="og:image" content="/images/pilot.png" />
 
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary_large_image"  />
 
         <title>Actuated - Blazing fast CI</title>
       </Head>
