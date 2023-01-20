@@ -162,7 +162,7 @@ Then, provision one or more VMs with nested virtualisation enabled on GCP, Digit
 
 If you need ARM support for your project, the [a1.metal from AWS](https://aws.amazon.com/ec2/instance-types/a1/) is ideal with 16 cores and 32GB RAM, or an [Ampere Altra](https://amperecomputing.com/processors/ampere-altra/) machine like the c3.large.arm64 from [Equinix Metal](https://metal.equinix.com/product/servers/c3-large-arm64/) with 80 Cores and 256GB RAM if you really need to push things. The 2020 M1 Mac Mini also works well with [Asahi Linux](https://asahilinux.org/), and can be maxed out at 16GB RAM / 8 Cores. [I even tried Frederic's Parca job on my Raspberry Pi](https://twitter.com/alexellisuk/status/1585228202087415808?s=20&t=kW-cfn44pQTzUsRiMw32kQ) and it was 26m30s quicker than a hosted runner!
 
-Then, whenever a build is scheduled on your organisation, we'll schedule a microVM on one of your agents, and GitHub takes over the rest.
+Whenever a build is triggered by a repo in your organisation, the control plane will schedule a microVM on one of your own servers, then GitHub takes over from there. When the GitHub runner exits, we forcibly delete the VM.
 
 You get:
 
