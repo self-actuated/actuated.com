@@ -71,13 +71,18 @@ You could make a container image and install the self-hosted runner binary withi
 
 If you are only building Java code, Python or Node.js, you may find this resolves many of the issues that we covered above, but it's hard to scale, and you still get side-effects as the environment is not immutable.
 
-That's where the community project "actions-runtime-controller" or ARC comes in. It's a controller that launches a pool of Pods with the self-hosted runner. Unfortunately, by default it uses the same Pod many times, so side effects still build up, malware can still be introduced and you have to maintain a Docker image with all the software needed for your builds.
+That's where the community project "actions-runtime-controller" or ARC comes in. It's a controller that launches a pool of Pods with the self-hosted runner. 
+
+> How much work does ARC need?
+>
+> Some of the teams I have interviewed over the past 3 months told me that ARC took them a lot of time to set up and maintain, whilst others have told us it was a lot easier for them. It may depend on your use-case, and whether you're more of a personal user, or part of a team with 10-30 people committing code several times per day.
+> The first customer for actuated, which I'll mention later in the article was a team of ~ 20 people who were using ARC and had grew tired of the maintenance overhead and certain reliability issues.
+
+Unfortunately, by default ARC uses the same Pod many times as a persistent runner, so side effects still build up, malware can still be introduced and you have to maintain a Docker image with all the software needed for your builds.
 
 You may be happy with those trade-offs, especially if you're only building private repositories.
 
-Some of the teams I have interviewed over the past 3 months told me that ARC took them a lot of time to set up and maintain, whilst others have told us it was a lot easier for them.
-
-But those trade-offs get a lot worse if you use Docker or Kubernetes.
+But those trade-offs gets a lot worse if you use Docker or Kubernetes.
 
 Out of the box, you simply cannot start a Docker container, build a container image or start a Kubernetes cluster.
 
