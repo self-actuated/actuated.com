@@ -2,42 +2,36 @@
 
 You will need Node.js LTS installed on your machine.
 
-Install npm packages:
+Install npm packages including next.js:
 
 ```bash
 npm install
 ```
 
-The Next.js CLI allows you to start, build, and export your application.
-
-To get a list of the available CLI commands, run the following command inside the project directory:
-
-```bash
-npx next -h
-```
-
 ## Available Scripts
 
-In the project directory, you can run:
+### Work on the site
 
-### `npm run dev`
+Work on the site with live-reload:
 
-Runs `next dev` to start Next.js in development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
 
-The page will reload when you make changes.
+npm run dev
 
-### `npm start`
+echo "http://localhost:3000"
+```
 
-Runs `next start` to start a Next.js production server
+Or run in "production mode" with `npm start`
 
-### `npm run build`
+### Deploy the site:
 
-Builds the app for production to the `build` folder.
+```bash
 
-It runs `next build && next export` to export the Next.js application to static HTML.
+npm run build
+npm run deploy
 
-### `npm run deploy`
+```
 
-Deploy to the CDN and the live site using the `gh-pages -d build` command.
+* `npm run build` - Builds the app for production to the `build` folder using `next build && next export`.
+* `npm run deploy` - Deploys to the CDN via `gh-pages -d build`
 
