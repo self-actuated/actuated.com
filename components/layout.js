@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Navbar from './navbar'
 import Footer from './footer'
 
+const cardImageURL = new URL("/images/pilot.png", process.env.PUBLIC_URL).toString()
+
 export default function Layout({ children }) {
   return (
     <div className="bg-white">
@@ -21,9 +23,10 @@ export default function Layout({ children }) {
         
         <meta property="og:title" content="Actuated - Blazing fast CI" key="og_title"/>
         <meta property="og:description" content="Keep your team productive &amp; focused with blazing fast CI" key="og_description"/>
-        <meta property="og:image" content="/images/pilot.png" />
+        <meta property="og:image" content={cardImageURL} key="og_image"/>
+        <meta name="twitter:image:src" content={cardImageURL} key="tw_image" />
 
-        <meta name="twitter:card" content="summary_large_image"  />
+        <meta name="twitter:card" content="summary_large_image" key="tw_card"/>
 
         <title>Actuated - Blazing fast CI</title>
       </Head>
