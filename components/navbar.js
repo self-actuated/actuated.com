@@ -42,7 +42,7 @@ const solutions = [
 
 const navigation = [
   { name: 'Blog', href: '/blog' },
-  { name: 'Announcement', href: 'https://blog.alexellis.io/blazing-fast-ci-with-microvms/' },
+  { name: 'Announcement', href: 'https://actuated.dev/blog/blazing-fast-ci-with-microvms' },
   { name: 'Docs', href: 'https://docs.actuated.dev/' },
 ]
 
