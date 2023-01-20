@@ -30,8 +30,8 @@ export default function Post({ post }) {
 
         {post.image &&
           <>
-            <meta name="twitter:image:src" content={imageURL} /> 
-            <meta property="og:image" content={imageURL} />
+            <meta name="twitter:image:src" content={imageURL} key="tw_image" /> 
+            <meta property="og:image" content={imageURL} key="og_image"/>
           </>
         }
 
