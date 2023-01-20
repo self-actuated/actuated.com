@@ -14,6 +14,7 @@ export default function Layout({ children }) {
           content="Blazing fast CI for containers and Kubernetes"
           key="description"
         />
+        <meta name="author" content="OpenFaaS Ltd" />
 
         <meta property="twitter:title" content="Actuated - Blazing fast CI" key="tw_title"/>
         <meta property="twitter:description" content="Keep your team productive &amp; focused with blazing fast CI" key="tw_description"/>
