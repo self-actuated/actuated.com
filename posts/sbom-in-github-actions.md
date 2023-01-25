@@ -9,10 +9,8 @@ tags:
 - sbom
 author_img: alex
 image: /images/2023-jan-sbom/list.jpg
-date: "2023-01-20"
+date: "2023-01-25"
 ---
-
-Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.
 
 ## What is a Software Bill of Materials (SBOM)?
 
