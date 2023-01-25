@@ -140,7 +140,7 @@ export default function NavBar({ children }) {
                 href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
                 className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
               >
-                Register interest
+                Register now
               </Link>
             </div>
           </div>
@@ -209,7 +209,7 @@ export default function NavBar({ children }) {
                       href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
                       className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                     >
-                      Register interest
+                      Register now
                     </Link>
                   </div>
                 </div>

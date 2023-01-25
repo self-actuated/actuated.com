@@ -8,8 +8,8 @@ const faqs = [
       "You probably need to set aside 30 minutes to follow our quickstart guide and get your builds running on actuated. For regular Intel/AMD builds, edit your workflow YAML and change the runs-on field to either \"actuated\" or \"actuated-aarch64\".",
   },
   {
-    question: "Why do I have to register interest?",
-    answer:"Whilst we have customers live in production and use actuated ourselves at OpenFaaS Ltd, we want to make sure we can support your team and rank which features you want to see coming on the roadmap. If you budget for our service, we'll very likely be able to work with you.",
+    question: "Why do I have to register my interest?",
+    answer:"Whilst we have customers live in production and use actuated ourselves at OpenFaaS Ltd, we want to make sure we can support your team and rank which features you want to see coming on the roadmap. If you have budget for our service, it's very likely that we will accept your team into the pilot.",
   },
   {
     question: "What kind of support do you offer?",
