@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 25 Jan 2023 16:16:46 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 25 Jan 2023 16:25:55 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -18,8 +18,7 @@
             <guid>https://actuated.dev/blog/sbom-in-github-actions</guid>
             <pubDate>Wed, 25 Jan 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.]]></description>
-            <content:encoded><![CDATA[<p>Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.</p>
-<h2>What is a Software Bill of Materials (SBOM)?</h2>
+            <content:encoded><![CDATA[<h2>What is a Software Bill of Materials (SBOM)?</h2>
 <p>In <a href="https://www.docker.com/blog/announcing-docker-sbom-a-step-towards-more-visibility-into-docker-images/">April 2022 Justin Cormack, CTO of Docker announced</a> that Docker was adding support to generate a Software Bill of Materials (SBOM) for container images.</p>
 <p>An SBOM is an inventory of the components that make up a software application. It is a list of the components that make up a software application including the version of each component. The version is important because it can be cross-reference with a vulnerability database to determine if the component has any known vulnerabilities.</p>
 <p>Many organisations are also required to company with certain Open Source Software (OSS) licenses. So if SBOMs are included in the software they purchase or consume from vendors, then it can be used to determine if the software is compliant with their specific license requirements, lowering legal and compliance risk.</p>
