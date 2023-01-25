@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 23 Jan 2023 21:56:41 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 25 Jan 2023 16:16:14 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,214 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[How to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions]]></title>
+            <link>https://actuated.dev/blog/sbom-in-github-actions</link>
+            <guid>https://actuated.dev/blog/sbom-in-github-actions</guid>
+            <pubDate>Fri, 20 Jan 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.]]></description>
+            <content:encoded><![CDATA[<p>Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.</p>
+<h2>What is a Software Bill of Materials (SBOM)?</h2>
+<p>In <a href="https://www.docker.com/blog/announcing-docker-sbom-a-step-towards-more-visibility-into-docker-images/">April 2022 Justin Cormack, CTO of Docker announced</a> that Docker was adding support to generate a Software Bill of Materials (SBOM) for container images.</p>
+<p>An SBOM is an inventory of the components that make up a software application. It is a list of the components that make up a software application including the version of each component. The version is important because it can be cross-reference with a vulnerability database to determine if the component has any known vulnerabilities.</p>
+<p>Many organisations are also required to company with certain Open Source Software (OSS) licenses. So if SBOMs are included in the software they purchase or consume from vendors, then it can be used to determine if the software is compliant with their specific license requirements, lowering legal and compliance risk.</p>
+<p>Docker's enhancements to Docker Desktop and their open source Buildkit tool were the result of a collaboration with Anchore, a company that provides a commercial SBOM solution.</p>
+<h2>Check out an SBOM for yourself</h2>
+<p>Anchore provides commercial solutions for creating, managing and inspecting SBOMs, however they also have two very useful open source tools that we can try out for free.</p>
+<ul>
+<li><a href="https://github.com/anchore/syft">syft</a> - a command line tool that can be used to generate an SBOM for a container image.</li>
+<li><a href="https://github.com/anchore/grype">grype</a> - a command line tool that can be used to scan an SBOM for vulnerabilities.</li>
+</ul>
+<p>OpenFaaS Community Edition (CE) is a popular open source serverless platform for Kubernetes. It's maintained by open source developers, and is free to use.</p>
+<p>Let's pick a container image from the Community Edition of <a href="https://github.com/orgs/openfaasltd/packages">OpenFaaS</a> like the container image for the OpenFaaS gateway.</p>
+<p>We can browse the GitHub UI to find the latest revision, or we can use Google's crane tool:</p>
+<pre><code class="hljs language-bash">crane <span class="hljs-built_in">ls</span> ghcr.io/openfaas/gateway | <span class="hljs-built_in">tail</span> -n 5
+0.26.0
+8e1c34e222d6c194302c649270737c516fe33edf
+0.26.1
+c26ec5221e453071216f5e15c3409168446fd563
+0.26.2
+</code></pre>
+<p>Now we can introduce one of those tags to syft:</p>
+<pre><code class="hljs language-bash">syft ghcr.io/openfaas/gateway:0.26.2
+ ✔ Pulled image            
+ ✔ Loaded image            
+ ✔ Parsed image            
+ ✔ Cataloged packages      [39 packages]
+NAME                                              VERSION                               TYPE      
+alpine-baselayout                                 3.4.0-r0                              apk        
+alpine-baselayout-data                            3.4.0-r0                              apk        
+alpine-keys                                       2.4-r1                                apk        
+apk-tools                                         2.12.10-r1                            apk        
+busybox                                           1.35.0                                binary     
+busybox                                           1.35.0-r29                            apk        
+busybox-binsh                                     1.35.0-r29                            apk        
+ca-certificates                                   20220614-r4                           apk        
+ca-certificates-bundle                            20220614-r4                           apk        
+github.com/beorn7/perks                           v1.0.1                                go-module  
+github.com/cespare/xxhash/v2                      v2.1.2                                go-module  
+github.com/docker/distribution                    v2.8.1+incompatible                   go-module  
+github.com/gogo/protobuf                          v1.3.2                                go-module  
+github.com/golang/protobuf                        v1.5.2                                go-module  
+github.com/gorilla/mux                            v1.8.0                                go-module  
+github.com/matttproud/golang_protobuf_extensions  v1.0.1                                go-module  
+github.com/nats-io/nats.go                        v1.22.1                               go-module  
+github.com/nats-io/nkeys                          v0.3.0                                go-module  
+github.com/nats-io/nuid                           v1.0.1                                go-module  
+github.com/nats-io/stan.go                        v0.10.4                               go-module  
+github.com/openfaas/faas-provider                 v0.19.1                               go-module  
+github.com/openfaas/faas/gateway                  (devel)                               go-module  
+github.com/openfaas/nats-queue-worker             v0.0.0-20230117214128-3615ccb286cc    go-module  
+github.com/prometheus/client_golang               v1.13.0                               go-module  
+github.com/prometheus/client_model                v0.2.0                                go-module  
+github.com/prometheus/common                      v0.37.0                               go-module  
+github.com/prometheus/procfs                      v0.8.0                                go-module  
+golang.org/x/crypto                               v0.5.0                                go-module  
+golang.org/x/sync                                 v0.1.0                                go-module  
+golang.org/x/sys                                  v0.4.1-0.20230105183443-b8be2fde2a9e  go-module  
+google.golang.org/protobuf                        v1.28.1                               go-module  
+libc-utils                                        0.7.2-r3                              apk        
+libcrypto3                                        3.0.7-r2                              apk        
+libssl3                                           3.0.7-r2                              apk        
+musl                                              1.2.3-r4                              apk        
+musl-utils                                        1.2.3-r4                              apk        
+scanelf                                           1.3.5-r1                              apk        
+ssl_client                                        1.35.0-r29                            apk        
+zlib                                              1.2.13-r0                             apk  
+</code></pre>
+<p>These are all the components that syft found in the container image. We can see that it found 39 packages, including the OpenFaaS gateway itself.</p>
+<p>Some of the packages are Go modules, others are packages that have been installed with <code>apk</code> (Alpine Linux's package manager).</p>
+<h2>Checking for vulnerabilities</h2>
+<p>Now that we have an SBOM, we can use grype to check for vulnerabilities.</p>
+<pre><code class="hljs language-bash">grype ghcr.io/openfaas/gateway:0.26.2
+ ✔ Vulnerability DB        [no update available]
+ ✔ Loaded image            
+ ✔ Parsed image            
+ ✔ Cataloged packages      [39 packages]
+ ✔ Scanned image           [2 vulnerabilities]
+NAME                        INSTALLED  FIXED-IN  TYPE       VULNERABILITY   SEVERITY 
+google.golang.org/protobuf  v1.28.1              go-module  CVE-2015-5237   High      
+google.golang.org/protobuf  v1.28.1              go-module  CVE-2021-22570  Medium  
+</code></pre>
+<p>In this instance, we can see there are only two vulnerabilities, both of which are in the <code>google.golang.org/protobuf</code> Go module, and neither of them have been fixed yet.</p>
+<ul>
+<li>As the maintainer of OpenFaaS CE, I could try to eliminate the dependency from the original codebase, or wait for a workaround to be published by its vendor.</li>
+<li>As a consumer of OpenFaaS CE my choices are similar, and it may be worth trying to look into the problem myself to see if the vulnerability is relevant to my use case.</li>
+<li>Now, for OpenFaaS Pro, a commercial distribution of OpenFaaS, where source is not available, I'd need to contact the vendor OpenFaaS Ltd and see if they could help, or if they could provide a workaround. Perhaps there would even be a paid support relationship and SLA relating to fixing vulnerabilities of this kind?</li>
+</ul>
+<p>With this scenario, I wanted to show that different people care about the supply chain, and have different responsibilities for it.</p>
+<h2>Generate an SBOM from within GitHub Actions</h2>
+<p>The examples above were all run locally, but we can also generate an SBOM from within a GitHub Actions workflow. In this way, the SBOM is shipped with the container image and is made available without having to scan the image each time.</p>
+<p>Imagine you have the following Dockerfile:</p>
+<pre><code>FROM alpine:3.17.0
+
+RUN apk add --no-cache curl ca-certificates
+
+CMD ["curl", "https://www.google.com"]
+</code></pre>
+<p>I know that there's a vulnerability in alpine 3.17.0 in the OpenSSL library. How do I know that? I recently updated every OpenFaaS Pro component to use <code>3.17.1</code> to fix a specific vulnerability.</p>
+<p>Now a typical workflow for this Dockerfile would look like the below:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">build</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span> [ <span class="hljs-string">master</span>, <span class="hljs-string">main</span> ]
+  <span class="hljs-attr">pull_request:</span>
+    <span class="hljs-attr">branches:</span> [ <span class="hljs-string">master</span>, <span class="hljs-string">main</span> ]
+
+<span class="hljs-attr">permissions:</span>
+  <span class="hljs-attr">actions:</span> <span class="hljs-string">read</span>
+  <span class="hljs-attr">checks:</span> <span class="hljs-string">write</span>
+  <span class="hljs-attr">contents:</span> <span class="hljs-string">read</span>
+  <span class="hljs-attr">packages:</span> <span class="hljs-string">write</span>
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">publish:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">fetch-depth:</span> <span class="hljs-number">1</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">Docker</span> <span class="hljs-string">Buildx</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/setup-buildx-action@v2</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Login</span> <span class="hljs-string">to</span> <span class="hljs-string">Docker</span> <span class="hljs-string">Registry</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/login-action@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.repository_owner</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">password:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">registry:</span> <span class="hljs-string">ghcr.io</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Publish</span> <span class="hljs-string">image</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
+            GitCommit=${{ github.sha }}
+</span>          <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
+          <span class="hljs-attr">tags:</span> <span class="hljs-string">|
+            ghcr.io/alexellis/gha-sbom:${{ github.sha }}
+</span></code></pre>
+<p>Upon each commit, an image is published to GitHub's Container Registry with the image name of: <code>ghcr.io/alexellis/gha-sbom:SHA</code>.</p>
+<p>To generate an SBOM, we just need to update the <code>docker/build-push-action</code> to use the <code>sbom</code> flag:</p>
+<pre><code class="hljs language-yaml">      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Local</span> <span class="hljs-string">build</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">local_build</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">sbom:</span> <span class="hljs-literal">true</span>
+          <span class="hljs-attr">provenance:</span> <span class="hljs-literal">false</span>
+</code></pre>
+<p>By checking the logs from the action, we can see that the image has been published with an SBOM:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment">#16 [linux/amd64] generating sbom using docker.io/docker/buildkit-syft-scanner:stable-1</span>
+<span class="hljs-comment">#0 0.120 time="2023-01-25T15:35:19Z" level=info msg="starting syft scanner for buildkit v1.0.0"</span>
+<span class="hljs-comment">#16 DONE 1.0s</span>
+</code></pre>
+<p>The SBOM can be viewed as before:</p>
+<pre><code class="hljs language-bash">syft ghcr.io/alexellis/gha-sbom:46bc16cb4033364233fad3caf8f3a255b5b4d10d@sha256:7229e15004d8899f5446a40ebdd072db6ff9c651311d86e0c8fd8f999a32a61a
+
+grype ghcr.io/alexellis/gha-sbom:46bc16cb4033364233fad3caf8f3a255b5b4d10d@sha256:7229e15004d8899f5446a40ebdd072db6ff9c651311d86e0c8fd8f999a32a61a
+ ✔ Vulnerability DB        [updated]
+ ✔ Loaded image            
+ ✔ Parsed image            
+ ✔ Cataloged packages      [21 packages]
+ ✔ Scanned image           [2 vulnerabilities]
+NAME        INSTALLED  FIXED-IN  TYPE  VULNERABILITY  SEVERITY 
+libcrypto3  3.0.7-r0   3.0.7-r2  apk   CVE-2022-3996  High      
+libssl3     3.0.7-r0   3.0.7-r2  apk   CVE-2022-3996  High  
+</code></pre>
+<p>The image: <code>alpine:3.17.0</code> contains two High vulnerabilities, and from reading the notes, we can see that both have been fixed.</p>
+<p>We can resolve the issue by changing the Dockerfile to use <code>alpine:3.17.1</code> instead, and re-running the build.</p>
+<pre><code class="hljs language-bash">grype ghcr.io/alexellis/gha-sbom:63c6952d1ded1f53b1afa3f8addbba9efa37b52b
+ ✔ Vulnerability DB        [no update available]
+ ✔ Pulled image            
+ ✔ Loaded image            
+ ✔ Parsed image            
+ ✔ Cataloged packages      [21 packages]
+ ✔ Scanned image           [0 vulnerabilities]
+No vulnerabilities found
+</code></pre>
+<h2>Wrapping up</h2>
+<p>There is a lot written on the topic of supply chain security, so I wanted to give you a quick overview, and how to get started wth it.</p>
+<p>We looked at Anchore's two open source tools: Syft and Grype, and how they can be used to generate an SBOM and scan for vulnerabilities.</p>
+<p>We then produced an SBOM for a pre-existing Dockerfile and GitHub Action, introducing a vulnerability by using an older base image, and then fixing it by upgrading it. We did this by adding additional flags to the <code>docker/build-push-action</code>. We added the sbom flag, and set the provenance flag to false. Provenance is a separate but related topic, which is explained well in an article by Justin Chadwell of Docker (linked below).</p>
+<p>I maintain an Open Source alternative to brew for developer-focused CLIs called <a href="https://arkade.dev/">arkade</a>. This already includes Google's crane project, and there's a <a href="https://github.com/alexellis/arkade/issues/839">Pull Request coming shortly to add Syft and Grype to the project</a>.</p>
+<p>It can be a convenient way to install these tools on MacOS, Windows or Linux:</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Available now</span>
+arkade get crane
+
+<span class="hljs-comment"># Coming shortly</span>
+arkade get syft grype
+</code></pre>
+<blockquote>
+<p>In the beginning of the article we mentioned license compliance. SBOMs generated by syft do not seem to include license information, but in my experience, corporations which take this risk seriously tend to run their own scanning infrastructure <a href="https://www.synopsys.com/software-integrity/security-testing/software-composition-analysis.html">with commercial tools like Blackduck</a></p>
+</blockquote>
+<p>See also:</p>
+<ul>
+<li><a href="https://www.docker.com/blog/announcing-docker-sbom-a-step-towards-more-visibility-into-docker-images/">Announcing Docker SBOM: A step towards more visibility into Docker images- Justin Cormack</a></li>
+<li><a href="https://www.docker.com/blog/generate-sboms-with-buildkit/">Generating SBOMs for Your Image with BuildKit - Justin Chadwell</a></li>
+<li><a href="https://github.com/anchore">Anchore on GitHub</a></li>
+</ul>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Is the GitHub Actions self-hosted runner safe for Open Source?]]></title>
             <link>https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions</link>
