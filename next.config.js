@@ -6,7 +6,7 @@ const {
 module.exports = (phase) => {
   const isDev = phase === PHASE_DEVELOPMENT_SERVER
 
-  const DEV_URL = process.env.DEV_URL || "http:localhost:3000"
+  const DEV_URL = process.env.DEV_URL || "http://localhost:3000"
 
   const env = {
     PUBLIC_URL: isDev ? DEV_URL : "https://actuated.dev"
