@@ -7,7 +7,7 @@ export default function Blog({ posts }) {
   return (
     <>
       <div className="bg-white">
-        <div className="max-w-screen-xl mx-auto py-4 px-4 sm:py-2 sm:px-6">
+        <div className=" max-w-7xl mx-auto py-4 px-4 sm:py-2 sm:px-6">
           <div className="text-center">
             <h1 className="mt-2 text-3xl leading-10 font-extrabold text-gray-900 sm:text-3xl sm:leading-none sm:tracking-tight lg:text-4xl">
               Actuated Blog
@@ -19,7 +19,7 @@ export default function Blog({ posts }) {
         </div>
       </div>
 
-      <ul className="container mx-auto mt-4 px-4 sm:px-6 lg:px-8 min-height-500">
+      <ul className="container max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8 min-height-500">
         {posts.map(({ slug, date, title, description, author, author_img }) => (
           <li key={slug} className="bg-white border-b border-gray-200">
             <div className="px-4 py-2 sm:px-6">
