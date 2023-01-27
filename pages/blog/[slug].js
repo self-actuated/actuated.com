@@ -1,5 +1,4 @@
-import path from 'path';
-import { getAllPostIds, getPostData } from '../../lib/posts';
+import { getPostBySlug, getPostData, getPosts } from '../../lib/posts';
 import Head from 'next/head';
 import Date from '../../components/date';
 
@@ -77,7 +76,12 @@ export default function Post({ post }) {
 }
 
 export async function getStaticPaths() {
-  const paths = getAllPostIds();
+  const paths = getPosts().map(post => {
+    return {
+      params: { slug: post.slug }
+    }
+  })
+
   return {
     paths,
     fallback: false,
@@ -85,10 +89,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const post = await getPostData(params.id);
+  const post = getPostBySlug(params.slug)
+  const postData = await getPostData(post);
   return {
     props: {
-      post,
+      post: { ...post, ...postData }
     },
   };
 }
