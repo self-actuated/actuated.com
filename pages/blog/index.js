@@ -1,4 +1,4 @@
-import { getSortedPostsData, generateRssFeed } from '../../lib/posts';
+import { getSortedPostsMetadata, generateRssFeed } from '../../lib/posts';
 
 import Link from 'next/link';
 import Date from '../../components/date';
@@ -20,11 +20,11 @@ export default function Blog({ posts }) {
       </div>
 
       <ul className="container mx-auto mt-4 px-4 sm:px-6 lg:px-8 min-height-500">
-        {posts.map(({ id, date, title, description, author, author_img }) => (
-          <li key={id} className="bg-white border-b border-gray-200">
+        {posts.map(({ slug, date, title, description, author, author_img }) => (
+          <li key={slug} className="bg-white border-b border-gray-200">
             <div className="px-4 py-2 sm:px-6">
               <Link
-                href={`/blog/${id}`}
+                href={`/blog/${slug}`}
                 className="block"
               >
                 <h1 className="mt-2 text-2xl leading-7 font-bold text-gray-900 hover:text-blue-500">
@@ -38,7 +38,7 @@ export default function Blog({ posts }) {
               </p>
 
               <h4 className="text-blue-500">
-                <Link href={`/blog/${id}`}>
+                <Link href={`/blog/${slug}`}>
                   Read more...
                 </Link>
               </h4>
@@ -68,12 +68,11 @@ export default function Blog({ posts }) {
 }
 
 export async function getStaticProps() {
-  await generateRssFeed();
-
-  const posts = getSortedPostsData();
+  await generateRssFeed()
+  
   return {
     props: {
-      posts,
+      posts: getSortedPostsMetadata()
     },
   };
 }
