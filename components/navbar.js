@@ -135,14 +135,19 @@ export default function NavBar({ children }) {
                 </Link>
               ))}
             </Popover.Group>
-            <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-              <Link
-                href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
-                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-              >
-                Register now
-              </Link>
-            </div>
+
+          <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
+            <a href="https://dashboard.actuated.dev" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+              Sign in
+            </a>
+            <a
+              href="https://docs.actuated.dev/register/"
+              className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            >
+              Sign up
+            </a>
+          </div>
+
           </div>
 
           <Transition
@@ -206,12 +211,21 @@ export default function NavBar({ children }) {
                   </div>
                   <div className="mt-6">
                     <Link
-                      href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
+                      href="https://docs.actuated.dev/register/"
                       className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                     >
-                      Register now
+                      Sign up
                     </Link>
                   </div>
+                  <div className="mt-6">
+                    <Link
+                      href="https://dashboard.actuated.dev"
+                      className="flex w-full items-center justify-center rounded-md border border-solid	 bg-white px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-900 shadow-sm"
+                    >
+                      Sign in
+                    </Link>
+                  </div>
+
                 </div>
               </div>
             </Popover.Panel>
