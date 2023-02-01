@@ -236,6 +236,36 @@ The `docker/setup-qemu-action@v2` step is responsible for setting up QEMU, which
 
 The `docker/build-push-action@v3` step is responsible for passing in a number of platform combinations such as: `linux/amd64` for cloud, `linux/arm64` for Arm servers and `linux/arm/v6` for Raspberry Pi.
 
+## What if you're not using GitHub Actions?
+
+The various GitHub Actions published by the Docker team are a great way to get started, but if you look under the hood, they're just syntactic sugar for the Docker CLI.
+
+```bash
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+# Have Docker download the latest buildx plugin
+docker buildx install
+
+# Create a buildkit daemon with the name "multiarch"
+docker buildx create \
+    --use \
+    --name=multiarch \
+    --node=multiarch
+
+# Install QEMU
+docker run --rm --privileged \
+    multiarch/qemu-user-static --reset -p yes
+
+# Run a build for the different platforms
+docker buildx build \
+    --platform=linux/arm64,linux/amd64 \
+    --output=type=registry,push=true --tag image:tag .
+```
+
+For OpenFaaS users, we do all of the above any time you type in `faas-cli publish` and the `faas-cli build` command just runs a regular Docker build, without any of the multi-arch steps.
+
+If you're interested, you can checkout the code here: [publish.go](https://github.com/openfaas/faas-cli/blob/master/commands/publish.go).
+
 ## Putting it all together
 
 * CLIs are published for many different combinations of OS and CPU, but containers are usually only required for Linux with an amd64 or Arm CPU.
