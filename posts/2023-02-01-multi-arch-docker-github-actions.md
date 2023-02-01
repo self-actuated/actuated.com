@@ -27,6 +27,8 @@ It's distributed in binary format for users, with builds for Windows, MacOS and 
 
 But why are there six different binaries for three Operating Systems? With the advent of Raspberry Pi, M1 Macs (Apple Silicon) and AWS Graviton servers, we have had to start building binaries for more than just Intel systems.
 
+If you're curious how to build multi-arch binaries with Go, you can check out the release process for the open source arkade tool here, which is a simpler example than faas-cli: [arkade Makefile](https://github.com/alexellis/arkade/blob/master/Makefile) and [GitHub Actions publish job](https://github.com/alexellis/arkade/blob/master/.github/workflows/publish.yml)
+
 So if we have to support at least six different binaries for Open Source CLIs, what about container images?
 
 ## Do we need multi-arch containers too?
