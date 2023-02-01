@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 01 Feb 2023 15:52:04 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 01 Feb 2023 16:04:41 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -197,6 +197,30 @@ jobs:
 <p>You'll see that we added a <code>Setup mirror</code> step, this explained in the <a href="/examples/registry-mirror">Registry Mirror example</a> and is not required for Hosted Runners.</p>
 <p>The <code>docker/setup-qemu-action@v2</code> step is responsible for setting up QEMU, which is used to emulate the different CPU architectures.</p>
 <p>The <code>docker/build-push-action@v3</code> step is responsible for passing in a number of platform combinations such as: <code>linux/amd64</code> for cloud, <code>linux/arm64</code> for Arm servers and <code>linux/arm/v6</code> for Raspberry Pi.</p>
+<h2>What if you're not using GitHub Actions?</h2>
+<p>The various GitHub Actions published by the Docker team are a great way to get started, but if you look under the hood, they're just syntactic sugar for the Docker CLI.</p>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> DOCKER_CLI_EXPERIMENTAL=enabled
+
+<span class="hljs-comment"># Have Docker download the latest buildx plugin</span>
+docker buildx install
+
+<span class="hljs-comment"># Create a buildkit daemon with the name "multiarch"</span>
+docker buildx create \
+    --use \
+    --name=multiarch \
+    --node=multiarch
+
+<span class="hljs-comment"># Install QEMU</span>
+docker run --<span class="hljs-built_in">rm</span> --privileged \
+    multiarch/qemu-user-static --reset -p <span class="hljs-built_in">yes</span>
+
+<span class="hljs-comment"># Run a build for the different platforms</span>
+docker buildx build \
+    --platform=linux/arm64,linux/amd64 \
+    --output=<span class="hljs-built_in">type</span>=registry,push=<span class="hljs-literal">true</span> --tag image:tag .
+</code></pre>
+<p>For OpenFaaS users, we do all of the above any time you type in <code>faas-cli publish</code> and the <code>faas-cli build</code> command just runs a regular Docker build, without any of the multi-arch steps.</p>
+<p>If you're interested, you can checkout the code here: <a href="https://github.com/openfaas/faas-cli/blob/master/commands/publish.go">publish.go</a>.</p>
 <h2>Putting it all together</h2>
 <ul>
 <li>CLIs are published for many different combinations of OS and CPU, but containers are usually only required for Linux with an amd64 or Arm CPU.</li>
