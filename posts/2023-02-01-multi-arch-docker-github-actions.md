@@ -11,6 +11,8 @@ image: /images/2023-02-multi-arch/architecture.jpg
 date: "2023-02-01"
 ---
 
+In 2017, I wrote an article on [multi-stage builds with Docker](https://docs.docker.com/build/building/multi-stage/), and it's now part of the Docker Documentation. In my opinion, multi-arch builds were the proceeding step in the evolution of container images.
+
 ## What's multi-arch and why should you care?
 
 If you want users to be able to use your containers on different types of computer, then you'll often need to build different versions of your binaries and containers.
