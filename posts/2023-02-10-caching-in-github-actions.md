@@ -3,8 +3,10 @@ title: Make your builds run faster with GitHub's built in caching for Actions.
 description: Learn how we made a Golang project build 4x faster using GitHub's built-in caching mechanism.
 author: Han Verstraete
 tags:
-- oss
-- githubactions
+- github
+- actions
+- caching
+- golang
 author_img: welteki
 image: /images/2023-02-10-caching-in-github-actions/background.png
 date: "2023-02-10"
@@ -132,9 +134,12 @@ jobs:
 Triggering the workflow with the build-in cache yields similar time gains as with the manual cache configuration.
 
 ## Conclusion
+
 We walked you through a short example to show you how to set up caching for a Go project and managed to build the project 4x faster.
 
 If you are building with Docker you can use [Docker layer caching](https://docs.docker.com/build/ci/github-actions/examples/#cache) to make your builds faster. Buildkit automatically caches the build results and allows exporting the cache to an external location. It has support for [uploading the build cache to GitHub Actions cache](https://docs.docker.com/build/cache/backends/)
+
+See also: [GitHub: Caching dependencies in Workflows](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows)
 
 Keep in mind that there are some limitations to the GitHub Actions cache. Cache entries that have not been accessed in over 7 days will be removed. There is also a limit on the total cache size of 10 GB per repository.
 
@@ -144,8 +149,6 @@ Some points to take away:
 - Workflows using the cache action can be converted to run on Actuated runners without any modifications.
 - Jobs on Actuated runners start in a clean VM each time. This means dependencies need to be downloaded and build artifacts or caches rebuilt each time. Caching these files in the actions cache can improve workflow execution time.
 
-Want to learn more about Go and GitHub Actions?
-
-- The ebook [Everyday Golang](https://openfaas.gumroad.com/l/everyday-golang) has a chapter dedicated on how to build and release go projects with GitHub Actions.
-
-Detailed instruction for setting up caching can be found in the GitHub documentation: [Cache dependencies](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows)
+> Want to learn more about Go and GitHub Actions?
+> 
+> Alex's eBook [Everyday Golang](https://openfaas.gumroad.com/l/everyday-golang) has a chapter dedicated to building Go programs with Docker and GitHub Actions.
