@@ -1,5 +1,5 @@
 ---
-title: Make your builds run faster with GitHub's built in caching for Actions.
+title: Make your builds run faster with Caching for GitHub Actions.
 description: Learn how we made a Golang project build 4x faster using GitHub's built-in caching mechanism.
 author: Han Verstraete
 tags:
