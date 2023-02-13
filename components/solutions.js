@@ -17,7 +17,7 @@ export default function Solutions() {
             <p className='mt-6 mx-10 text-base leading-7 text-gray-600 text-justify'>
               Learn what friction actuated solves and how it compares to other solutions: <a className='text-blue-500 underline' href='https://blog.alexellis.io/blazing-fast-ci-with-microvms/'>Read the announcement</a>
             </p>
-            </div>
+          </div>
 
         <div className="mx-auto max-w-xl px-6 lg:max-w-7xl lg:px-8">
         
@@ -36,7 +36,27 @@ export default function Solutions() {
                     
                     <p className="mb-2">The first thing you'll notice when you switch to actuated, is just how fast your jobs launch, followed up by the processing power of bare-metal, which is several times faster than GitHub's hosted runners.</p>
 
-                    <p>If you deal with large base images for Docker builds, then you'll benefit from our pull through cache solution, that'll mean common images can be pulled directly from localhost instead of the public Internet.</p>
+                    {/* <p>If you deal with large base images for Docker builds, then you'll benefit from our pull through cache solution, that'll mean common images can be pulled directly from localhost instead of the public Internet.</p> */}
+                </dd>
+              </div>
+          </dl>
+        </div>
+
+        <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
+          <h2 className="sr-only">Secure CI that feels like hosted</h2>
+          <dl className="grid grid-cols-1 lg:grid-cols-1">
+          <div className='mx-10' key="isolated-feature">
+                <dt>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
+                    <KeyIcon className="h-8 w-8" aria-hidden="true" />
+                  </div>
+                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Secure CI that feels like hosted</p>
+
+                </dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
+                  <p className="mb-2">Every job runs in an immutable microVM, just like hosted runners, but on your own servers.</p>
+                  <p className="mb-2">That means you can run <code>sudo</code>, Docker and Kubernetes directly, just like you do during development, there's no need for Docker-in-Docker (DIND), Kaniko or complex user-namespaces.</p>
+                  <p className="mb-2">What about management and scheduling? Provision a server with a minimal Operating System, then install the agent. We'll do the rest.</p>
                 </dd>
               </div>
           </dl>
@@ -58,8 +78,7 @@ export default function Solutions() {
                     <p className="mb-2">If you work with large container images or datasets, then you'll benefit from having your CI run with direct local network access to your internal network.</p>
                     
                     <p className="mb-2">This is not possible with hosted runners, and this is crucial for one of our customers who can regularly saturate a 10GbE link during GitHub Actions runs.</p>
-
-                    <p className="mb-2">Any use of VPNs will incur significant bandwidth costs along with being capped on speed.</p>
+                    <p className="mb-2">In contrast, VPNs are complex to manage, capped on speed, and incur costly egress charges.</p>
                 </dd>
               </div>
           </dl>
@@ -78,33 +97,11 @@ export default function Solutions() {
                 </dt>
                 <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
                   <p className="mb-2">The Apple M1 has made local developers much more productive. Teams we interviewed told us their code builds in 1-2 minutes locally, but takes more than 30 minutes with GitHub's runners.</p>
-                    
-                    <p>When you develop with Apple's M1 locally using Docker, you're running a 64-bit ARM Linux VM, with actuated you can build in the same environment for CI. This reduces friction, but also opens the doors to deploy to more powerful machines in production like AWS Graviton and Ampere servers.</p>
+                  <p>When you develop with Apple's M1 locally using Docker, you're running a 64-bit ARM Linux VM, with actuated you can build in the same environment for CI. This reduces friction, but also opens the doors to deploy to more powerful machines in production like AWS Graviton and Ampere servers.</p>
                 </dd>
               </div>
           </dl>
         </div>
-
-        <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">Completely private CI.</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-          <div className='mx-10' key="isolated-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <KeyIcon className="h-8 w-8" aria-hidden="true" />
-                  </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Completely private CI</p>
-
-                </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
-                  <p className="mb-2">Actuated uses a hybrid model that you bring bare-metal machines with a bare Operating System, and we do everything else.</p>
-                    
-                    <p>Your jobs run on either your own machines or cloud instances in your own account, isolated in speedy Firecracker MicroVMs and an immutable filesystem, that we keep up to date and rebuild regularly.</p>
-                </dd>
-              </div>
-          </dl>
-        </div>
-
 
         <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
           <h2 className="sr-only">Live debugging via SSH.</h2>
@@ -125,7 +122,6 @@ export default function Solutions() {
               </div>
           </dl>
         </div>
-
 
         <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
           <h2 className="sr-only">Flat rate billing.</h2>
