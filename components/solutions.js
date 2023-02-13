@@ -20,7 +20,7 @@ export default function Solutions() {
           </div>
         
         <div className="mx-auto mt-16 max-w-2xl sm:mt-12 lg:mt-16 lg:max-w-6xl">
-          <dl className="grid max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+          <dl className="grid mx-5 md:mx-auto lg:mx-5 xl:mx-auto 2xl:mx-auto max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
 
               <div className="relative pl-16">
                 <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
@@ -90,7 +90,7 @@ export default function Solutions() {
 
 
         <div className="mx-auto mt-16 max-w-2xl sm:mt-12 lg:mt-16 lg:max-w-6xl">
-          <dl className="grid max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+          <dl className="grid mx-5 md:mx-auto lg:mx-5 xl:mx-auto 2xl:mx-auto max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
 
               <div className="relative pl-16">
                 <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
