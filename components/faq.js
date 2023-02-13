@@ -8,24 +8,20 @@ const faqs = [
       "You probably need to set aside 30 minutes to follow our quickstart guide and get your builds running on actuated. For regular Intel/AMD builds, edit your workflow YAML and change the runs-on field to either \"actuated\" or \"actuated-aarch64\".",
   },
   {
-    question: "Why do I have to register my interest?",
-    answer:"Whilst we have customers live in production and use actuated ourselves at OpenFaaS Ltd, we want to make sure we can support your team and rank which features you want to see coming on the roadmap. If you have budget for our service, it's very likely that we will accept your team into the pilot.",
-  },
-  {
     question: "What kind of support do you offer?",
     answer:
-      "For the pilot, every customer is invited to a Slack channel for collaboration and fast support. We have quite a bit of operational experience with GitHub Actions, Docker and Kubernetes and we're making time to help you tune your builds up to get the most out of them.",
+      "For the pilot, every customer is invited to a Slack channel for collaboration and support. We have operational experience with GitHub Actions, Docker and Kubernetes and we're making time to help you tune your builds up to get the most out of them.",
   },
   {
-    question: "What kinds of machines do I need?",
+    question: "What kinds of servers do I need?",
     answer:
       "You can use your own physical servers, nested virtualisation with cloud VMs or rent instances paid by the hour.",
-    link: "https://docs.actuated.dev/add-agent/"
+    link: "https://docs.actuated.dev/provision-server/"
   },
   {
     question: "Can we turn machines off overnight to save money?",
     answer:
-      "If you have little to no activity overnight, and want to optimise your costs, you can power cycle your agents with a cron schedule. Actuated will launch VMs for your jobs when the agents are available again.",
+      "If you have little to no activity overnight, and want to optimise your costs, you can power cycle your agents with a cron schedule. Actuated will launch VMs for your jobs when the servers are available again.",
   },
   {
     question: "Won't GitHub just offer faster runners?",
@@ -39,7 +35,7 @@ const faqs = [
       link: "https://docs.actuated.dev/faq",
   },
   {
-    question: "How much faster is an ARM build than using hosted runners?",
+    question: "How much faster is an Arm build than using hosted runners?",
     answer:
       "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to a real ARM runner instead of using QEMU.",
     link: '/blog/native-arm64-for-github-actions'

@@ -5,6 +5,7 @@ import Solutions from '../components/solutions'
 import Cta from '../components/cta'
 import Testimonial from '../components/testimonial'
 import GitHubQuote from '../components/GitHubQuote'
+import BlogRollup from '../components/rollup'
 
 export default function Home() {
   return (
@@ -78,6 +79,9 @@ export default function Home() {
       {/* More main page content here... */}
 
       <Solutions></Solutions>
+
+
+      <BlogRollup></BlogRollup>
 
       <Testimonial></Testimonial>
 

@@ -8,138 +8,116 @@ import {ServerStackIcon} from '@heroicons/react/20/solid'
 export default function Solutions() {
     return (
         
-      <div id='solutions' className="bg-white py-5 sm:py-5 lg:py-10">
+      <div id='solutions' className="bg-white py-5 sm:py-5 lg:py-5">
        
-          <div className="mx-auto mt-10 mb-10 max-w-xl px-6 lg:max-w-7xl lg:px-8">
+          <div className="mx-auto mt-10 max-w-xl px-4 lg:max-w-7xl lg:px-6">
             <p className='mt-6 mx-10 text-2xl font-semibold leading-8 tracking-tight text-gray-900'>
-                All about speed and efficiency.
+                Increase speed, security and efficiency.
             </p>
-            <p className='mt-6 mx-10 text-base leading-7 text-gray-600 text-justify'>
-              Learn what friction actuated solves and how it compares to other solutions: <a className='text-blue-500 underline' href='https://blog.alexellis.io/blazing-fast-ci-with-microvms/'>Read the announcement</a>
+            <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
+              Learn what friction actuated solves and how it compares to other solutions: <a className='text-blue-500 underline' href='/blog/blazing-fast-ci-with-microvms'>Read the announcement</a>
             </p>
           </div>
-
-        <div className="mx-auto max-w-xl px-6 lg:max-w-7xl lg:px-8">
         
-          <h2 className="sr-only">Blazing fast CI.</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-              <div className='mx-10' key="fast-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <FireIcon className="h-8 w-8" aria-hidden="true" />
+        <div className="mx-auto mt-16 max-w-2xl sm:mt-12 lg:mt-16 lg:max-w-6xl">
+          <dl className="grid max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+
+              <div className="relative pl-16">
+                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
+                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <KeyIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Blazing fast CI</p>
-
+                  Secure CI that feels like hosted.
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
-                    <p className="mb-2">Many teams that we interviewed told us that they have 5-30 people committing regularly throughout the day, with a 20-30 minute build team time. That delay made their team frustrated and distracted as they task switched.</p>
-                    
-                    <p className="mb-2">The first thing you'll notice when you switch to actuated, is just how fast your jobs launch, followed up by the processing power of bare-metal, which is several times faster than GitHub's hosted runners.</p>
-
-                    {/* <p>If you deal with large base images for Docker builds, then you'll benefit from our pull through cache solution, that'll mean common images can be pulled directly from localhost instead of the public Internet.</p> */}
-                </dd>
-              </div>
-          </dl>
-        </div>
-
-        <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">Secure CI that feels like hosted</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-          <div className='mx-10' key="isolated-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <KeyIcon className="h-8 w-8" aria-hidden="true" />
-                  </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Secure CI that feels like hosted</p>
-
-                </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
+                <dd className="mt-2 text-base leading-7 text-gray-600">
                   <p className="mb-2">Every job runs in an immutable microVM, just like hosted runners, but on your own servers.</p>
                   <p className="mb-2">That means you can run <code>sudo</code>, Docker and Kubernetes directly, just like you do during development, there's no need for Docker-in-Docker (DIND), Kaniko or complex user-namespaces.</p>
                   <p className="mb-2">What about management and scheduling? Provision a server with a minimal Operating System, then install the agent. We'll do the rest.</p>
+                 
+                </dd>
+              </div>
+
+              <div className="relative pl-16">
+                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
+                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <CpuChipIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                  </div>
+                  Arm / M1 from Dev to Production.
+                </dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  <p className="mb-2">Apple Silicon is a new favourite for developer workstations. Did you know that when your team run Docker, they're using an Arm VM?</p>
+                  <p>With actuated, those same builds can be performed on Arm servers during CI, and even deployed to production on more efficient Ampere or AWS Graviton servers.</p>
+                </dd>
+              </div>
+
+              <div className="relative pl-16">
+                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
+                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <ServerStackIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                  </div>
+                  Run directly within your datacenter.
+                </dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  <p className="mb-2">If you work with large container images or datasets, then you'll benefit from having your CI run with direct local network access to your internal network.</p>    
+                  <p className="mb-2">This is not possible with hosted runners, and this is crucial for one of our customers who can regularly saturate a 10GbE link during GitHub Actions runs.</p>
+                  <p className="mb-2">In contrast, VPNs are complex to manage, capped on speed, and incur costly egress charges.</p>
+                </dd>
+              </div>
+
+              <div className="relative pl-16">
+                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
+                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <CommandLineIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                  </div>
+                  Debug live over SSH
+                </dt>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                <p className="mb-2">We heard from many teams that they missed CircleCI's "debug this job" button, so we built it for you.</p>
+                  <p>We realise you won't debug your jobs on a regular basis, but when you are stuck, and have to wait 15-20 minutes to get to the line you've changed in a job, debugging with a terminal can save you hours.</p>
                 </dd>
               </div>
           </dl>
         </div>
 
-        <div className="mx-auto max-w-xl px-6 lg:max-w-7xl lg:px-8">
-        
-          <h2 className="sr-only">Run directly within your datacenter.</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-              <div className='mx-10' key="fast-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <ServerStackIcon className="h-8 w-8" aria-hidden="true" />
-                  </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Run directly within your datacenter</p>
-
-                </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
-                    <p className="mb-2">If you work with large container images or datasets, then you'll benefit from having your CI run with direct local network access to your internal network.</p>
-                    
-                    <p className="mb-2">This is not possible with hosted runners, and this is crucial for one of our customers who can regularly saturate a 10GbE link during GitHub Actions runs.</p>
-                    <p className="mb-2">In contrast, VPNs are complex to manage, capped on speed, and incur costly egress charges.</p>
-                </dd>
-              </div>
-          </dl>
+        <div className="mx-auto mt-10 max-w-xl px-4 lg:max-w-7xl lg:px-6">
+            <p className='mt-6 mx-10 text-2xl font-semibold leading-8 tracking-tight text-gray-900'>
+                Lower your costs.
+            </p>
+            <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
+              Actuated is billed on maximum concurrent jobs, so no matter how many build minutes you require, the charge will be the same predictable amount.
+            </p>
         </div>
 
-        <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">ARM / M1 from Dev to Production.</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-            <div className='mx-10' key="arm-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <CpuChipIcon className="h-8 w-8" aria-hidden="true" />
-                  </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">ARM from dev to production</p>
 
+        <div className="mx-auto mt-16 max-w-2xl sm:mt-12 lg:mt-16 lg:max-w-6xl">
+          <dl className="grid max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+
+              <div className="relative pl-16">
+                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
+                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <BanknotesIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                  </div>
+                  Lower management costs.
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
-                  <p className="mb-2">The Apple M1 has made local developers much more productive. Teams we interviewed told us their code builds in 1-2 minutes locally, but takes more than 30 minutes with GitHub's runners.</p>
-                  <p>When you develop with Apple's M1 locally using Docker, you're running a 64-bit ARM Linux VM, with actuated you can build in the same environment for CI. This reduces friction, but also opens the doors to deploy to more powerful machines in production like AWS Graviton and Ampere servers.</p>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                  <p className="mb-2">Whenever your team has to manage self-hosted runners, or explain non-standard tools like Kaniko to developers, you're losing money.</p>
+                  <p className="mb-2">With actuated, you bring your own servers, install our agent, and we do the rest. Our VM image is built with automation and kept up to date, so you don't have to manage packages.</p>
                 </dd>
               </div>
-          </dl>
-        </div>
 
-        <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">Live debugging via SSH.</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-          <div className='mx-10' key="debug-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <CommandLineIcon className="h-8 w-8" aria-hidden="true" />
+              <div className="relative pl-16">
+                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
+                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                    <BanknotesIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Live debugging via SSH</p>
-
+                  Predictable billing.
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
-                    <p className="mb-2">We heard from many teams that they missed CircleCI's "debug this job" button, so we built it for you.</p>
-                    
-                    <p>We realise you won't debug your jobs on a regular basis, but when you are stuck, and have to wait 15-20 minutes to get to the line you've changed in a job, debugging with a terminal can save you hours. Check if this feature is included in your tier.</p>
+                <dd className="mt-2 text-base leading-7 text-gray-600">
+                 <p className="mb-2">Most small teams we interviewed were spending at least 1000-1500 USD / mo for the standard, slower hosted runners.</p>
+                  <p className="mb-2">That cost would only increase with GitHub's faster runners, but with actuated the cost is flat-rate, no matter how many minutes you use.</p>
                 </dd>
               </div>
-          </dl>
-        </div>
 
-        <div className="mx-auto mt-5 max-w-xl px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">Flat rate billing.</h2>
-          <dl className="grid grid-cols-1 lg:grid-cols-1">
-          <div className='mx-10' key="debug-feature">
-                <dt>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 text-white">
-                    <BanknotesIcon className="h-8 w-8" aria-hidden="true" />
-                  </div>
-                  <p className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-900">Flat rate billing</p>
-
-                </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600 text-justify">
-                  <p className="mb-2">Most small teams we spoke to were already spending 1000-1500 USD/mo on overage charges on GitHub Actions for the slower hosted runners.</p>
-                  <p className="mb-2">This doesn't factor in the long delays that your team is facing, and with engineering salaries at an all time high, we're talking about 100-300 USD / hour for every hour wasted, per person within your team.</p>
-                  <p>With actuated, you can use as many build minutes as you need, with a predictable flat-rate charge per month. There's no commitment beyond a month, so you can cancel at any time if you want to go back to slower builds. On top of that, your team will be less distracted by task switching.</p>
-                </dd>
-              </div>
           </dl>
         </div>
 
