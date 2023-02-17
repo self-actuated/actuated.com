@@ -1,5 +1,5 @@
 ---
-title: How to run a KVM guest in your GitHub Actions
+title: How to run KVM guests in your GitHub Actions
 description: From building cloud images, to running NixOS tests and the android emulator, we look at how and why you'd want to run a VM in GitHub Actions.
 author: Han Verstraete
 tags:
@@ -13,7 +13,7 @@ image: /images/2023-02-17-kvm-in-github-actions/nested-firecracker.png
 date: "2023-02-17"
 ---
 
-GitHub's hosted runners do not support nested virtualization. This means some frequently used tools that require KVM like packer, the android emulator, etc can not be used in GitHub Actions CI pipelines.
+GitHub's hosted runners do not support nested virtualization. This means some frequently used tools that require KVM like packer, the Android emulator, etc can not be used in GitHub Actions CI pipelines.
 
 We noticed there are quite a few issues for people requesting KVM support for GitHub Actions:
 
