@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 14 Feb 2023 16:34:46 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 17 Feb 2023 18:45:13 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -13,7 +13,207 @@
             <link>https://actuated.dev</link>
         </image>
         <item>
-            <title><![CDATA[Make your builds run faster with Caching for GitHub Actions.]]></title>
+            <title><![CDATA[How to run a KVM guest in your GitHub Actions]]></title>
+            <link>https://actuated.dev/blog/kvm-in-github-actions</link>
+            <guid>https://actuated.dev/blog/kvm-in-github-actions</guid>
+            <pubDate>Fri, 17 Feb 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[From building cloud images, to running NixOS tests and the android emulator, we look at how and why you'd want to run a VM in GitHub Actions.]]></description>
+            <content:encoded><![CDATA[<p>GitHub's hosted runners do not support nested virtualization. This means some frequently used tools that require KVM like packer, the android emulator, etc can not be used in GitHub Actions CI pipelines.</p>
+<p>We noticed there are quite a few issues for people requesting KVM support for GitHub Actions:</p>
+<ul>
+<li><a href="https://github.com/actions/runner-images/issues/183">Enable nested virtualization · Issue #183 · actions/runner-images</a></li>
+<li><a href="https://github.com/community/community/discussions/8305">Revisiting KVM support for Hosted GitHub Actions · Discussion #8305 · community/community</a></li>
+<li><a href="https://github.com/WikiWatershed/model-my-watershed/pull/3586">[Experimental] Add CI GitHub Actions workflow by rajadain · Pull Request #3586 · WikiWatershed/model-my-watershed</a></li>
+</ul>
+<p>As mentioned in some of these issues, an alternative would be to run your own self-hosted runner on a bare metal host. This comes with the downside that builds can conflict and cause side effects to system-level packages. On top if this self-hosted runners are considered <a href="https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#self-hosted-runner-security">insecure for public repositories</a>.</p>
+<p>Solutions like the "actions-runtime-controller" or ARC that use Kubernetes to orchestrate and run self-hosted runners in Pods are also out of scope if you need to run VMs.</p>
+<p>With Actuated we make it possible to launch a Virtual Machine (VM) within a GitHub Action. Jobs are launched in isolated VMs just like GitHub hosted runners but with support for nested virtualization.</p>
+<h2>Case Study: Githedgehog</h2>
+<p>One of our customers Sergei Lukianov, founding engineer at <a href="https://githedgehog.com">Githedgehog</a> told us he needed somewhere to build Docker images and to test them with Kubernetes, he uses KinD for that.</p>
+<p>Prior to adopting Actuated, his team used hosted runners which are considerably slower, and paid on a per minute basis. Actuated made his builds both faster, and more secure than using any of the alternatives for self-hosted runners.</p>
+<p>It turned out that he also needed to launch VMs in those jobs, and that's something else that hosted runners cannot cater for right now. Actuated’s KVM guest support means he can run all of his workloads on fast hardware.</p>
+<p>Some other common use cases that require KVM support on the CI runner:</p>
+<ul>
+<li>Running <a href="https://www.packer.io/">Packer</a> for creating Amazon Machine Images (AMI) or VM images for other cloud platforms.</li>
+<li>Accelerating the <a href="https://developer.android.com/studio/run/emulator-commandline">Android Emulator</a> via KVM.</li>
+<li>Running <a href="https://nixos.org/">NixOS</a> tests or builds that depend on VMs.</li>
+<li>Testing software that can only be done with <a href="https://www.linux-kvm.org/page/Main_Page">KVM</a> or in a VM.</li>
+</ul>
+<h2>Running VMs in GitHub Actions</h2>
+<p>In this section we will walk you through a couple of hands-on examples.</p>
+<h3>Firecracker microVM</h3>
+<p>In this example we are going to follow the Firecracker quickstart guide to boot up a Firecracker VM but instead of running it on our local machine we will run it from within a GitHub Actions workflow.</p>
+<p>The workflow instals Firecracker, configures and boots a guest VM and then waits 20 seconds before shutting down the VM and exiting the workflow. The image below shows the run logs of the workflow. We see the login prompt of the running microVM.</p>
+<p><img src="/images/2023-02-17-kvm-in-github-actions/nested-firecracker.png" alt="Running a firecracker microVM in a GitHub Actions job"></p>
+<blockquote>
+<p>Running a firecracker microVM in a GitHub Actions job</p>
+</blockquote>
+<p>Here is the workflow file used by this job:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">vm-run</span>
+
+<span class="hljs-attr">on:</span> <span class="hljs-string">push</span>
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">vm-run:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">fetch-depth:</span> <span class="hljs-number">1</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">arkade</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">alexellis/setup-arkade@v2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">firecracker</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">arkade</span> <span class="hljs-string">system</span> <span class="hljs-string">install</span> <span class="hljs-string">firecracker</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">microVM</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">./run-vm.sh</span>
+</code></pre>
+<p>The <a href="https://github.com/alexellis/setup-arkade">setup-arkade</a> is to install arkade on the runner. Next firecracker is installed from the arkade system apps.</p>
+<p>As a last step we run a firecracker microVM. The <code>run-vm.sh</code> script is based on the <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/getting-started.md">firecracker quickstart</a> and collects all the steps into a single script that can be run in the CI pipeline.</p>
+<p>It script will:</p>
+<ul>
+<li>Get the kernel and rootfs for the microVM</li>
+<li>Start fireckracker and configure the guest kernel and rootfs</li>
+<li>Start the guest machine</li>
+<li>Wait for 20 seconds and kill the firecracker process so workflow finishes.</li>
+</ul>
+<p>The <code>run-vm.sh</code> script:</p>
+<pre><code class="hljs language-sh"><span class="hljs-meta">#!/bin/bash</span>
+
+<span class="hljs-comment"># Get a kernel and rootfs</span>
+<span class="hljs-built_in">arch</span>=`<span class="hljs-built_in">uname</span> -m`
+dest_kernel=<span class="hljs-string">"hello-vmlinux.bin"</span>
+dest_rootfs=<span class="hljs-string">"hello-rootfs.ext4"</span>
+image_bucket_url=<span class="hljs-string">"https://s3.amazonaws.com/spec.ccfc.min/img/quickstart_guide/<span class="hljs-variable">$arch</span>"</span>
+
+<span class="hljs-keyword">if</span> [ <span class="hljs-variable">${arch}</span> = <span class="hljs-string">"x86_64"</span> ]; <span class="hljs-keyword">then</span>
+    kernel=<span class="hljs-string">"<span class="hljs-variable">${image_bucket_url}</span>/kernels/vmlinux.bin"</span>
+    rootfs=<span class="hljs-string">"<span class="hljs-variable">${image_bucket_url}</span>/rootfs/bionic.rootfs.ext4"</span>
+<span class="hljs-keyword">elif</span> [ <span class="hljs-variable">${arch}</span> = <span class="hljs-string">"aarch64"</span> ]; <span class="hljs-keyword">then</span>
+    kernel=<span class="hljs-string">"<span class="hljs-variable">${image_bucket_url}</span>/kernels/vmlinux.bin"</span>
+    rootfs=<span class="hljs-string">"<span class="hljs-variable">${image_bucket_url}</span>/rootfs/bionic.rootfs.ext4"</span>
+<span class="hljs-keyword">else</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Cannot run firecracker on <span class="hljs-variable">$arch</span> architecture!"</span>
+    <span class="hljs-built_in">exit</span> 1
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Downloading <span class="hljs-variable">$kernel</span>..."</span>
+curl -fsSL -o <span class="hljs-variable">$dest_kernel</span> <span class="hljs-variable">$kernel</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Downloading <span class="hljs-variable">$rootfs</span>..."</span>
+curl -fsSL -o <span class="hljs-variable">$dest_rootfs</span> <span class="hljs-variable">$rootfs</span>
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Saved kernel file to <span class="hljs-variable">$dest_kernel</span> and root block device to <span class="hljs-variable">$dest_rootfs</span>."</span>
+
+<span class="hljs-comment"># Start firecracker</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Starting firecracker"</span>
+firecracker --api-sock /tmp/firecracker.socket &#x26;
+firecracker_pid=$!
+
+<span class="hljs-comment"># Set the guest kernel and rootfs</span>
+rch=`<span class="hljs-built_in">uname</span> -m`
+kernel_path=$(<span class="hljs-built_in">pwd</span>)<span class="hljs-string">"/hello-vmlinux.bin"</span>
+
+<span class="hljs-keyword">if</span> [ <span class="hljs-variable">${arch}</span> = <span class="hljs-string">"x86_64"</span> ]; <span class="hljs-keyword">then</span>
+    curl --unix-socket /tmp/firecracker.socket -i \
+      -X PUT <span class="hljs-string">'http://localhost/boot-source'</span>   \
+      -H <span class="hljs-string">'Accept: application/json'</span>           \
+      -H <span class="hljs-string">'Content-Type: application/json'</span>     \
+      -d <span class="hljs-string">"{
+            \"kernel_image_path\": \"<span class="hljs-variable">${kernel_path}</span>\",
+            \"boot_args\": \"console=ttyS0 reboot=k panic=1 pci=off\"
+       }"</span>
+<span class="hljs-keyword">elif</span> [ <span class="hljs-variable">${arch}</span> = <span class="hljs-string">"aarch64"</span> ]; <span class="hljs-keyword">then</span>
+    curl --unix-socket /tmp/firecracker.socket -i \
+      -X PUT <span class="hljs-string">'http://localhost/boot-source'</span>   \
+      -H <span class="hljs-string">'Accept: application/json'</span>           \
+      -H <span class="hljs-string">'Content-Type: application/json'</span>     \
+      -d <span class="hljs-string">"{
+            \"kernel_image_path\": \"<span class="hljs-variable">${kernel_path}</span>\",
+            \"boot_args\": \"keep_bootcon console=ttyS0 reboot=k panic=1 pci=off\"
+       }"</span>
+<span class="hljs-keyword">else</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Cannot run firecracker on <span class="hljs-variable">$arch</span> architecture!"</span>
+    <span class="hljs-built_in">exit</span> 1
+<span class="hljs-keyword">fi</span>
+
+rootfs_path=$(<span class="hljs-built_in">pwd</span>)<span class="hljs-string">"/hello-rootfs.ext4"</span>
+curl --unix-socket /tmp/firecracker.socket -i \
+  -X PUT <span class="hljs-string">'http://localhost/drives/rootfs'</span> \
+  -H <span class="hljs-string">'Accept: application/json'</span>           \
+  -H <span class="hljs-string">'Content-Type: application/json'</span>     \
+  -d <span class="hljs-string">"{
+        \"drive_id\": \"rootfs\",
+        \"path_on_host\": \"<span class="hljs-variable">${rootfs_path}</span>\",
+        \"is_root_device\": true,
+        \"is_read_only\": false
+   }"</span>
+
+<span class="hljs-comment"># Start the guest machine</span>
+curl --unix-socket /tmp/firecracker.socket -i \
+  -X PUT <span class="hljs-string">'http://localhost/actions'</span>       \
+  -H  <span class="hljs-string">'Accept: application/json'</span>          \
+  -H  <span class="hljs-string">'Content-Type: application/json'</span>    \
+  -d <span class="hljs-string">'{
+      "action_type": "InstanceStart"
+   }'</span>
+
+<span class="hljs-comment"># Kill the firecracker process to exit the workflow</span>
+<span class="hljs-built_in">sleep</span> 20
+<span class="hljs-built_in">kill</span> -9 <span class="hljs-variable">$firecracker_pid</span>
+
+</code></pre>
+<p>The full example can be found on <a href="https://github.com/skatolo/nested-firecracker">GitHub</a></p>
+<p>If you'd like to know more about how Firecracker works and how it compares to traditional VMs and Docker you can watch Alex's webinar on the topic.</p>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/CYCsa5e2vqg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<blockquote>
+<p>Join Alex and Richard Case for a cracking time. The pair share what's got them so excited about Firecracker, the kinds of use-cases they see for microVMs, fundamentals of Linux Operating Systems and plenty of demos.</p>
+</blockquote>
+<h3>NixOS integration tests</h3>
+<p>With nix there is the ability to provide a set of declarative configuration to define integration tests that spin up virtual machines using <a href="https://www.qemu.org/">QEMU</a> as the backend. While running these tests in CI without hardware acceleration is supported this is considerably slower.</p>
+<p>For a more detailed overview of the test setup and configuration see the original article in the NixOS guides:</p>
+<ul>
+<li><a href="https://nixos.org/guides/integration-testing-using-virtual-machines.html">Integration testing using virtual machines (VMs)</a></li>
+</ul>
+<p>The workflow file for running NixOS tests on  GitHub Actions:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">nixos-tests</span>
+
+<span class="hljs-attr">on:</span> <span class="hljs-string">push</span>
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">nixos-test:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">fetch-depth:</span> <span class="hljs-number">1</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-python@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">python-version:</span> <span class="hljs-string">'3.x'</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">cachix/install-nix-action@v16</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">extra_nix_config:</span> <span class="hljs-string">"system-features = nixos-test benchmark big-parallel kvm"</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">NixOS</span> <span class="hljs-string">test</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">nix</span> <span class="hljs-string">build</span> <span class="hljs-string">-L</span> <span class="hljs-string">.#checks.x86_64-linux.postgres</span>
+</code></pre>
+<p>We just install Nix using the <a href="https://github.com/cachix/install-nix-action">install-nix-action</a> and run the tests in the next step.</p>
+<p>The full example is available on <a href="https://github.com/skatolo/gh-actions-nixos-tests">GitHub</a></p>
+<h3>Other examples of using a VM</h3>
+<p>In the previous section we showed you some brief examples for the kind of workflows you can run. Here are some other resources and tutorials that should be easy to adapt and run in CI.</p>
+<ul>
+<li>Create KVM virtual machine images with the <a href="https://developer.hashicorp.com/packer/plugins/builders/qemu">Packer QEMU Builder</a></li>
+<li>Launching an Ubuntu cloud image with cloud-init: <a href="https://fabianlee.org/2020/02/23/kvm-testing-cloud-init-locally-using-kvm-for-an-ubuntu-cloud-image/">
+KVM: Testing cloud-init locally using KVM for an Ubuntu cloud image </a></li>
+</ul>
+<h2>Conclusion</h2>
+<p>Hosted runners do not support nested virtualization. That makes them unsuitable for running CI jobs that require KVM support.</p>
+<p>For Actuated runners we provide a custom Kernel that enables KVM support. This will allow you to run Virtual Machines within your CI jobs.</p>
+<p>At time of writing there is no support for aarch64 runners. Only Intel and AMD CPUs support nested virtualisation.</p>
+<p>While it is possible to deploy your own self-hosted runners to run jobs that need KVM support, this is not recommended:</p>
+<ul>
+<li><a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
+</ul>
+<p>Want to see a demo or talk to our team? Register <a href="https://forms.gle/8XmpTTWXbZwWkfqT6">here</a></p>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Make your builds run faster with Caching for GitHub Actions]]></title>
             <link>https://actuated.dev/blog/caching-in-github-actions</link>
             <guid>https://actuated.dev/blog/caching-in-github-actions</guid>
             <pubDate>Fri, 10 Feb 2023 00:00:00 GMT</pubDate>
