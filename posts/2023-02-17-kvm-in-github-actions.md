@@ -1,12 +1,15 @@
 ---
-title: How to run a KVM guest in your GitHub Actions.
+title: How to run a KVM guest in your GitHub Actions
 description: From building cloud images, to running NixOS tests and the android emulator, we look at how and why you'd want to run a VM in GitHub Actions.
 author: Han Verstraete
 tags:
 - virtualization
 - kvm
 - githubactions
+- nestedvirt
+- cicd
 author_img: welteki
+image: /images/2023-02-17-kvm-in-github-actions/nested-firecracker.png
 date: "2023-02-17"
 ---
 
