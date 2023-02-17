@@ -237,4 +237,6 @@ While it is possible to deploy your own self-hosted runners to run jobs that nee
 
 - [Is the GitHub Actions self-hosted runner safe for Open Source?](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions)
 
-Want to see a demo or talk to our team? Register [here](https://forms.gle/8XmpTTWXbZwWkfqT6)
+Want to see a demo or talk to our team? [Contact us here](https://forms.gle/8XmpTTWXbZwWkfqT6)
+
+Just want to try it out instead? [Register your GitHub Organisation and set-up a subscription](https://docs.actuated.dev/register/)
