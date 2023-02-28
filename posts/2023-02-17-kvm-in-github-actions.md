@@ -222,8 +222,7 @@ The full example is available on [GitHub](https://github.com/skatolo/gh-actions-
 In the previous section we showed you some brief examples for the kind of workflows you can run. Here are some other resources and tutorials that should be easy to adapt and run in CI.
 
 - Create KVM virtual machine images with the [Packer QEMU Builder](https://developer.hashicorp.com/packer/plugins/builders/qemu)
-- Launching an Ubuntu cloud image with cloud-init: [
-KVM: Testing cloud-init locally using KVM for an Ubuntu cloud image ](https://fabianlee.org/2020/02/23/kvm-testing-cloud-init-locally-using-kvm-for-an-ubuntu-cloud-image/)
+- Launching an Ubuntu cloud image with cloud-init: [KVM: Testing cloud-init locally using KVM for an Ubuntu cloud image](https://fabianlee.org/2020/02/23/kvm-testing-cloud-init-locally-using-kvm-for-an-ubuntu-cloud-image/)
 
 ## Conclusion
 
