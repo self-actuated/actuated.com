@@ -13,22 +13,22 @@ export default function Layout({ children }) {
 
         <meta
           name="description"
-          content="Blazing fast CI for containers and Kubernetes"
+          content="Fast and Secure CI on your infrastructure."
           key="description"
         />
         <meta name="author" content="OpenFaaS Ltd" />
 
-        <meta property="twitter:title" content="Actuated - Blazing fast CI" key="tw_title"/>
-        <meta property="twitter:description" content="Keep your team productive &amp; focused with blazing fast CI" key="tw_description"/>
+        <meta property="twitter:title" content="Actuated - Fast and Secure CI on your infrastructure." key="tw_title"/>
+        <meta property="twitter:description" content="Keep your team productive &amp; focused with Fast and Secure CI on your infrastructure." key="tw_description"/>
         
-        <meta property="og:title" content="Actuated - Blazing fast CI" key="og_title"/>
-        <meta property="og:description" content="Keep your team productive &amp; focused with blazing fast CI" key="og_description"/>
+        <meta property="og:title" content="Actuated - Fast and Secure CI on your infrastructure." key="og_title"/>
+        <meta property="og:description" content="Keep your team productive &amp; focused with Fast and Secure CI on your infrastructure." key="og_description"/>
         <meta property="og:image" content={cardImageURL} key="og_image"/>
         <meta name="twitter:image:src" content={cardImageURL} key="tw_image" />
 
         <meta name="twitter:card" content="summary_large_image" key="tw_card"/>
 
-        <title>Actuated - Blazing fast CI</title>
+        <title>Actuated - Fast and Secure CI on your infrastructure.</title>
       </Head>
 
       <Navbar />

@@ -3,9 +3,19 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
 const faqs = [
   {
-    question: "How much time do I need to invest to try actuated?",
+    question: "What is Firecracker? Why is it better than a container?",
     answer:
-      "You probably need to set aside 30 minutes to follow our quickstart guide and get your builds running on actuated. For regular Intel/AMD builds, edit your workflow YAML and change the runs-on field to either \"actuated\" or \"actuated-aarch64\".",
+      "Generally, any use of containers for CI means bypassing security, so that any job can take over a host or the cluster. Actuated uses Firecracker microVMs, a project built by AWS to fully isolate every job with an immutable VM.",
+  },
+  {
+    question: "How do we try out actuated for our team?",
+    answer:
+      "Register using the link, and we'll book 30 mins to find your challenges, recommend a plan, and server hosting for your current usage.",
+      link: "https://docs.actuated.dev/register/#sign-up-for-the-pilot"
+  },
+  {
+    question: "How much does it cost? What is the right plan for our team?",
+    answer: "For the pilot, we are offering unmetered billing with a flat-rate monthly subscription. You can use as many minutes as you like.",
   },
   {
     question: "What kind of support do you offer?",
@@ -19,25 +29,20 @@ const faqs = [
     link: "https://docs.actuated.dev/provision-server/"
   },
   {
-    question: "Can we turn machines off overnight to save money?",
+    question: "Doesn't GitHub already offer faster runners?",
     answer:
-      "If you have little to no activity overnight, and want to optimise your costs, you can power cycle your agents with a cron schedule. Actuated will launch VMs for your jobs when the servers are available again.",
+      "GitHub are in a beta phase for larger runners for their Team and Enterprises plans, these have an increased cost vs. standard runners and there is no Arm support. With actuated you get much faster speeds at a flat rate cost.",
   },
   {
-    question: "Won't GitHub just offer faster runners?",
+    question: "What's the difference with Actions Runtime Controller?",
     answer:
-      "GitHub do already offer faster runners at a greatly increased cost, but there is currently no Arm support. With actuated's flat-rate billing, you can get much faster speeds for a flat rate price.",
-  },
-  {
-    question: "How does actuated compare to Actions Runtime Controller or the stand-alone self-hosted runner?",
-    answer:
-      "You can find a detailed comparison in the FAQ in the docs.",
-      link: "https://docs.actuated.dev/faq",
+      "actions-runtime-controller compromises the security of a Kubernetes cluster by using privileged containers or by mounting the Docker socket - both mean that code in a CI job can take over the host - or potentially the cluster.",
+      link: "https://actuated.dev/blog/blazing-fast-ci-with-microvms"
   },
   {
     question: "How much faster is an Arm build than using hosted runners?",
     answer:
-      "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to a real ARM runner instead of using QEMU.",
+      "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to an Arm runner instead of using QEMU.",
     link: '/blog/native-arm64-for-github-actions'
   },
   {
@@ -47,13 +52,9 @@ const faqs = [
     link: 'https://docs.actuated.dev/'
   },
   {
-    question: "How much does it cost? What is the right plan for our team?",
-    answer: "For pilot customers, we have unmetered billing, which means you can use as many build minutes as you like, with one flat fee. The initial tier comes with 5 concurrent builds across one host, and as you increase, you get more RAM/CPU per job, more build agents and more parallel jobs.",
-  },
-  {
     question: "How mature is actuated?",
     answer:
-      "Actuated is built on battle tested technology that's run in production at huge scale by Amazon Web Services (AWS) and GitHub. Our solution is already being used by us and our customers to save time and increase efficiency.",
+      "Actuated is built on battle tested technology that's run in production at huge scale by Amazon Web Services (AWS) and GitHub. Our solution launches thousands of VMs for customers already, without issue.",
   },
   {
     question: "Where can I find detailed information about actuated?",

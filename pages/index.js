@@ -33,7 +33,7 @@ export default function Home() {
                   Standard hosted runners are slow and expensive, larger runners cost even more.
                   </p>
                 <p className="mx-auto mt-6 max-w-lg text-center text-xl text-indigo-200 sm:max-w-3xl">
-                  Actuated runs on your own infrastructure with a predictable cost, low management and secure isolation with VMs.
+                  Actuated runs on your own infrastructure with a predictable cost, low management and secure isolation with Firecracker.
                 </p>
                 <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                   <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
