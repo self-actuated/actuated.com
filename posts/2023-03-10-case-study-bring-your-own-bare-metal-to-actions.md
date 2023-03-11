@@ -93,7 +93,6 @@ How long did it take on bare-metal? 14 minutes 28 seconds.
 
 That's a 25x improvement.
 
-
 The Firecracker VM that we launched had 16GB of RAM and 8x vCPUs allocated.
 
 It was running on a Mac Mini M1 configured with 16GB RAM, running with Asahi Linux. I bought it for development and testing, as a one-off cost, and it's a very fast machine. 
@@ -101,6 +100,8 @@ It was running on a Mac Mini M1 configured with 16GB RAM, running with Asahi Lin
 But, this case-study is *not* specifically about using consumer hardware, or hardware plugged in under your desk.
 
 Equinix Metal and Hetzner both have the Ampere Altra bare-metal server available on either an hourly or monthly basis, and AWS customers can get access to the a1.metal instance on an hourly basis too.
+
+> To prove the point, that BYO means cloud servers, just as much as physically owned machines, [I also ran the same build on an Ampere Altra from Equinix Metal](https://github.com/actuated-samples/govpp/actions/runs/4391240138) with 20 GB of RAM, and 32 vCPUs, it completed in 9 minutes 39 seconds.
 
 See our hosting recommendations: [Actuated Docs: Provision a Server](https://docs.actuated.dev/provision-server/)
 
