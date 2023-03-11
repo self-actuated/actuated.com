@@ -47,7 +47,13 @@ But that wouldn't have covered him for the Arm build, GitHub don't have any supp
 
 With actuated, we have no interest in competing with GitHub's business model of selling compute on demand. We want to do something more unique than that - we want to enable you to bring your own (BYO) devices and then use them as runners, with VM-level isolation and one-shot runners.
 
-We are a nimble team, but have a pedigree with self-hosted software going back 6-7 years from OpenFaaS, used widely in production by anyone from hobbyists to Fortune 500 companies.
+> What does Bring Your Own (BYO) mean?
+> 
+> "Your Own" does not have to mean physical ownership. You do not need to own a datacenter, or to send off a dozen Mac Minis to a Colo.
+> You can provision bare-metal servers on AWS or with Equinix Metal as quickly as you can get an EC2 instance.
+> Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and Azure's VMs will work with actuated because they support KVM, which we use to launch Firecracker.
+
+And who is behind actuated? We are a nimble team, but have a pedigree with Cloud Native and self-hosted software going back 6-7 years from [OpenFaaS](https://openfaas.com/). OpenFaaS is a well known serverless platform which is used widely in production by commercial companies including Fortune 500s.
 
 Actuated uses a Bring Your Own (BYO) server model, but there's very little for you to do once you've installed the actuated agent.
 
@@ -87,11 +93,14 @@ How long did it take on bare-metal? 14 minutes 28 seconds.
 
 That's a 25x improvement.
 
-I used a Mac Mini M1 running Asahi Linux with 16GB RAM - coming in at around 1000 USD for a one-time purchase.
 
 The Firecracker VM that we launched had 16GB of RAM and 8x vCPUs allocated.
 
-But, both Hetzner and Equinix Metal rent out Ampere Altras per hour in the cloud, and would also be a great option here.
+It was running on a Mac Mini M1 configured with 16GB RAM, running with Asahi Linux. I bought it for development and testing, as a one-off cost, and it's a very fast machine. 
+
+But, this case-study is *not* specifically about using consumer hardware, or hardware plugged in under your desk.
+
+Equinix Metal and Hetzner both have the Ampere Altra bare-metal server available on either an hourly or monthly basis, and AWS customers can get access to the a1.metal instance on an hourly basis too.
 
 See our hosting recommendations: [Actuated Docs: Provision a Server](https://docs.actuated.dev/provision-server/)
 
