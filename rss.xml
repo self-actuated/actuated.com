@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 10 Mar 2023 18:18:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 13 Mar 2023 08:36:30 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -43,7 +43,13 @@
 <p>So GitHub does actually have a beta going for "larger runners", and if Ed wanted to try that out, he'd have to apply to a beta waitlist, upgrade to a Team or Enterprise Plan, and then pick a new runner size.</p>
 <p>But that wouldn't have covered him for the Arm build, GitHub don't have any support there right now. I'm sure it will come one, day, but here we are unable to release binaries for our Arm users.</p>
 <p>With actuated, we have no interest in competing with GitHub's business model of selling compute on demand. We want to do something more unique than that - we want to enable you to bring your own (BYO) devices and then use them as runners, with VM-level isolation and one-shot runners.</p>
-<p>We are a nimble team, but have a pedigree with self-hosted software going back 6-7 years from OpenFaaS, used widely in production by anyone from hobbyists to Fortune 500 companies.</p>
+<blockquote>
+<p>What does Bring Your Own (BYO) mean?</p>
+<p>"Your Own" does not have to mean physical ownership. You do not need to own a datacenter, or to send off a dozen Mac Minis to a Colo.
+You can provision bare-metal servers on AWS or with Equinix Metal as quickly as you can get an EC2 instance.
+Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and Azure's VMs will work with actuated because they support KVM, which we use to launch Firecracker.</p>
+</blockquote>
+<p>And who is behind actuated? We are a nimble team, but have a pedigree with Cloud Native and self-hosted software going back 6-7 years from <a href="https://openfaas.com/">OpenFaaS</a>. OpenFaaS is a well known serverless platform which is used widely in production by commercial companies including Fortune 500s.</p>
 <p>Actuated uses a Bring Your Own (BYO) server model, but there's very little for you to do once you've installed the actuated agent.</p>
 <p>Here's how to set up the agent software: <a href="https://docs.actuated.dev/install-agent/">Actuated Docs: Install the Agent</a>.</p>
 <p>You then get detailed stats about each runner, the build queue and insights across your whole GitHub organisation, in one place:</p>
@@ -63,9 +69,13 @@
 <p>How long did it take on bare-metal? 14 minutes 28 seconds.</p>
 <p><img src="/images/2023-03-vpp/arm64.png" alt="Improvements over QEMU"></p>
 <p>That's a 25x improvement.</p>
-<p>I used a Mac Mini M1 running Asahi Linux with 16GB RAM - coming in at around 1000 USD for a one-time purchase.</p>
 <p>The Firecracker VM that we launched had 16GB of RAM and 8x vCPUs allocated.</p>
-<p>But, both Hetzner and Equinix Metal rent out Ampere Altras per hour in the cloud, and would also be a great option here.</p>
+<p>It was running on a Mac Mini M1 configured with 16GB RAM, running with Asahi Linux. I bought it for development and testing, as a one-off cost, and it's a very fast machine.</p>
+<p>But, this case-study is <em>not</em> specifically about using consumer hardware, or hardware plugged in under your desk.</p>
+<p>Equinix Metal and Hetzner both have the Ampere Altra bare-metal server available on either an hourly or monthly basis, and AWS customers can get access to the a1.metal instance on an hourly basis too.</p>
+<blockquote>
+<p>To prove the point, that BYO means cloud servers, just as much as physically owned machines, <a href="https://github.com/actuated-samples/govpp/actions/runs/4391240138">I also ran the same build on an Ampere Altra from Equinix Metal</a> with 20 GB of RAM, and 32 vCPUs, it completed in 9 minutes 39 seconds.</p>
+</blockquote>
 <p>See our hosting recommendations: <a href="https://docs.actuated.dev/provision-server/">Actuated Docs: Provision a Server</a></p>
 <p>In October last year, I benchmarked a Raspberry Pi 4 as an actuated server and pitted it directly against QEMU and GitHub's Hosted runners.</p>
 <p>It was 24 minutes faster. That's how bad using QEMU can be instead of using bare-metal Arm.</p>
