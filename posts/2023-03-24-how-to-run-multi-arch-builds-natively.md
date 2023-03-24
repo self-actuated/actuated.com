@@ -294,6 +294,8 @@ The Kubernetes controller that's available has the same issues, because it re-us
 
 Hosted runners solve this by creating a fresh VM per job, and destroying it immediately. That's the same approach that we took with actuated, but you get to bring your own metal along, so that you keep costs from growing out of control. Actuated also supports Arm, out of the box.
 
+Want to know more about the security of self-hosted runners? [Read more in our FAQ](https://docs.actuated.dev/faq/).
+
 Want to talk to us about your CI/CD needs? We're happy to help.
 
 * [Contact us about a PoC](https://docs.actuated.dev/register/#sign-up-for-the-pilot)
