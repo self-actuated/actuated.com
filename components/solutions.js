@@ -82,13 +82,15 @@ export default function Solutions() {
 
         <div className="mx-auto mt-10 max-w-xl px-4 lg:max-w-7xl lg:px-6">
             <p className='mt-6 mx-10 text-2xl font-semibold leading-8 tracking-tight text-gray-900'>
-                Lower your costs.
+                Lower your costs, and keep them there.
             </p>
             <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
-              Actuated is billed on maximum concurrent jobs, so no matter how many build minutes you require, the charge will be the same predictable amount.
+              Actuated is billed by the maximum amount of concurrent jobs you can run, so no matter how many build minutes your team requires, the charge will not increase with usage.
+            </p>
+            <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
+              In a recent interview, a lead SRE at UK-based scale-up told us that their bill had increased 5x over the past 6 months. They are now paying 5000 GBP / month and we worked out that we could make their builds faster and at least half the costs.
             </p>
         </div>
-
 
         <div className="mx-auto mt-16 max-w-2xl sm:mt-12 lg:mt-16 lg:max-w-6xl">
           <dl className="grid mx-5 md:mx-auto lg:mx-5 xl:mx-auto 2xl:mx-auto max-w-xl grid-cols-1 gap-y-10 gap-x-8 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
