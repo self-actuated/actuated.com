@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 24 Mar 2023 09:55:35 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 24 Mar 2023 15:00:48 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,257 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[How to split up multi-arch Docker builds to run natively]]></title>
+            <link>https://actuated.dev/blog/how-to-run-multi-arch-builds-natively</link>
+            <guid>https://actuated.dev/blog/how-to-run-multi-arch-builds-natively</guid>
+            <pubDate>Fri, 24 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[QEMU is a convenient way to publish containers for multiple architectures, but it can be incredibly slow. Native is much faster.]]></description>
+            <content:encoded><![CDATA[<p>In two previous articles, we covered huge improvements in performance for the Parca project and VPP (Network Service Mesh) simply by switching to actuated with Arm64 runners instead of using QEMU and hosted runners.</p>
+<p>In the <a href="http://actuated.dev/blog/native-arm64-for-github-actions">first case</a>, using QEMU took over 33 minutes, and bare-metal Arm showed a 22x improvement at only 1 minute 26 seconds. For Network Service Mesh, <a href="http://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions">VPP</a> couldn't even complete a build in 6 hours using QEMU - and I got it down to 9 minutes flat using a bare-metal <a href="https://amperecomputing.com/processors/ampere-altra">Ampere Altra server</a>.</p>
+<h2>What are we going to see and why is it better?</h2>
+<p>In this article, I'll show you how to run multi-arch builds natively on bare-metal hardware using GitHub Actions and actuated.</p>
+<p><a href="https://actuated.dev/">Actuated</a> is a SaaS service that we built so that you can Bring Your Own compute to GitHub Actions, and have every build run in an immutable, single-use VM.</p>
+<p><a href="https://twitter.com/alexellisuk/status/1639232258887372801?s=20"><img src="https://pbs.twimg.com/media/Fr_CcVJWIAEY1gL?format=png&#x26;name=medium" alt="Comparison of the two builds"></a></p>
+<blockquote>
+<p>Comparison of splitting out to run in parallel on native hardware and QEMU.</p>
+</blockquote>
+<p>Not every build will see such a dramatic increase as the ones I mentioned in the introduction. Here, with the inlets-operator, we gained 4 minutes on each commit. But I often speak to users who are running past 30 minutes to over an hour because of QEMU.</p>
+<p>Three things got us a speed bump here:</p>
+<ul>
+<li>We ran on bare-metal, native hardware - not the standard hosted runner from GitHub</li>
+<li>We split up the work and ran in parallel - rather than waiting for two builds to run in serial</li>
+<li>Finally, we did away with QEMU and ran the Arm build directly on an Arm server</li>
+</ul>
+<p>Only last week an engineer at Calyptia (the team behind <a href="https://fluentbit.io/">fluent-bit</a>) reached out for help after telling me they had to disable and stop publishing open source images for Arm, it was simply timing out at the 6 hour mark.</p>
+<p>So how does this thing work, and is QEMU actually "OK"?</p>
+<h2>QEMU can be slow, but it's actually "OK"</h2>
+<p>So if the timings are so bad, why does anyone use QEMU?</p>
+<p>Well it's free - as in beer, there's no cost at all to use it. And many builds can complete in a reasonable amount of time using QEMU, even if it's not as fast as native.</p>
+<p>That's why we wrote up how we build 80+ multi-arch images for various products like OpenFaaS and Inlets:</p>
+<p><a href="https://actuated.dev/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></p>
+<p>Here's what the build looks like with QEMU:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">split-operator</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span> [ <span class="hljs-string">master</span>, <span class="hljs-string">qemu</span> ]
+
+<span class="hljs-attr">jobs:</span>
+
+  <span class="hljs-attr">publish_qemu:</span>
+    <span class="hljs-attr">concurrency:</span> 
+      <span class="hljs-attr">group:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.ref</span> <span class="hljs-string">}}-qemu</span>
+      <span class="hljs-attr">cancel-in-progress:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">permissions:</span>
+      <span class="hljs-attr">packages:</span> <span class="hljs-string">write</span>
+
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">repository:</span> <span class="hljs-string">inlets/inlets-operator</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">"./"</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Get</span> <span class="hljs-string">Repo</span> <span class="hljs-string">Owner</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">get_repo_owner</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">echo</span> <span class="hljs-string">"REPO_OWNER=$(echo $<span class="hljs-template-variable">{{ github.repository_owner }}</span> | tr '[:upper:]' '[:lower:]')"</span> <span class="hljs-string">></span> <span class="hljs-string">$GITHUB_ENV</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">QEMU</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/setup-qemu-action@v2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">Docker</span> <span class="hljs-string">Buildx</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/setup-buildx-action@v2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Login</span> <span class="hljs-string">to</span> <span class="hljs-string">container</span> <span class="hljs-string">Registry</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/login-action@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.repository_owner</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">password:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">registry:</span> <span class="hljs-string">ghcr.io</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Release</span> <span class="hljs-string">build</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">release_build</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
+          <span class="hljs-attr">platforms:</span> <span class="hljs-string">linux/amd64,linux/arm64</span>
+          <span class="hljs-attr">file:</span> <span class="hljs-string">./Dockerfile</span>
+          <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
+          <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
+            Version=dev
+            GitCommit=${{ github.sha }}
+</span>          <span class="hljs-attr">tags:</span> <span class="hljs-string">|
+            ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-qemu
+</span></code></pre>
+<p>This is the kind of build that is failing or causing serious delays for projects like Parca, VPP and Fluent Bit.</p>
+<p>Let's look at the alternative.</p>
+<h2>Building on native hardware</h2>
+<p>Whilst QEMU emulates the architecture you need within a build, it's not the same as running on the real hardware. This is why we see such a big difference in performance.</p>
+<p>The downside is that we have to write a bit more CI configuration and run two builds instead of one, but there is some good news - we can now run them in parallel.</p>
+<p>In parallel we:</p>
+<ol>
+<li>We publish the x86_64 image - <code>ghcr.io/owner/repo:sha-amd64</code></li>
+<li>We publish the ARM image - <code>ghcr.io/owner/repo:sha-arm64</code></li>
+</ol>
+<p>Then:</p>
+<ol start="3">
+<li>We create a manifest with its own name - <code>ghcr.io/owner/repo:sha</code></li>
+<li>We annotate the manifest with the images we built earlier</li>
+<li>We push the manifest</li>
+</ol>
+<p>In this way, anyone can pull the image with the name <code>ghcr.io/owner/repo:sha</code> and it will map to either of the two images for Arm64 or Amd64.</p>
+<p><img src="/images/2023-split-native/parallel.jpg" alt="Parallel execution"></p>
+<blockquote>
+<p>The two builds on the left ran on two separate bare-metal hosts, and the manifest was published using one of GitHub's hosted runners.</p>
+</blockquote>
+<p>Here's a sample for the inlets-operator, a Go binary which connects to the Kubernetes API.</p>
+<p>First up, we have the x86 build:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">split-operator</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span> [ <span class="hljs-string">master</span> ]
+
+<span class="hljs-attr">jobs:</span>
+
+  <span class="hljs-attr">publish_x86:</span>
+    <span class="hljs-attr">concurrency:</span> 
+      <span class="hljs-attr">group:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.ref</span> <span class="hljs-string">}}-x86</span>
+      <span class="hljs-attr">cancel-in-progress:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">permissions:</span>
+      <span class="hljs-attr">packages:</span> <span class="hljs-string">write</span>
+
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">repository:</span> <span class="hljs-string">inlets/inlets-operator</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">"./"</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">mirror</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/hub-mirror@master</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Get</span> <span class="hljs-string">Repo</span> <span class="hljs-string">Owner</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">get_repo_owner</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">echo</span> <span class="hljs-string">"REPO_OWNER=$(echo $<span class="hljs-template-variable">{{ github.repository_owner }}</span> | tr '[:upper:]' '[:lower:]')"</span> <span class="hljs-string">></span> <span class="hljs-string">$GITHUB_ENV</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">Docker</span> <span class="hljs-string">Buildx</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/setup-buildx-action@v2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Login</span> <span class="hljs-string">to</span> <span class="hljs-string">container</span> <span class="hljs-string">Registry</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/login-action@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.repository_owner</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">password:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">registry:</span> <span class="hljs-string">ghcr.io</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Release</span> <span class="hljs-string">build</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">release_build</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
+          <span class="hljs-attr">platforms:</span> <span class="hljs-string">linux/amd64</span>
+          <span class="hljs-attr">file:</span> <span class="hljs-string">./Dockerfile</span>
+          <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
+          <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
+            Version=dev
+            GitCommit=${{ github.sha }}
+</span>          <span class="hljs-attr">tags:</span> <span class="hljs-string">|
+            ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-amd64
+</span></code></pre>
+<p>Then we have the arm64 build which is almost identical, but we specify a different value for <code>platforms</code> and the <code>runs-on</code> field.</p>
+<pre><code class="hljs language-yaml">
+  <span class="hljs-attr">publish_aarch64:</span>
+    <span class="hljs-attr">concurrency:</span> 
+      <span class="hljs-attr">group:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.ref</span> <span class="hljs-string">}}-aarch64</span>
+      <span class="hljs-attr">cancel-in-progress:</span> <span class="hljs-literal">true</span>
+    <span class="hljs-attr">permissions:</span>
+      <span class="hljs-attr">packages:</span> <span class="hljs-string">write</span>
+
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated-aarch64</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">repository:</span> <span class="hljs-string">inlets/inlets-operator</span>
+          <span class="hljs-attr">path:</span> <span class="hljs-string">"./"</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">mirror</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/hub-mirror@master</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Get</span> <span class="hljs-string">Repo</span> <span class="hljs-string">Owner</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">get_repo_owner</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">echo</span> <span class="hljs-string">"REPO_OWNER=$(echo $<span class="hljs-template-variable">{{ github.repository_owner }}</span> | tr '[:upper:]' '[:lower:]')"</span> <span class="hljs-string">></span> <span class="hljs-string">$GITHUB_ENV</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">Docker</span> <span class="hljs-string">Buildx</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/setup-buildx-action@v2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Login</span> <span class="hljs-string">to</span> <span class="hljs-string">container</span> <span class="hljs-string">Registry</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/login-action@v2</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.repository_owner</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">password:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+          <span class="hljs-attr">registry:</span> <span class="hljs-string">ghcr.io</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Release</span> <span class="hljs-string">build</span>
+        <span class="hljs-attr">id:</span> <span class="hljs-string">release_build</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
+          <span class="hljs-attr">platforms:</span> <span class="hljs-string">linux/arm64</span>
+          <span class="hljs-attr">file:</span> <span class="hljs-string">./Dockerfile</span>
+          <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
+          <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
+            Version=dev
+            GitCommit=${{ github.sha }}
+</span>          <span class="hljs-attr">tags:</span> <span class="hljs-string">|
+            ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-aarch64
+</span></code></pre>
+<p>Finally, we need to create the manifest. GitHub Actions has a <code>needs</code> variable that we can set to control the execution order:</p>
+<pre><code class="hljs language-yaml">  <span class="hljs-attr">publish_manifest:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">needs:</span> [<span class="hljs-string">publish_x86</span>, <span class="hljs-string">publish_aarch64</span>]
+    <span class="hljs-attr">steps:</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Get</span> <span class="hljs-string">Repo</span> <span class="hljs-string">Owner</span>
+      <span class="hljs-attr">id:</span> <span class="hljs-string">get_repo_owner</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">echo</span> <span class="hljs-string">"REPO_OWNER=$(echo $<span class="hljs-template-variable">{{ github.repository_owner }}</span> | tr '[:upper:]' '[:lower:]')"</span> <span class="hljs-string">></span> <span class="hljs-string">$GITHUB_ENV</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Login</span> <span class="hljs-string">to</span> <span class="hljs-string">container</span> <span class="hljs-string">Registry</span>
+      <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/login-action@v2</span>
+      <span class="hljs-attr">with:</span>
+        <span class="hljs-attr">username:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.repository_owner</span> <span class="hljs-string">}}</span>
+        <span class="hljs-attr">password:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+        <span class="hljs-attr">registry:</span> <span class="hljs-string">ghcr.io</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Create</span> <span class="hljs-string">manifest</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        docker manifest create ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }} \
+          --amend ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-amd64 \
+          --amend ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-aarch64
+        docker manifest annotate --arch amd64 --os linux ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }} ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-amd64
+        docker manifest annotate --arch arm64 --os linux ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }} ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-aarch64
+        docker manifest inspect ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}
+</span>
+        <span class="hljs-string">docker</span> <span class="hljs-string">manifest</span> <span class="hljs-string">push</span> <span class="hljs-string">ghcr.io/${{</span> <span class="hljs-string">env.REPO_OWNER</span> <span class="hljs-string">}}/inlets-operator:${{</span> <span class="hljs-string">github.sha</span> <span class="hljs-string">}}</span>
+</code></pre>
+<p>One thing I really dislike about this final stage is how much repetition we get. Fortunately, it's relatively simple to hide this complexity behind a custom GitHub Action.</p>
+<p>Note that this is just an example at the moment, but I could make a custom composite action in Bash in about 30 minutes, including testing. So it's not a lot of work and it would make our whole workflow a lot less repetitive.</p>
+<pre><code class="hljs language-yaml">   <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/compile-manifest@master</span>
+    <span class="hljs-attr">with:</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">ghcr.io/${{</span> <span class="hljs-string">env.REPO_OWNER</span> <span class="hljs-string">}}/inlets-operator</span>
+      <span class="hljs-attr">sha:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.sha</span> <span class="hljs-string">}}</span>
+      <span class="hljs-attr">platforms:</span> <span class="hljs-string">amd64,arm64</span>
+</code></pre>
+<h2>Wrapping up</h2>
+<p>Yesterday we took a new customer on for actuated who wanted to improve the speed of Arm builds, but on the call we both knew they would need to leave QEMU behind. I put this write-up together to show what would be involved, and I hope it's useful to you.</p>
+<p>Where can you run these builds?</p>
+<p>Couldn't you just add a low-cost Arm VM from AWS, Oracle Cloud, Azure or Google Cloud?</p>
+<p>The answer unfortunately is no.</p>
+<p>The self-hosted runner is not suitable for open source / public repositories, the GitHub documentation has a stark warning about this.</p>
+<p>The Kubernetes controller that's available has the same issues, because it re-uses the Pods by default, and runs in a dangerous Docker In Docker Mode as a privileged container or by mounting the Docker Socket. I'm not sure which is worse, but both mean that code in CI can take over the host, potentially even the whole cluster.</p>
+<p>Hosted runners solve this by creating a fresh VM per job, and destroying it immediately. That's the same approach that we took with actuated, but you get to bring your own metal along, so that you keep costs from growing out of control. Actuated also supports Arm, out of the box.</p>
+<p>Want to talk to us about your CI/CD needs? We're happy to help.</p>
+<ul>
+<li><a href="https://docs.actuated.dev/register/#sign-up-for-the-pilot">Contact us about a PoC</a></li>
+</ul>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Bring Your Own Metal Case Study with GitHub Actions]]></title>
             <link>https://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions</link>
