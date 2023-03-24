@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 24 Mar 2023 15:00:48 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 24 Mar 2023 15:02:51 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -258,6 +258,7 @@
 <p>The self-hosted runner is not suitable for open source / public repositories, the GitHub documentation has a stark warning about this.</p>
 <p>The Kubernetes controller that's available has the same issues, because it re-uses the Pods by default, and runs in a dangerous Docker In Docker Mode as a privileged container or by mounting the Docker Socket. I'm not sure which is worse, but both mean that code in CI can take over the host, potentially even the whole cluster.</p>
 <p>Hosted runners solve this by creating a fresh VM per job, and destroying it immediately. That's the same approach that we took with actuated, but you get to bring your own metal along, so that you keep costs from growing out of control. Actuated also supports Arm, out of the box.</p>
+<p>Want to know more about the security of self-hosted runners? <a href="https://docs.actuated.dev/faq/">Read more in our FAQ</a>.</p>
 <p>Want to talk to us about your CI/CD needs? We're happy to help.</p>
 <ul>
 <li><a href="https://docs.actuated.dev/register/#sign-up-for-the-pilot">Contact us about a PoC</a></li>
