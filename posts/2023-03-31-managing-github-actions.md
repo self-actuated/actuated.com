@@ -9,7 +9,7 @@ tags:
 - lessons
 - github
 author_img: alex
-image: /images/2023-03-lessons-learned/background.png
+image: /images/2023-03-lessons-learned/background.jpg
 date: "2023-03-31"
 ---
 
