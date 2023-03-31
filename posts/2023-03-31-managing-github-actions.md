@@ -228,4 +228,4 @@ If you'd like to know how actuated compares to hosted runners or managing the se
 
 Are your builds slowing the team down? Do you need better organisation-level insights and reporting? Or do you need Arm support? Are you frustrated with managing self-hosted runners?
 
-[Reach out to us for a discovery call](https://docs.actuated.dev/register/#sign-up-for-the-pilot)
+[Reach out to us take part in the pilot](https://docs.actuated.dev/register/#sign-up-for-the-pilot)
