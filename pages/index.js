@@ -68,10 +68,10 @@ export default function Home() {
                 <img className="h-12" src="./images/Riskfuel-logo-blue.png" alt="Riskfuel" />
               </div>
               <div className="col-span-12 flex justify-center md:col-span-4 lg:col-span-4">
-                <img className="h-12" src="./images/dasch.png" alt="DaSCH" />
+                <img className="h-12" src="./images/dasch.png" alt="Swiss National Data and Service Center." />
               </div>
               <div className="col-span-12 flex justify-center md:col-span-4 lg:col-span-4">
-                <img className="h-12" src="./images/openfaas_light.png" alt="OpenFaaS" />
+                <img className="h-12" src="./images/openfaas_light.png" alt="OpenFaaS Ltd" />
               </div>
             </div>
           </div>
