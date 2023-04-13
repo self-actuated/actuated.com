@@ -11,7 +11,7 @@ const faqs = [
     question: "How do we try out actuated for our team?",
     answer:
       "Register using the link, and we'll book 30 mins to find your challenges, recommend a plan, and server hosting for your current usage.",
-      link: "https://docs.actuated.dev/register/#sign-up-for-the-pilot"
+      link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
   },
   {
     question: "How much does it cost? What is the right plan for our team?",

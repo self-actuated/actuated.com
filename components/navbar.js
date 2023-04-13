@@ -141,10 +141,10 @@ export default function NavBar({ children }) {
               Sign in
             </a>
             <a
-              href="https://docs.actuated.dev/register/"
+              href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
               className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
-              Sign up
+              Sign-up
             </a>
           </div>
 
@@ -211,10 +211,10 @@ export default function NavBar({ children }) {
                   </div>
                   <div className="mt-6">
                     <Link
-                      href="https://docs.actuated.dev/register/"
+                      href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
                       className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                     >
-                      Sign up
+                      Sign-up
                     </Link>
                   </div>
                   <div className="mt-6">
