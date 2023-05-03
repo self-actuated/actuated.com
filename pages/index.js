@@ -64,15 +64,23 @@ export default function Home() {
               Trusted by a growing number of companies
             </p>
             <div className="mt-6 justify-center grid grid-cols-12 gap-8 md:grid-cols-12 lg:grid-cols-12">
-              <div className="col-span-12 flex justify-center md:col-span-4 lg:col-span-4">
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
                 <img className="h-12" src="./images/Riskfuel-logo-blue.png" alt="Riskfuel" />
               </div>
-              <div className="col-span-12 flex justify-center md:col-span-4 lg:col-span-4">
-                <img className="h-12" src="./images/dasch.png" alt="Swiss National Data and Service Center." />
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/calyptia.png" alt="Observability, simplified" />
               </div>
-              <div className="col-span-12 flex justify-center md:col-span-4 lg:col-span-4">
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/dasch.png" alt="Swiss National Data and Service Center" />
+              </div>
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
                 <img className="h-12" src="./images/openfaas_light.png" alt="OpenFaaS Ltd" />
               </div>
+
             </div>
           </div>
         </div>
