@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 05 May 2023 11:33:08 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 05 May 2023 17:08:25 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -60,7 +60,7 @@ Shaked, CTO, Kubiya.ai</p>
 </blockquote>
 <p>First Set up your values.yaml for Helm:</p>
 <pre><code class="hljs language-yaml"><span class="hljs-comment"># The public URL to access the proxy</span>
-<span class="hljs-attr">publicURL:</span> <span class="hljs-string">oidc-proxy.example.com</span>
+<span class="hljs-attr">publicURL:</span> <span class="hljs-string">https://oidc-proxy.example.com</span>
 
 <span class="hljs-comment"># Comma separated list of repository owners for which short-lived OIDC tokens are authorized.</span>
 <span class="hljs-comment"># For example: alexellis,self-actuated</span>
@@ -71,7 +71,7 @@ Shaked, CTO, Kubiya.ai</p>
 </code></pre>
 <p>The chart will create an Ingress record for you using an existing issuer. If you want to use something else like Inlets or Istio to expose the OIDC proxy, then simply set <code>enabled: false</code> under the <code>ingress:</code> section.</p>
 <p>Then run:</p>
-<pre><code class="hljs language-bash">helm repo add actuated https://github.com/self-actuated/charts
+<pre><code class="hljs language-bash">helm repo add actuated https://self-actuated.github.io/charts/
 helm repo update
 
 helm upgrade --install actuated/openfaas-oidc-proxy \
@@ -121,7 +121,7 @@ helm upgrade --install actuated/openfaas-oidc-proxy \
 </code></pre>
 <p>Since we have a lot of experience with GitHub Actions, we decided to make the above simpler by creating a custom <a href="https://docs.github.com/en/actions/creating-actions/creating-a-composite-action">Composite Action</a>. If you check out the code for <a href="https://github.com/self-actuated/openfaas-oidc">self-actuated/openfaas-oidc</a> you'll see that it obtains a token, then writes it into an openfaaas config file, so that the <code>--token</code> flag isn't required.</p>
 <p>Here's how it changes:</p>
-<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/openfaas-oidc@master</span>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/openfaas-oidc@v1</span>
   <span class="hljs-attr">with:</span> 
     <span class="hljs-attr">gateway:</span> <span class="hljs-string">https://minty.exit.o6s.io</span>
 <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Check</span> <span class="hljs-string">OpenFaaS</span> <span class="hljs-string">version</span>
@@ -151,7 +151,7 @@ helm upgrade --install actuated/openfaas-oidc-proxy \
           <span class="hljs-attr">fetch-depth:</span> <span class="hljs-number">1</span>
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">faas-cli</span>
         <span class="hljs-attr">run:</span> <span class="hljs-string">curl</span> <span class="hljs-string">-sLS</span> <span class="hljs-string">https://cli.openfaas.com</span> <span class="hljs-string">|</span> <span class="hljs-string">sudo</span> <span class="hljs-string">sh</span>
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/openfaas-oidc@master</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/openfaas-oidc@v1</span>
         <span class="hljs-attr">with:</span>
           <span class="hljs-attr">gateway:</span> <span class="hljs-string">https://minty.exit.o6s.io</span>
 
