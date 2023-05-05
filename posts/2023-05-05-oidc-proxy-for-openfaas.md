@@ -68,7 +68,7 @@ First Set up your values.yaml for Helm:
 
 ```yaml
 # The public URL to access the proxy
-publicURL: oidc-proxy.example.com
+publicURL: https://oidc-proxy.example.com
 
 # Comma separated list of repository owners for which short-lived OIDC tokens are authorized.
 # For example: alexellis,self-actuated
@@ -83,7 +83,7 @@ The chart will create an Ingress record for you using an existing issuer. If you
 Then run:
 
 ```bash
-helm repo add actuated https://github.com/self-actuated/charts
+helm repo add actuated https://self-actuated.github.io/charts/
 helm repo update
 
 helm upgrade --install actuated/openfaas-oidc-proxy \
