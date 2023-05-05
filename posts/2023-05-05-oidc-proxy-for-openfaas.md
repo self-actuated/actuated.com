@@ -153,7 +153,7 @@ Since we have a lot of experience with GitHub Actions, we decided to make the ab
 Here's how it changes:
 
 ```yaml
-- uses: self-actuated/openfaas-oidc@master
+- uses: self-actuated/openfaas-oidc@v1
   with: 
     gateway: https://minty.exit.o6s.io
 - name: Check OpenFaaS version
@@ -186,7 +186,7 @@ jobs:
           fetch-depth: 1
       - name: Install faas-cli
         run: curl -sLS https://cli.openfaas.com | sudo sh
-      - uses: self-actuated/openfaas-oidc@master
+      - uses: self-actuated/openfaas-oidc@v1
         with:
           gateway: https://minty.exit.o6s.io
 
