@@ -80,6 +80,14 @@ ingress:
 
 The chart will create an Ingress record for you using an existing issuer. If you want to use something else like Inlets or Istio to expose the OIDC proxy, then simply set `enabled: false` under the `ingress:` section.
 
+Create a secret for the actuated subscription key:
+
+```bash
+kubectl create secret generic actuated-license \
+  -n openfaas \
+  --from-file=actuated-license=$HOME/.actuated/LICENSE
+```
+
 Then run:
 
 ```bash
