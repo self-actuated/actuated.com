@@ -27,8 +27,8 @@ const posts = [
   export default function BlogRollup() {
     return (
       <div className="bg-white px-6 lg:px-8 lg:pt-8 lg:pb-10">
-        <div className="mx-auto mt-10 max-w-xl px-4 lg:max-w-7xl lg:px-6">
-            <p className='mt-6 mx-10 text-2xl font-semibold leading-8 tracking-tight text-gray-900'>
+        <div className="mx-auto mt-2 max-w-xl px-4 lg:max-w-7xl lg:px-6">
+            <p className='mt-2 mx-10 text-2xl font-semibold leading-8 tracking-tight text-gray-900'>
                 Improve your builds with our tips & tricks
             </p>
             <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>

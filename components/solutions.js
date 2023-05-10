@@ -124,6 +124,27 @@ export default function Solutions() {
           </dl>
         </div>
 
+        <div className="mx-auto mt-10 max-w-xl px-4 lg:max-w-7xl lg:px-6">
+            <p className='mt-6 mx-10 text-2xl font-semibold leading-8 tracking-tight text-gray-900'>
+                Get insights into your organisation
+            </p>
+            <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
+              When you have more than a few teammates and a dozen repositories, it's near impossible to get insights into patterns of usage.
+            </p>
+            <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
+              Inspired by Google Analytics, Actuated contrasts usage for the current period vs the previous period - for the whole organisation, each repository and each developer. 
+            </p>
+
+            <img
+              className="rounded-lg shadow-lg object-cover object-center mt-4 mx-10 "
+              src="https://docs.actuated.dev/images/dashboard/org-usage.png"
+              alt="Organisational level insights"
+            />
+
+          <p className="text-base text-gray-500 mt-10 mt-4 mx-10"><a href="https://docs.actuated.dev/dashboard/" className='text-blue-500 underline' >Learn about the actuated dashboard</a></p>
+          
+        </div>
+
       </div>
     )
   }

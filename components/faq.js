@@ -5,12 +5,12 @@ const faqs = [
   {
     question: "What is Firecracker? Why is it better than a container?",
     answer:
-      "Generally, any use of containers for CI means bypassing security, so that any job can take over a host or the cluster. Actuated uses Firecracker microVMs, a project built by AWS to fully isolate every job with an immutable VM.",
+      "Generally, any use of containers for CI means bypassing security, so that any job can take over a host or the cluster. Actuated uses Firecracker, an open-source project built by AWS to fully isolate every job with an immutable microVM.",
   },
   {
     question: "How do we try out actuated for our team?",
     answer:
-      "Register using the link, and we'll book 30 mins to find your challenges, recommend a plan, and server hosting for your current usage.",
+      "Click Sign-up and fill out the form for a call with our founder. If you think our solution is a good fit, you can be up and running on the same day.",
       link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
   },
   {
@@ -31,7 +31,7 @@ const faqs = [
   {
     question: "Doesn't GitHub already offer faster runners?",
     answer:
-      "GitHub are in a beta phase for larger runners for their Team and Enterprises plans, these have an increased cost vs. standard runners and there is no Arm support. With actuated you get much faster speeds at a flat rate cost.",
+      "GitHub are in a beta phase for larger runners for their Team and Enterprises plans, these have an increased cost vs. standard runners and there is no Arm support. With actuated you get much faster speeds at a flat rate cost, with usage insights across your team and organisation.",
   },
   {
     question: "What's the difference with Actions Runtime Controller?",
@@ -42,7 +42,7 @@ const faqs = [
   {
     question: "How much faster is an Arm build than using hosted runners?",
     answer:
-      "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to an Arm runner instead of using QEMU.",
+      "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to an Arm runner instead of using QEMU. For Network Service Mesh, Dasch Swiss and Calyptia - their builds couldn't complete within 6 hours, all complete in 4-20 minutes with actuated.",
     link: '/blog/native-arm64-for-github-actions'
   },
   {
@@ -54,7 +54,12 @@ const faqs = [
   {
     question: "How mature is actuated?",
     answer:
-      "Actuated is built on battle tested technology that's run in production at huge scale by Amazon Web Services (AWS) and GitHub. Our solution launches thousands of VMs for customers already, without issue.",
+      "Actuated is built on battle tested technology that's run in production at huge scale by Amazon Web Services (AWS) and GitHub. Our solution has launched over 25k VMs for customers already, without issue.",
+  },
+  {
+    question: "Is self-hosted GitLab supported?",
+    answer:
+      "We have a prototype ready with GitLab and are looking for customers, please get in touch via the registration form.",
   },
   {
     question: "Where can I find detailed information about actuated?",
@@ -62,7 +67,6 @@ const faqs = [
     link: 'https://docs.actuated.dev/faq'
   },
 ]
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
