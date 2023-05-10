@@ -63,10 +63,14 @@ export default function Home() {
             <p className="text-center text-base font-semibold text-gray-500 ">
               Trusted by a growing number of companies
             </p>
-            <div className="mt-6 justify-center grid grid-cols-12 gap-8 md:grid-cols-12 lg:grid-cols-12">
+            <div className="mt-6 justify-center grid grid-cols-12 gap-8 md:grid-cols-12 lg:grid-cols-12 content-evenly">
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
                 <img className="h-12" src="./images/Riskfuel-logo-blue.png" alt="Riskfuel" />
+              </div>
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/openfaas_light.png" alt="OpenFaaS Ltd" />
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
@@ -78,8 +82,9 @@ export default function Home() {
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
-                <img className="h-12" src="./images/openfaas_light.png" alt="OpenFaaS Ltd" />
+                <img className="h-12" src="./images/kubiya-actuated.png" alt="Kubiya.ai" />
               </div>
+
 
             </div>
           </div>
