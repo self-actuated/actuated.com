@@ -6,12 +6,15 @@ const faqs = [
     question: "What is Firecracker? Why is it better than a container?",
     answer:
       "Generally, any use of containers for CI means bypassing security, so that any job can take over a host or the cluster. Actuated uses Firecracker, an open-source project built by AWS to fully isolate every job with an immutable microVM.",
+      link: "https://www.youtube.com/watch?v=CYCsa5e2vqg",
+      action: "Watch our Firecracker webinar"
   },
   {
     question: "How do we try out actuated for our team?",
     answer:
-      "Click Sign-up and fill out the form for a call with our founder. If you think our solution is a good fit, you can be up and running on the same day.",
-      link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform"
+      "Just fill out the form for a call with our founder. If you think our solution is a good fit, you can be up and running on the same day.",
+      link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform",
+      action: "Register Interest"
   },
   {
     question: "How much does it cost? What is the right plan for our team?",
@@ -26,7 +29,8 @@ const faqs = [
     question: "What kinds of servers do I need?",
     answer:
       "You can use your own physical servers, nested virtualisation with cloud VMs or rent instances paid by the hour.",
-    link: "https://docs.actuated.dev/provision-server/"
+    link: "https://docs.actuated.dev/provision-server/",
+    action: "Explore server options"
   },
   {
     question: "Doesn't GitHub already offer faster runners?",
@@ -34,7 +38,7 @@ const faqs = [
       "GitHub are in a beta phase for larger runners for their Team and Enterprises plans, these have an increased cost vs. standard runners and there is no Arm support. With actuated you get much faster speeds at a flat rate cost, with usage insights across your team and organisation.",
   },
   {
-    question: "What's the difference with Actions Runtime Controller?",
+    question: "What are the differences vs. Actions Runtime Controller?",
     answer:
       "actions-runtime-controller compromises the security of a Kubernetes cluster by using privileged containers or by mounting the Docker socket - both mean that code in a CI job can take over the host - or potentially the cluster.",
       link: "https://actuated.dev/blog/blazing-fast-ci-with-microvms"
@@ -43,7 +47,8 @@ const faqs = [
     question: "How much faster is an Arm build than using hosted runners?",
     answer:
       "In our testing of the open source Parca project, we got the build time down from 33 minutes to 1 minute 26s simply by changing to an Arm runner instead of using QEMU. For Network Service Mesh, Dasch Swiss and Calyptia - their builds couldn't complete within 6 hours, all complete in 4-20 minutes with actuated.",
-    link: '/blog/native-arm64-for-github-actions'
+    link: '/blog/native-arm64-for-github-actions',
+    action: "Read a case study"
   },
   {
     question: "How do I launch jobs in parallel?",
@@ -59,12 +64,15 @@ const faqs = [
   {
     question: "Is self-hosted GitLab supported?",
     answer:
-      "We have a prototype ready with GitLab and are looking for customers, please get in touch via the registration form.",
+      "We have a prototype ready with GitLab and are looking for customers, please get in touch.",
+      link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform",
+      action: "Register Interest"
   },
   {
     question: "Where can I find detailed information about actuated?",
     answer: "We cover most common questions in much more detail over in the FAQ in the docs.",
-    link: 'https://docs.actuated.dev/faq'
+    link: 'https://docs.actuated.dev/faq',
+    action: "FAQ"
   },
 ]
 
@@ -98,7 +106,7 @@ export default function Faq() {
                     </dt>
                     <Disclosure.Panel as="dd" className="mt-2 pr-12">
 
-                      <p className="text-base text-gray-500">{faq.answer} {faq.link ? <a href={faq.link} className='text-blue-500 underline' >Learn more</a> : "" } </p>
+                      <p className="text-base text-gray-500">{faq.answer} {faq.link ? <a href={faq.link} className='text-blue-500 underline' >{faq.action ? faq.action : "Learn more"}</a> : "" } </p>
                     </Disclosure.Panel>
                   </>
                 )}
