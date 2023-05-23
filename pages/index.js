@@ -85,6 +85,9 @@ export default function Home() {
                 <img className="h-12" src="./images/kubiya-actuated.png" alt="Kubiya.ai" />
               </div>
 
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/settlemint.png" alt="Settlemint" />
+              </div>
 
             </div>
           </div>
