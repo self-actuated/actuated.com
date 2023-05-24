@@ -26,7 +26,7 @@ Something else that can slow builds down is having to download large base images
 
 ## Speeding up in the real world
 
-We recently worked with Roderik, the CTO of [SettleMint](https://settlemint.com) to migrate their CI from a self-hosted Kubernetes solution Actions Runtime Controller (ARC) to actuated. He told me that they originally moved from GitHub's hosted runners to ARC to save money, increase speed and to lower the latency of their builds. Unfortunately, running container builds within Kubernetes provided very poor isolation, and side effects were being left over between builds, even with a pool of ephemeral containers.
+We recently worked with Roderik, the CTO of [SettleMint](https://settlemint.com) to migrate their CI from a self-hosted Kubernetes solution Actions Runtime Controller (ARC) to actuated. He told me that they originally moved from GitHub's hosted runners to ARC to save money, increase speed and to lower the latency of their builds. Unfortunately, running container builds within Kubernetes provided very poor isolation, and side effects were being left over between builds, even with a pool of ephemeral containers. They also wanted to reduce the amount of effort required to maintain a Kubernetes cluster and control-plane for CI.
 
 Roderik explained that he'd been able to get times down by using [pnpm](https://pnpm.io) instead of yarn, and said every Node project should try it out to see the speed increases. He believes the main improvement is due to efficient downloading and caching. pnpm is a drop-in replacement for npm and yarn, and is compatible with both.
 
@@ -229,7 +229,10 @@ If you'd like a good starting-point for GitHub Actions Caching, Han Verstraete f
 
 We were able to dramatically speed up caching for GitHub Actions by using a self-hosted S3 service. We used Seaweedfs directly on the server running Firecracker with a fallback to GitHub's cache if the S3 service was unavailable.
 
-We tend to recommend that all customers enable a mirror of the Docker Hub to counter restrictive rate-limits. The other reason is to avoid any penalties that you'd see from downloading large base images - or from downloading small to medium sized images when running in high concurrency.
+[![Brr](https://pbs.twimg.com/media/Fw4PQEfWwAIl-6u?format=jpg&name=medium)](https://twitter.com/alexellisuk/status/1661282581617229827/)
+> An [Ampere](https://amperecomputing.com/en/) Altra Arm server running parallel VMs using Firecracker. The CPU is going brr. [Find a server with our guide](https://docs.actuated.dev/provision-server/)
+
+We also tend to recommend that all customers enable a mirror of the Docker Hub to counter restrictive rate-limits. The other reason is to avoid any penalties that you'd see from downloading large base images - or from downloading small to medium sized images when running in high concurrency.
 
 You can find out how to configure a container mirror for the Docker Hub using actuated here: [Set up a registry mirror](https://docs.actuated.dev/tasks/registry-mirror/). When testing builds for the [Discourse](https://github.com/discourse/discourse) team, there was a 2.5GB container image used for UI testing with various browsers preinstalled within it. We found that we could shave off a few minutes off the build time by using the local mirror. Imagine 10x of those builds running at once, needlessly downloading 250GB of data.
 
