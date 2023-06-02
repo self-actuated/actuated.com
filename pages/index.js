@@ -4,6 +4,7 @@ import Faq from '../components/faq'
 import Solutions from '../components/solutions'
 import Cta from '../components/cta'
 import Testimonial from '../components/testimonial'
+import TestimonialPrimary from '../components/testimonial-primary'
 import GitHubQuote from '../components/GitHubQuote'
 import BlogRollup from '../components/rollup'
 
@@ -97,16 +98,15 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-  
-      {/* More main page content here... */}
+      <TestimonialPrimary></TestimonialPrimary>
 
       <Solutions></Solutions>
-
 
       <BlogRollup></BlogRollup>
 
       <Testimonial></Testimonial>
+      
+
 
       <Faq></Faq>
 
