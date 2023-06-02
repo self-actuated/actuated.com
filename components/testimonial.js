@@ -1,6 +1,6 @@
 const testimonials = [
   {
-    body: 'Our team loves actuated. It gave us a 3x speed increase on a Go repo that we build throughout the day. Alex and team are really responsive, and we\'re already customers of OpenFaaS and Inlets.',
+    body: 'Our team loves actuated. It gave us a 3x speed increase on a Go repo that we build throughout the day. Alex and team are really responsive, and we\'re already happy customers of OpenFaaS and Inlets.',
     author: {
       name: 'Shaked Askayo',
       handle: 'CTO, Kubiya.ai',
