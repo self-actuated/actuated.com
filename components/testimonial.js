@@ -36,7 +36,7 @@ const testimonials = [
     },
   },
   {
-    body: 'We needed to build public repos on Arm runners, but QEMU couldn\'t finish in 6 hours. Actuated now builds the same code in 4 minutes.',
+    body: 'We needed to build public repos on Arm runners, but QEMU couldn\'t finish in 6 hours, so we had to turn the build off. Actuated now builds the same code in 4 minutes.',
     author: {
       name: 'Patrick Stephens',
       handle: 'Tech Lead of Infrastructure, Calyptia/Fluent Bit.',
