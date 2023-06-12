@@ -13,11 +13,11 @@ image: "/images/2023-06-faster-nix-builds/background.png"
 date: "2023-06-12"
 ---
 
-[faasd](https://github.com/openfaas/faasd) is a lightweight and portable version of [OpenFaaS](https://www.openfaas.com/) that was created to run on a single host. In my spare time I maintain [faasd-nix](https://github.com/welteki/faasd-nix), a project to package faasd and various NixOS modules so it can be run with NixOS.
+[faasd](https://github.com/openfaas/faasd) is a lightweight and portable version of [OpenFaaS](https://www.openfaas.com/) that was created to run on a single host. In my spare time I maintain [faasd-nix](https://github.com/welteki/faasd-nix), a project that packages faasd and exposes a NixOS module so it can be run with NixOS.
 
 The module itself depends on faasd, containerd and the CNI plugins and all of these binaries are built in CI with Nix and then cached using [Cachix](https://www.cachix.org/) to save time on subsequent builds.
 
-I often deploy faasd with NixOS on a Raspberry Pi and to the cloud, so I build binaries for both `x86_64` and aarch64. The build usually runs on the default GitHub hosted action runners. Now because GitHub currently doesn't have Arm support, I use QEMU instead which can emulate them. The drawback of this approach is that builds can sometimes be several times slower.
+I often deploy faasd with NixOS on a Raspberry Pi and to the cloud, so I build binaries for both `x86_64` and `aarch64`. The build usually runs on the default GitHub hosted action runners. Now because GitHub currently doesn't have Arm support, I use QEMU instead which can emulate them. The drawback of this approach is that builds can sometimes be several times slower.
 
 > For some of our customers, their builds couldn't even complete in 6 hours using QEMU, and only took between 5-20 minutes using native Arm hardware. Alex Ellis, Founder of Actuated.
 
@@ -29,7 +29,7 @@ One of the features Nix offers are reproducible builds. Once a package is declar
 
 > If you are new to Nix, then I'd recommend you read the [Zero to Nix](https://zero-to-nix.com/start/install) guide. It's what got me excited about the project.
 
-Because Nix is declarative and offers reproducible builds, it is easy to setup a concise build pipeline for GitHub actions. A lot of steps usually required to setup the build environment can be left out. For instance, faasd requires Go, but there's no need to install it onto the build machine, and you'd normally have to install btrfs-progs to build containerd, but that's not something you have to think about, because Nix packages will take care of it for you.
+Because Nix is declarative and offers reproducible builds, it is easy to setup a concise build pipeline for GitHub actions. A lot of steps usually required to setup the build environment can be left out. For instance, faasd requires Go, but there's no need to install it onto the build machine, and you'd normally have to install btrfs-progs to build containerd, but that's not something you have to think about, because Nix will take care of it for you.
 
 Another advantage of the reproducible builds is that if it works on your local machine it most likely also works in CI. No need to debug and find any discrepancies between your local and CI environment.
 
