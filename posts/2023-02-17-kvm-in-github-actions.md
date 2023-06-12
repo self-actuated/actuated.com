@@ -188,8 +188,8 @@ If you'd like to know more about how Firecracker works and how it compares to tr
 
 With nix there is the ability to provide a set of declarative configuration to define integration tests that spin up virtual machines using [QEMU](https://www.qemu.org/) as the backend. While running these tests in CI without hardware acceleration is supported this is considerably slower.
 
-For a more detailed overview of the test setup and configuration see the original article in the NixOS guides:
-- [Integration testing using virtual machines (VMs)](https://nixos.org/guides/integration-testing-using-virtual-machines.html)
+For a more detailed overview of the test setup and configuration see the original tutorial on nix.dev:
+- [Integration testing using virtual machines (VMs)](https://nix.dev/tutorials/nixos/build-and-deploy/integration-testing-using-virtual-machines)
 
 The workflow file for running NixOS tests on  GitHub Actions:
 ```yaml
