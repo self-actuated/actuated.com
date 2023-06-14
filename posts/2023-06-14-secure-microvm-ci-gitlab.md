@@ -18,6 +18,8 @@ None of the solutions at the time could satisfy all of those requirements, and e
 As we've gained more experience with customers who largely had the same needs as we did for GitHub Actions, we started to hear more and more from GitLab CI users. From large enterprise companies who are concerned about the security risks of running CI with privileged Docker containers, Docker socket binding (from the host!) or the flakey nature and slow speed of VFS with Docker In Docker (DIND).
 
 > The [GitLab docs have a stark warning](https://docs.gitlab.com/runner/security/) about using both of these approaches. It was no surprise that when a consultant at Thoughtworks reached out to me, he listed off the pain points and concerns that we'd set out to solve for GitHub Actions.
+> 
+> At KubeCon, I also spoke to several developers who worked at Deutsche Telekom who had numerous frustrations with the user-experience and management overhead of the Kubernetes executor.
 
 So with growing interest from customers, we built a solution for GitLab CI - just like we did for GitHub Actions. We're excited to share it with you today in tech preview.
 
