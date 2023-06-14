@@ -62,11 +62,11 @@ const faqs = [
       "Actuated is built on battle tested technology that's run in production at huge scale by Amazon Web Services (AWS) and GitHub. Our solution has launched over 25k VMs for customers already, without issue.",
   },
   {
-    question: "Is self-hosted GitLab supported?",
+    question: "Is GitLab supported?",
     answer:
-      "We have a prototype ready with GitLab and are looking for customers, please get in touch.",
-      link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform",
-      action: "Register Interest"
+      "We have a tech preview for self-hosted GitLab.",
+      link: "https://actuated.dev/blog/secure-microvm-ci-gitlab",
+      action: "Read the announcement"
   },
   {
     question: "Where can I find detailed information about actuated?",
