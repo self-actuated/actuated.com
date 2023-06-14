@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 12 Jun 2023 14:05:38 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 14 Jun 2023 14:47:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -13,14 +13,65 @@
             <link>https://actuated.dev</link>
         </image>
         <item>
+            <title><![CDATA[Secure CI for GitLab with Firecracker microVMs]]></title>
+            <link>https://actuated.dev/blog/secure-microvm-ci-gitlab</link>
+            <guid>https://actuated.dev/blog/secure-microvm-ci-gitlab</guid>
+            <pubDate>Fri, 16 Jun 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Learn how actuated for GitLab CI can help you secure your CI/CD pipelines with Firecracker.]]></description>
+            <content:encoded><![CDATA[<p>We started building actuated for GitHub Actions because we at OpenFaaS Ltd had a need for: unmetered CI minutes, faster &#x26; more powerful x86 machines, native Arm builds and low maintenance CI builds.</p>
+<p>And most importantly, we needed it to be low-maintenance, and securely isolated.</p>
+<p>None of the solutions at the time could satisfy all of those requirements, and even today with GitHub adopting the community-based Kubernetes controller to run CI in Pods, there is still a lot lacking.</p>
+<p>As we've gained more experience with customers who largely had the same needs as we did for GitHub Actions, we started to hear more and more from GitLab CI users. From large enterprise companies who are concerned about the security risks of running CI with privileged Docker containers, Docker socket binding (from the host!) or the flakey nature and slow speed of VFS with Docker In Docker (DIND).</p>
+<blockquote>
+<p>The <a href="https://docs.gitlab.com/runner/security/">GitLab docs have a stark warning</a> about using both of these approaches. It was no surprise that when a consultant at Thoughtworks reached out to me, he listed off the pain points and concerns that we'd set out to solve for GitHub Actions.</p>
+</blockquote>
+<p>So with growing interest from customers, we built a solution for GitLab CI - just like we did for GitHub Actions. We're excited to share it with you today in tech preview.</p>
+<p><img src="/images/2023-06-gitlab-preview/conceptual.png" alt="actuated for GitLab CI"></p>
+<p>For every build that requires a runner, we will schedule and boot a complete system with Firecracker using Linux KVM for secure isolation. After the job is completed, the VM will be destroyed and removed from the GitLab instance.</p>
+<p>If you'd like to use it or find out more, please apply here: <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Sign-up for the Actuated pilot</a></p>
+<h2>Secure CI with Firecracker microVMs</h2>
+<p><a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a> is the open-source technology that provides isolation between tenants on certain AWS products like Lambda and Fargate. There's a growing number of cloud native solutions evolving around Firecracker, and we believe that it's the only way to run CI/CD securely.</p>
+<p>Firecracker is a virtual machine monitor (VMM) that uses the Linux Kernel-based Virtual Machine (KVM) to create and manage microVMs. It's lightweight, fast, and most importantly, provides proper isolation, which anything based upon Docker cannot.</p>
+<p>There are no horrible Kernel tricks or workarounds to be able to use user namespaces, no need to change your tooling from what developers love - Docker, to Kaninko or Buildah or similar.</p>
+<p>You'll get <code>sudo</code>, plus a fresh Docker engine in every VM, booted up with systemd, so things like Kubernetes work out of the box, if you need them for end to end testing (as so many of us do these days).</p>
+<p>You can learn the differences between VMs, containers and microVMs like Firecracker in my video from Cloud Native Rejekts at KubeCon Amsterdam:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pTQ_jVYhAoc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<p>Many people have also told me that they learned how to use Firecracker from my webinar last year with Richard Case: <a href="https://www.youtube.com/watch?v=CYCsa5e2vqg">A cracking time: Exploring Firecracker &#x26; MicroVMs</a>.</p>
+<h2>Let's see it then</h2>
+<p>Here's a video demo of the tech preview we have available for customers today.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PybSPduDT6s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<p>You'll see that when I create a commit in our self-hosted copy of GitLab Enterprise, within 1 second a microVM is booting up and running the CI job.</p>
+<p>Shortly after that the VM is destroyed which means there are absolutely no side-effects or any chance of leakage between jobs.</p>
+<p>Here's a later demo of three jobs within a single pipeline, all set to run in parallel.</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Here&#39;s 3x <a href="https://twitter.com/gitlab?ref_src=twsrc%5Etfw">@GitLab</a> CI jobs running in parallel within the same Pipeline demoed by <a href="https://twitter.com/alexellisuk?ref_src=twsrc%5Etfw">@alexellisuk</a> <br><br>All in their own ephemeral VM powered by Firecracker 🔥<a href="https://twitter.com/hashtag/cicd?src=hash&amp;ref_src=twsrc%5Etfw">#cicd</a> <a href="https://twitter.com/hashtag/secure?src=hash&amp;ref_src=twsrc%5Etfw">#secure</a> <a href="https://twitter.com/hashtag/isolation?src=hash&amp;ref_src=twsrc%5Etfw">#isolation</a> <a href="https://twitter.com/hashtag/microvm?src=hash&amp;ref_src=twsrc%5Etfw">#microvm</a> <a href="https://twitter.com/hashtag/baremetal?src=hash&amp;ref_src=twsrc%5Etfw">#baremetal</a> <a href="https://t.co/fe5HaxMsGB">pic.twitter.com/fe5HaxMsGB</a></p>&mdash; actuated (@selfactuated) <a href="https://twitter.com/selfactuated/status/1668575246952136704?ref_src=twsrc%5Etfw">June 13, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>Everything's completed before I have a chance to even open the logs in the UI of GitLab.</p>
+<h2>Wrapping up</h2>
+<p>With actuated for GitLab, we're bringing:</p>
+<ul>
+<li>🚀 Faster x86 builds</li>
+<li>🚀 Secure isolation with Firecracker microVMs</li>
+<li>🚀 Native Arm builds that can actually finish</li>
+<li>🚀 Fixed-costs &#x26; less management</li>
+<li>🚀 Insights into CI usage across your organisation</li>
+</ul>
+<p>Runners are registered and running a job in a dedicated VM within less than one second. Our scheduler can pack in jobs across a fleet of servers, <a href="https://docs.actuated.dev/provision-server/">they just need to have KVM available</a>.</p>
+<p>If you think your automation for runners could be improved, or work with customers who need faster builds, better isolation or Arm support, get in touch with us.</p>
+<ul>
+<li><a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Sign-up for the Actuated pilot</a></li>
+<li><a href="https://docs.actuated.dev/">Browse the docs and FAQ for actuated for GitHub Actions</a></li>
+<li><a href="https://actuated.dev/">Read customer testimonials</a></li>
+</ul>
+<p>You can follow <a href="https://twitter.com/selfactuated">@selfactuated</a> on Twitter, or find <a href="https://twitter.com/alexellisuk">me there too</a> to keep an eye on what we're building.</p>]]></content:encoded>
+        </item>
+        <item>
             <title><![CDATA[Faster Nix builds with GitHub Actions and actuated]]></title>
             <link>https://actuated.dev/blog/faster-nix-builds</link>
             <guid>https://actuated.dev/blog/faster-nix-builds</guid>
             <pubDate>Mon, 12 Jun 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Speed up your Nix project builds on GitHub Actions with runners powered by Firecracker.]]></description>
-            <content:encoded><![CDATA[<p><a href="https://github.com/openfaas/faasd">faasd</a> is a lightweight and portable version of <a href="https://www.openfaas.com/">OpenFaaS</a> that was created to run on a single host. In my spare time I maintain <a href="https://github.com/welteki/faasd-nix">faasd-nix</a>, a project to package faasd and various NixOS modules so it can be run with NixOS.</p>
+            <content:encoded><![CDATA[<p><a href="https://github.com/openfaas/faasd">faasd</a> is a lightweight and portable version of <a href="https://www.openfaas.com/">OpenFaaS</a> that was created to run on a single host. In my spare time I maintain <a href="https://github.com/welteki/faasd-nix">faasd-nix</a>, a project that packages faasd and exposes a NixOS module so it can be run with NixOS.</p>
 <p>The module itself depends on faasd, containerd and the CNI plugins and all of these binaries are built in CI with Nix and then cached using <a href="https://www.cachix.org/">Cachix</a> to save time on subsequent builds.</p>
-<p>I often deploy faasd with NixOS on a Raspberry Pi and to the cloud, so I build binaries for both <code>x86_64</code> and aarch64. The build usually runs on the default GitHub hosted action runners. Now because GitHub currently doesn't have Arm support, I use QEMU instead which can emulate them. The drawback of this approach is that builds can sometimes be several times slower.</p>
+<p>I often deploy faasd with NixOS on a Raspberry Pi and to the cloud, so I build binaries for both <code>x86_64</code> and <code>aarch64</code>. The build usually runs on the default GitHub hosted action runners. Now because GitHub currently doesn't have Arm support, I use QEMU instead which can emulate them. The drawback of this approach is that builds can sometimes be several times slower.</p>
 <blockquote>
 <p>For some of our customers, their builds couldn't even complete in 6 hours using QEMU, and only took between 5-20 minutes using native Arm hardware. Alex Ellis, Founder of Actuated.</p>
 </blockquote>
@@ -30,7 +81,7 @@
 <blockquote>
 <p>If you are new to Nix, then I'd recommend you read the <a href="https://zero-to-nix.com/start/install">Zero to Nix</a> guide. It's what got me excited about the project.</p>
 </blockquote>
-<p>Because Nix is declarative and offers reproducible builds, it is easy to setup a concise build pipeline for GitHub actions. A lot of steps usually required to setup the build environment can be left out. For instance, faasd requires Go, but there's no need to install it onto the build machine, and you'd normally have to install btrfs-progs to build containerd, but that's not something you have to think about, because Nix packages will take care of it for you.</p>
+<p>Because Nix is declarative and offers reproducible builds, it is easy to setup a concise build pipeline for GitHub actions. A lot of steps usually required to setup the build environment can be left out. For instance, faasd requires Go, but there's no need to install it onto the build machine, and you'd normally have to install btrfs-progs to build containerd, but that's not something you have to think about, because Nix will take care of it for you.</p>
 <p>Another advantage of the reproducible builds is that if it works on your local machine it most likely also works in CI. No need to debug and find any discrepancies between your local and CI environment.</p>
 <blockquote>
 <p>Of course, if you ever do get frustrated and want to debug a build, you can use the built-in <a href="https://docs.actuated.dev/tasks/debug-ssh/">SSH feature in Actuated</a>. Alex Ellis, Founder of Actuated.</p>
@@ -1140,9 +1191,9 @@ curl --unix-socket /tmp/firecracker.socket -i \
 </blockquote>
 <h3>NixOS integration tests</h3>
 <p>With nix there is the ability to provide a set of declarative configuration to define integration tests that spin up virtual machines using <a href="https://www.qemu.org/">QEMU</a> as the backend. While running these tests in CI without hardware acceleration is supported this is considerably slower.</p>
-<p>For a more detailed overview of the test setup and configuration see the original article in the NixOS guides:</p>
+<p>For a more detailed overview of the test setup and configuration see the original tutorial on nix.dev:</p>
 <ul>
-<li><a href="https://nixos.org/guides/integration-testing-using-virtual-machines.html">Integration testing using virtual machines (VMs)</a></li>
+<li><a href="https://nix.dev/tutorials/nixos/build-and-deploy/integration-testing-using-virtual-machines">Integration testing using virtual machines (VMs)</a></li>
 </ul>
 <p>The workflow file for running NixOS tests on  GitHub Actions:</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">nixos-tests</span>
