@@ -27,6 +27,8 @@ So with growing interest from customers, we built a solution for GitLab CI - jus
 
 For every build that requires a runner, we will schedule and boot a complete system with Firecracker using Linux KVM for secure isolation. After the job is completed, the VM will be destroyed and removed from the GitLab instance.
 
+actuated for GitLab is for self-hosted GitLab instances, whether hosted on-premises or on the public cloud.
+
 If you'd like to use it or find out more, please apply here: [Sign-up for the Actuated pilot](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform)
 
 ## Secure CI with Firecracker microVMs
@@ -63,7 +65,9 @@ Everything's completed before I have a chance to even open the logs in the UI of
 
 ## Wrapping up
 
-With actuated for GitLab, we're bringing:
+actuated for GitLab is for self-hosted GitLab instances, whether hosted on-premises or on the public cloud.
+
+Here's what we bring to the table:
 
 * 🚀 Faster x86 builds
 * 🚀 Secure isolation with Firecracker microVMs
