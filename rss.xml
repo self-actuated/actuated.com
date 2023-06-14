@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 14 Jun 2023 14:53:29 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 14 Jun 2023 16:16:43 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -29,6 +29,7 @@
 <p>So with growing interest from customers, we built a solution for GitLab CI - just like we did for GitHub Actions. We're excited to share it with you today in tech preview.</p>
 <p><img src="/images/2023-06-gitlab-preview/conceptual.png" alt="actuated for GitLab CI"></p>
 <p>For every build that requires a runner, we will schedule and boot a complete system with Firecracker using Linux KVM for secure isolation. After the job is completed, the VM will be destroyed and removed from the GitLab instance.</p>
+<p>actuated for GitLab is for self-hosted GitLab instances, whether hosted on-premises or on the public cloud.</p>
 <p>If you'd like to use it or find out more, please apply here: <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Sign-up for the Actuated pilot</a></p>
 <h2>Secure CI with Firecracker microVMs</h2>
 <p><a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a> is the open-source technology that provides isolation between tenants on certain AWS products like Lambda and Fargate. There's a growing number of cloud native solutions evolving around Firecracker, and we believe that it's the only way to run CI/CD securely.</p>
@@ -47,7 +48,8 @@
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Here&#39;s 3x <a href="https://twitter.com/gitlab?ref_src=twsrc%5Etfw">@GitLab</a> CI jobs running in parallel within the same Pipeline demoed by <a href="https://twitter.com/alexellisuk?ref_src=twsrc%5Etfw">@alexellisuk</a> <br><br>All in their own ephemeral VM powered by Firecracker 🔥<a href="https://twitter.com/hashtag/cicd?src=hash&amp;ref_src=twsrc%5Etfw">#cicd</a> <a href="https://twitter.com/hashtag/secure?src=hash&amp;ref_src=twsrc%5Etfw">#secure</a> <a href="https://twitter.com/hashtag/isolation?src=hash&amp;ref_src=twsrc%5Etfw">#isolation</a> <a href="https://twitter.com/hashtag/microvm?src=hash&amp;ref_src=twsrc%5Etfw">#microvm</a> <a href="https://twitter.com/hashtag/baremetal?src=hash&amp;ref_src=twsrc%5Etfw">#baremetal</a> <a href="https://t.co/fe5HaxMsGB">pic.twitter.com/fe5HaxMsGB</a></p>&mdash; actuated (@selfactuated) <a href="https://twitter.com/selfactuated/status/1668575246952136704?ref_src=twsrc%5Etfw">June 13, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>Everything's completed before I have a chance to even open the logs in the UI of GitLab.</p>
 <h2>Wrapping up</h2>
-<p>With actuated for GitLab, we're bringing:</p>
+<p>actuated for GitLab is for self-hosted GitLab instances, whether hosted on-premises or on the public cloud.</p>
+<p>Here's what we bring to the table:</p>
 <ul>
 <li>🚀 Faster x86 builds</li>
 <li>🚀 Secure isolation with Firecracker microVMs</li>
