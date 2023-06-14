@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 14 Jun 2023 14:51:54 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 14 Jun 2023 14:53:29 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -24,6 +24,7 @@
 <p>As we've gained more experience with customers who largely had the same needs as we did for GitHub Actions, we started to hear more and more from GitLab CI users. From large enterprise companies who are concerned about the security risks of running CI with privileged Docker containers, Docker socket binding (from the host!) or the flakey nature and slow speed of VFS with Docker In Docker (DIND).</p>
 <blockquote>
 <p>The <a href="https://docs.gitlab.com/runner/security/">GitLab docs have a stark warning</a> about using both of these approaches. It was no surprise that when a consultant at Thoughtworks reached out to me, he listed off the pain points and concerns that we'd set out to solve for GitHub Actions.</p>
+<p>At KubeCon, I also spoke to several developers who worked at Deutsche Telekom who had numerous frustrations with the user-experience and management overhead of the Kubernetes executor.</p>
 </blockquote>
 <p>So with growing interest from customers, we built a solution for GitLab CI - just like we did for GitHub Actions. We're excited to share it with you today in tech preview.</p>
 <p><img src="/images/2023-06-gitlab-preview/conceptual.png" alt="actuated for GitLab CI"></p>
