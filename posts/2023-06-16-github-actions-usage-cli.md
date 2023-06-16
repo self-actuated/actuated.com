@@ -159,7 +159,7 @@ This is the beauty of open source and community. We all get to benefit from each
 
 Now this is my favourite way to run the tool. I can run it on a schedule and get a report sent to me via email or Slack.
 
-![Example output from running the tool as a GitHub Action](/images/2023-06-actions-usage/)
+![Example output from running the tool as a GitHub Action](/images/2023-06-actions-usage/summary.png)
 > Example output from running the tool as a GitHub Action
 
 Create `actions-usage.yaml` in your `.github/workflows` folder:
