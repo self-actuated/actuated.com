@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 16 Jun 2023 10:25:17 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 16 Jun 2023 10:27:06 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -14,8 +14,8 @@
         </image>
         <item>
             <title><![CDATA[Understand your usage of GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/actions-usage</link>
-            <guid>https://actuated.dev/blog/actions-usage</guid>
+            <link>https://actuated.dev/blog/github-actions-usage-cli</link>
+            <guid>https://actuated.dev/blog/github-actions-usage-cli</guid>
             <pubDate>Fri, 16 Jun 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how you or your team is using GitHub Actions across your personal account or organisation.]]></description>
             <content:encoded><![CDATA[<p>Whenever GitHub Actions users get in touch with us to ask about actuated, we ask them a number of questions. What do you build? What pain points have you been running into? What are you currently spending? And then - how many minutes are you using?</p>
@@ -116,7 +116,7 @@ actuated-samples/faasd-nix                6              6              0       
 <p>This is the beauty of open source and community. We all get to benefit from each other's ideas and contributions.</p>
 <h2>Running actions-usage with a GitHub Action</h2>
 <p>Now this is my favourite way to run the tool. I can run it on a schedule and get a report sent to me via email or Slack.</p>
-<p><img src="public/images/2023-06-actions-usage/" alt="Example output from running the tool as a GitHub Action"></p>
+<p><img src="/images/2023-06-actions-usage/" alt="Example output from running the tool as a GitHub Action"></p>
 <blockquote>
 <p>Example output from running the tool as a GitHub Action</p>
 </blockquote>
