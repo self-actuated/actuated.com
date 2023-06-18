@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 16 Jun 2023 10:35:33 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 18 Jun 2023 10:21:24 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -30,9 +30,14 @@
 </ul>
 <p>I'll show you each briefly, but the one I like the most is the third option because it's kind of recursive.</p>
 <p>Before we get started, download arkade, and use it to install the tool:</p>
-<pre><code class="hljs language-bash">curl -sLS https://get.arkade.dev | sudo sh
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Move the binary yourself into $PATH</span>
+curl -sLS https://get.arkade.dev | sh
+
+<span class="hljs-comment"># Have sudo move it for you</span>
+curl -sLS https://get.arkade.dev | sudo sh
 arkade install actions-usage
 </code></pre>
+<p>Or if you prefer - you can add my <a href="https://github.com/alexellis/homebrew-alexellis">brew tap</a>, or head over to the <a href="https://github.com/alexellis/arkade/releases">arkade releases page</a>.</p>
 <p>Later on, I'll also show you how to use the <code>alexellis/arkade-get</code> action to install the tool for CI.</p>
 <h2>Finding out about your organisation</h2>
 <p>If you want to find out about your organisation, you can run the tool like this:</p>
