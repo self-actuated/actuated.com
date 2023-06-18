@@ -32,9 +32,15 @@ I'll show you each briefly, but the one I like the most is the third option beca
 Before we get started, download arkade, and use it to install the tool:
 
 ```bash
+# Move the binary yourself into $PATH
+curl -sLS https://get.arkade.dev | sh
+
+# Have sudo move it for you
 curl -sLS https://get.arkade.dev | sudo sh
 arkade install actions-usage
 ```
+
+Or if you prefer - you can add my [brew tap](https://github.com/alexellis/homebrew-alexellis), or head over to the [arkade releases page](https://github.com/alexellis/arkade/releases).
 
 Later on, I'll also show you how to use the `alexellis/arkade-get` action to install the tool for CI.
 
