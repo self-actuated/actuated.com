@@ -220,7 +220,7 @@ And there are no worries about privacy, we've gone very low tech here. The outpu
 
 Feel free to create an issue if you have a feature request or a question.
 
-Check out [self-actuated/actions-usage](https://self-actuated/actions-usage) on GitHub
+Check out [self-actuated/actions-usage](https://github.com/self-actuated/actions-usage) on GitHub
 
 I wrote an eBook writing CLIs like this in Go and keep it up to date on a regular basis - adding new examples and features of Go.
 
