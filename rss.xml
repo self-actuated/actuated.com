@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Sun, 18 Jun 2023 10:21:24 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 22 Jun 2023 08:52:04 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -167,7 +167,7 @@ actuated-samples/faasd-nix                6              6              0       
 <p>actions-usage is a practical tool that we use with customers to get an idea of their usage and how we can help with actuated. That said, it's also a completely free and open source tool for which the community is finding their own set of use-cases.</p>
 <p>And there are no worries about privacy, we've gone very low tech here. The output is only printed to the console, and we never receive any of your data unless you specifically copy and paste the output into an email.</p>
 <p>Feel free to create an issue if you have a feature request or a question.</p>
-<p>Check out <a href="https://self-actuated/actions-usage">self-actuated/actions-usage</a> on GitHub</p>
+<p>Check out <a href="https://github.com/self-actuated/actions-usage">self-actuated/actions-usage</a> on GitHub</p>
 <p>I wrote an eBook writing CLIs like this in Go and keep it up to date on a regular basis - adding new examples and features of Go.</p>
 <p>Why not check out what people are saying about it on Gumroad?</p>
 <p><a href="https://store.openfaas.com/l/everyday-golang">Everyday Go - The Fast Track</a></p>]]></content:encoded>
