@@ -89,7 +89,7 @@ jobs:
 
       - name: Release build
         id: release_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           outputs: "type=registry,push=true"
           platforms: linux/amd64,linux/arm64
@@ -98,6 +98,7 @@ jobs:
           build-args: |
             Version=dev
             GitCommit=${{ github.sha }}
+          provenance: false
           tags: |
             ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-qemu
 ```
@@ -173,12 +174,13 @@ jobs:
 
       - name: Release build
         id: release_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           outputs: "type=registry,push=true"
           platforms: linux/amd64
           file: ./Dockerfile
           context: .
+          provenance: false
           build-args: |
             Version=dev
             GitCommit=${{ github.sha }}
@@ -222,12 +224,13 @@ Then we have the arm64 build which is almost identical, but we specify a differe
 
       - name: Release build
         id: release_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           outputs: "type=registry,push=true"
           platforms: linux/arm64
           file: ./Dockerfile
           context: .
+          provenance: false
           build-args: |
             Version=dev
             GitCommit=${{ github.sha }}
@@ -277,6 +280,8 @@ Note that this is just an example at the moment, but I could make a custom compo
       sha: ${{ github.sha }}
       platforms: amd64,arm64
 ```
+
+As a final note, we recently saw that with upgrading from `docker/build-push-action@v3` to `docker/build-push-action@v4`, buildx no longer publishes an image, but a manifest for each architecture. This is because a new "provenance" feature is enabled which under the hood is publishing multiple artifacts instead of a single image. We've turned this off with `provenance: false` and [are awaiting a response from Docker](https://github.com/docker/build-push-action/issues/755#issuecomment-1607792956) on how to enable provenance for multi-arch images built with a split build.
 
 ## Wrapping up
 

@@ -215,9 +215,10 @@ jobs:
 
       - name: Release build
         id: release_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           outputs: "type=registry,push=true"
+          provenance: false
 +         platforms: linux/amd64,linux/arm/v6,linux/arm64
           build-args: |
             Version=${{  env.TAG }}
@@ -234,7 +235,7 @@ You'll see that we added a `Setup mirror` step, this explained in the [Registry 
 
 The `docker/setup-qemu-action@v2` step is responsible for setting up QEMU, which is used to emulate the different CPU architectures.
 
-The `docker/build-push-action@v3` step is responsible for passing in a number of platform combinations such as: `linux/amd64` for cloud, `linux/arm64` for Arm servers and `linux/arm/v6` for Raspberry Pi.
+The `docker/build-push-action@v4` step is responsible for passing in a number of platform combinations such as: `linux/amd64` for cloud, `linux/arm64` for Arm servers and `linux/arm/v6` for Raspberry Pi.
 
 ## What if you're not using GitHub Actions?
 

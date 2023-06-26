@@ -174,11 +174,12 @@ jobs:
           registry: ghcr.io
 
       - name: Publish image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           build-args: |
             GitCommit=${{ github.sha }}
           outputs: "type=registry,push=true"
+          provenance: false
           tags: |
             ghcr.io/alexellis/gha-sbom:${{ github.sha }}
 ```
@@ -190,7 +191,7 @@ To generate an SBOM, we just need to update the `docker/build-push-action` to us
 ```yaml
       - name: Local build
         id: local_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           sbom: true
           provenance: false
