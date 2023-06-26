@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 22 Jun 2023 08:52:04 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 26 Jun 2023 16:12:58 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -169,7 +169,7 @@ actuated-samples/faasd-nix                6              6              0       
 <p>Feel free to create an issue if you have a feature request or a question.</p>
 <p>Check out <a href="https://github.com/self-actuated/actions-usage">self-actuated/actions-usage</a> on GitHub</p>
 <p>I wrote an eBook writing CLIs like this in Go and keep it up to date on a regular basis - adding new examples and features of Go.</p>
-<p>Why not check out what people are saying about it on Gumroad?</p>
+<p>Why not check out what people are saying about it on <a href="https://store.openfaas.com/l/everyday-golang">Gumroad</a>?</p>
 <p><a href="https://store.openfaas.com/l/everyday-golang">Everyday Go - The Fast Track</a></p>]]></content:encoded>
         </item>
         <item>
@@ -911,7 +911,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Release</span> <span class="hljs-string">build</span>
         <span class="hljs-attr">id:</span> <span class="hljs-string">release_build</span>
-        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v4</span>
         <span class="hljs-attr">with:</span>
           <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
           <span class="hljs-attr">platforms:</span> <span class="hljs-string">linux/amd64,linux/arm64</span>
@@ -920,7 +920,8 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
           <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
             Version=dev
             GitCommit=${{ github.sha }}
-</span>          <span class="hljs-attr">tags:</span> <span class="hljs-string">|
+</span>          <span class="hljs-attr">provenance:</span> <span class="hljs-literal">false</span>
+          <span class="hljs-attr">tags:</span> <span class="hljs-string">|
             ghcr.io/${{ env.REPO_OWNER }}/inlets-operator:${{ github.sha }}-qemu
 </span></code></pre>
 <p>This is the kind of build that is failing or causing serious delays for projects like Parca, VPP and Fluent Bit.</p>
@@ -986,12 +987,13 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Release</span> <span class="hljs-string">build</span>
         <span class="hljs-attr">id:</span> <span class="hljs-string">release_build</span>
-        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v4</span>
         <span class="hljs-attr">with:</span>
           <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
           <span class="hljs-attr">platforms:</span> <span class="hljs-string">linux/amd64</span>
           <span class="hljs-attr">file:</span> <span class="hljs-string">./Dockerfile</span>
           <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
+          <span class="hljs-attr">provenance:</span> <span class="hljs-literal">false</span>
           <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
             Version=dev
             GitCommit=${{ github.sha }}
@@ -1032,12 +1034,13 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Release</span> <span class="hljs-string">build</span>
         <span class="hljs-attr">id:</span> <span class="hljs-string">release_build</span>
-        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v4</span>
         <span class="hljs-attr">with:</span>
           <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
           <span class="hljs-attr">platforms:</span> <span class="hljs-string">linux/arm64</span>
           <span class="hljs-attr">file:</span> <span class="hljs-string">./Dockerfile</span>
           <span class="hljs-attr">context:</span> <span class="hljs-string">.</span>
+          <span class="hljs-attr">provenance:</span> <span class="hljs-literal">false</span>
           <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
             Version=dev
             GitCommit=${{ github.sha }}
@@ -1080,6 +1083,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
       <span class="hljs-attr">sha:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.sha</span> <span class="hljs-string">}}</span>
       <span class="hljs-attr">platforms:</span> <span class="hljs-string">amd64,arm64</span>
 </code></pre>
+<p>As a final note, we recently saw that with upgrading from <code>docker/build-push-action@v3</code> to <code>docker/build-push-action@v4</code>, buildx no longer publishes an image, but a manifest for each architecture. This is because a new "provenance" feature is enabled which under the hood is publishing multiple artifacts instead of a single image. We've turned this off with <code>provenance: false</code> and <a href="https://github.com/docker/build-push-action/issues/755#issuecomment-1607792956">are awaiting a response from Docker</a> on how to enable provenance for multi-arch images built with a split build.</p>
 <h2>Wrapping up</h2>
 <p>Yesterday we took a new customer on for actuated who wanted to improve the speed of Arm builds, but on the call we both knew they would need to leave QEMU behind. I put this write-up together to show what would be involved, and I hope it's useful to you.</p>
 <p>Where can you run these builds?</p>
@@ -1676,9 +1680,10 @@ jobs:
 
       - name: Release build
         id: release_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           outputs: "type=registry,push=true"
+          provenance: false
 <span class="hljs-addition">+         platforms: linux/amd64,linux/arm/v6,linux/arm64</span>
           build-args: |
             Version=${{  env.TAG }}
@@ -1691,7 +1696,7 @@ jobs:
 <p>All of the images and corresponding manifest are published to GitHub's Container Registry (GHCR). The action itself is able to authenticate to GHCR using a built-in, short-lived token. This is dependent on the "permissions" section and "packages: write" being set.</p>
 <p>You'll see that we added a <code>Setup mirror</code> step, this explained in the <a href="/examples/registry-mirror">Registry Mirror example</a> and is not required for Hosted Runners.</p>
 <p>The <code>docker/setup-qemu-action@v2</code> step is responsible for setting up QEMU, which is used to emulate the different CPU architectures.</p>
-<p>The <code>docker/build-push-action@v3</code> step is responsible for passing in a number of platform combinations such as: <code>linux/amd64</code> for cloud, <code>linux/arm64</code> for Arm servers and <code>linux/arm/v6</code> for Raspberry Pi.</p>
+<p>The <code>docker/build-push-action@v4</code> step is responsible for passing in a number of platform combinations such as: <code>linux/amd64</code> for cloud, <code>linux/arm64</code> for Arm servers and <code>linux/arm/v6</code> for Raspberry Pi.</p>
 <h2>What if you're not using GitHub Actions?</h2>
 <p>The various GitHub Actions published by the Docker team are a great way to get started, but if you look under the hood, they're just syntactic sugar for the Docker CLI.</p>
 <pre><code class="hljs language-bash"><span class="hljs-built_in">export</span> DOCKER_CLI_EXPERIMENTAL=enabled
@@ -1871,11 +1876,12 @@ CMD ["curl", "https://www.google.com"]
           <span class="hljs-attr">registry:</span> <span class="hljs-string">ghcr.io</span>
 
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Publish</span> <span class="hljs-string">image</span>
-        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v4</span>
         <span class="hljs-attr">with:</span>
           <span class="hljs-attr">build-args:</span> <span class="hljs-string">|
             GitCommit=${{ github.sha }}
 </span>          <span class="hljs-attr">outputs:</span> <span class="hljs-string">"type=registry,push=true"</span>
+          <span class="hljs-attr">provenance:</span> <span class="hljs-literal">false</span>
           <span class="hljs-attr">tags:</span> <span class="hljs-string">|
             ghcr.io/alexellis/gha-sbom:${{ github.sha }}
 </span></code></pre>
@@ -1883,7 +1889,7 @@ CMD ["curl", "https://www.google.com"]
 <p>To generate an SBOM, we just need to update the <code>docker/build-push-action</code> to use the <code>sbom</code> flag:</p>
 <pre><code class="hljs language-yaml">      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Local</span> <span class="hljs-string">build</span>
         <span class="hljs-attr">id:</span> <span class="hljs-string">local_build</span>
-        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v3</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">docker/build-push-action@v4</span>
         <span class="hljs-attr">with:</span>
           <span class="hljs-attr">sbom:</span> <span class="hljs-literal">true</span>
           <span class="hljs-attr">provenance:</span> <span class="hljs-literal">false</span>
