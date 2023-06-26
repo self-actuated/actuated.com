@@ -224,6 +224,6 @@ Check out [self-actuated/actions-usage](https://github.com/self-actuated/actions
 
 I wrote an eBook writing CLIs like this in Go and keep it up to date on a regular basis - adding new examples and features of Go.
 
-Why not check out what people are saying about it on Gumroad?
+Why not check out what people are saying about it on [Gumroad](https://store.openfaas.com/l/everyday-golang)?
 
 [Everyday Go - The Fast Track](https://store.openfaas.com/l/everyday-golang)
