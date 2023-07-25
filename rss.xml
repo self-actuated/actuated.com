@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 26 Jun 2023 16:12:58 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 25 Jul 2023 13:23:45 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,246 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Automate Packer Images with QEMU and Actuated]]></title>
+            <link>https://actuated.dev/blog/automate-packer-qemu-image-builds</link>
+            <guid>https://actuated.dev/blog/automate-packer-qemu-image-builds</guid>
+            <pubDate>Tue, 25 Jul 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Learn how to automate Packer images using QEMU and nested virtualisation through actuated.]]></description>
+            <content:encoded><![CDATA[<p>One of the most popular tools for creating images for virtual machines is <a href="https://www.packer.io/">Packer</a> by <a href="https://hashicorp.com">Hashicorp</a>. Packer automates the process of building images for a variety of platforms from a single source configuration. Different builders can be used to create machines and generate images from those machines.</p>
+<p>In this tutorial we will use the <a href="https://developer.hashicorp.com/packer/plugins/builders/qemu">QEMU builder</a> to create a <a href="https://www.linux-kvm.org/page/Main_Page">KVM</a> virtual machine image.</p>
+<p>We will see how the Packer build can be completely automated by integrating Packer into a continuous integration (CI) pipeline with GitHub Actions. The workflow will automatically trigger image builds on changes and publish the resulting images as GitHub release artifacts.</p>
+<p>Actuated supports nested virtualsation where a VM can make use of KVM to launch additional VMs within a GitHub Action. This makes it possible to run the Packer QEMU builder in GitHub Action workflows. Something that is not possible with GitHub's default hosted runners.</p>
+<blockquote>
+<p>See also: <a href="https://actuated.dev/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></p>
+</blockquote>
+<h2>Create the Packer template</h2>
+<p>We will be starting from a <a href="https://cloud-images.ubuntu.com/">Ubuntu Cloud Image</a> and modify it to suit our needs. If you need total control of what goes into the image you can start from scratch using the ISO.</p>
+<p>Variables are used in the packer template to set the <code>iso_url</code> and <code>iso_checksum</code>. In addition to these we also use variables to configure the <code>disk_size</code>, <code>ram</code>, <code>cpu</code>, <code>ssh_password</code> and <code>ssh_username</code>:</p>
+<pre><code>variable "cpu" {
+  type    = string
+  default = "2"
+}
+
+variable "disk_size" {
+  type    = string
+  default = "40000"
+}
+
+variable "headless" {
+  type    = string
+  default = "true"
+}
+
+variable "iso_checksum" {
+  type    = string
+  default = "sha256:d699ae158ec028db69fd850824ee6e14c073b02ad696b4efb8c59d37c8025aaa"
+}
+
+variable "iso_url" {
+  type    = string
+  default = "https://cloud-images.ubuntu.com/jammy/20230719/jammy-server-cloudimg-amd64.img"
+}
+
+variable "name" {
+  type    = string
+  default = "jammy"
+}
+
+variable "ram" {
+  type    = string
+  default = "2048"
+}
+
+variable "ssh_password" {
+  type    = string
+  default = "ubuntu"
+}
+
+variable "ssh_username" {
+  type    = string
+  default = "ubuntu"
+}
+
+variable "version" {
+  type    = string
+  default = ""
+}
+
+variable "format" {
+  type    = string
+  default = "qcow2"
+}
+</code></pre>
+<p>The Packer source configuration:</p>
+<pre><code>source "qemu" "jammy" {
+  accelerator      = "kvm"
+  boot_command     = []
+  disk_compression = true
+  disk_interface   = "virtio"
+  disk_image       = true
+  disk_size        = var.disk_size
+  format           = var.format
+  headless         = var.headless
+  iso_checksum     = var.iso_checksum
+  iso_url          = var.iso_url
+  net_device       = "virtio-net"
+  output_directory = "artifacts/qemu/${var.name}${var.version}"
+  qemuargs = [
+    ["-m", "${var.ram}M"],
+    ["-smp", "${var.cpu}"],
+    ["-cdrom", "cidata.iso"]
+  ]
+  communicator           = "ssh"
+  shutdown_command       = "echo '${var.ssh_password}' | sudo -S shutdown -P now"
+  ssh_password           = var.ssh_password
+  ssh_username           = var.ssh_username
+  ssh_timeout            = "10m"
+}
+</code></pre>
+<p>Some notable settings in the source configuration:</p>
+<ul>
+<li>We set <code>disk_image=true</code> since we are starting from an Ubuntu Cloud Image. If you wanted to launch an ISO based installation this would have to be false.</li>
+<li>Notice how the variables are used to configure different VM settings like disk size: <code>disk_size=var.disk_size</code>, image output format: <code>format=var.format</code> and the RAM and CPU for the vm through <code>qemuargs</code>.</li>
+<li>The <code>ssh_username</code> and <code>ssh_password</code> that Packer can use to establish an ssh connection to the VM are also configured.</li>
+</ul>
+<p>In the next section we will see how <a href="https://cloudinit.readthedocs.io/en/latest/">cloud-init</a> is used to setup user account with the correct password that Packer needs for provisioning.</p>
+<p>The full example of the packer file is available on <a href="https://github.com/skatolo/actuated-packer-qemu">GitHub</a>.</p>
+<h3>Create the user-data file</h3>
+<p>Cloud images provided by Canonical do not have users by default. The Ubuntu images use <a href="https://cloudinit.readthedocs.io/en/latest/">cloud-init</a> to pre-configure the system during boot.</p>
+<p>Packer uses provisioners to install and configure the machine image after booting. To run these provisioners Packer needs to be able to communicate with the machine. By default this happens by establishing an ssh connection to the machine.</p>
+<p>Create a user-data file that sets the password of the default user so that it can be used by Packer to connect over ssh:</p>
+<pre><code>#cloud-config
+password: ubuntu
+ssh_pwauth: true
+chpasswd:
+  expire: false
+</code></pre>
+<p>Next create an ISO that can be referenced by our Packer template and presented to the VM:</p>
+<pre><code class="hljs language-bash">genisoimage -output cidata.iso -input-charset utf-8 -volid cidata -joliet -r \
+</code></pre>
+<p>The ISO can be mounted by QEMU to provide the configuration data to <code>cloud-init</code> while the VM boots.</p>
+<p>The <code>-cdrom</code> flag is used in the <code>qemuargs</code> field to mount the <code>cidata.iso</code> file:</p>
+<pre><code>  qemuargs = [
+    ["-m", "${var.ram}M"],
+    ["-smp", "${var.cpu}"],
+    ["-cdrom", "cidata.iso"]
+  ]
+</code></pre>
+<h3>Provision the image</h3>
+<p>The build section of the Packer template is used to define provisioners that can run scripts and commands to install software and configure the machine.</p>
+<p>In this example we are installing python3 but you can run any script you want or use tools like <a href="https://www.ansible.com/">Ansible</a> to automate the configuration.</p>
+<pre><code>build {
+  sources = ["source.qemu.jammy"]
+
+  provisioner "shell" {
+    execute_command = "{{ .Vars }} sudo -E bash '{{ .Path }}'"
+    inline          = ["sudo apt update", "sudo apt install python3"]
+  }
+
+  post-processor "shell-local" {
+    environment_vars = ["IMAGE_NAME=${var.name}", "IMAGE_VERSION=${var.version}", "IMAGE_FORMAT=${var.format}"]
+    script           = "scripts/prepare-image.sh"
+  }
+}
+</code></pre>
+<h3>Prepare the image for publishing.</h3>
+<p>Packer supports post-processors. They only run after Packer saves an instance as an image. Post-processors are commonly used to compress artifacts, upload them into a cloud, etc. See the <a href="https://developer.hashicorp.com/packer/tutorials/docker-get-started/docker-get-started-post-processors">Packer docs</a> for more use-cases and examples.</p>
+<p>We will add a post processing step to the packer template to run the <code>prepare-image.sh</code> script. This script renames the image artifacts and calculates the shasum to prepare them to be uploaded as release artifacts on GitHub.</p>
+<pre><code>  post-processor "shell-local" {
+    environment_vars = ["IMAGE_NAME=${var.name}", "IMAGE_VERSION=${var.version}", "IMAGE_FORMAT=${var.format}"]
+    script           = "scripts/prepare-image.sh"
+  }
+</code></pre>
+<h3>Launch the build locally</h3>
+<p>If your local system is setup correctly, it has the packer binary and qemu installed, you can build with just:</p>
+<pre><code class="hljs language-bash">packer build .
+</code></pre>
+<p>The artifacts folder will contain the resulting machine image and shasum file after the build completes.</p>
+<pre><code>artifacts
+└── qemu
+    └── jammy
+        ├── jammy.qcow2
+        └── jammy.qcow2.sha256sum
+</code></pre>
+<h2>Automate image releases with GitHub Actions.</h2>
+<p>For the QEMU builder to run at peak performance it requires hardware acceleration. This is not always possible in CI runners. GitHub's hosted runners do not support nested virtualization. With Actuated we added support for launching Virtual Machines in GitHub Action pipelines. This makes it possible to run the Packer QEMU builder in your workflows.</p>
+<p>Support for KVM is not enabled by default on Actuated and there are some prerequisites:</p>
+<ul>
+<li><code>arm64</code> runners are not supported at the moment</li>
+<li>A bare-metal host that supports nested virtualization is required for the Agent.</li>
+</ul>
+<p>To configure your Actuated Agent for KVM support follow the <a href="https://docs.actuated.dev/examples/kvm-guest/">instructions in the docs</a>.</p>
+<h3>The GitHub actions workflow</h3>
+<p>The default GitHub hosted runners come with Packer pre-installed. On self-hosted runners you will need a step to install the Packer binary. The official [setup-packer][https://github.com/hashicorp/setup-packer] action can be used for this.</p>
+<p>We set <code>runs-on</code> to <code>actuated</code> so that the build workflow will run on an Actuated runner:</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Build</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">tags:</span> [<span class="hljs-string">"v[0-9].[0-9]+.[0-9]+"</span>]
+    <span class="hljs-attr">branches:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"main"</span>
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">build-image:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated</span>
+    <span class="hljs-comment">##...</span>
+</code></pre>
+<p>The build job runs the following steps:</p>
+<ol>
+<li>
+<p>Retrieve the Packer configuration by checking out the GitHub repository.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">Repository</span>
+  <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+</code></pre>
+</li>
+<li>
+<p>Install QEMU to ensure Packer is able to launch kvm/qemu virtual machines.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">qemu</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">apt-get</span> <span class="hljs-string">update</span> <span class="hljs-string">&#x26;&#x26;</span> <span class="hljs-string">sudo</span> <span class="hljs-string">apt-get</span> <span class="hljs-string">install</span> <span class="hljs-string">qemu-system</span> <span class="hljs-string">-y</span>
+</code></pre>
+</li>
+<li>
+<p>Setup packet to ensure the binary is available in the path.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Setup</span> <span class="hljs-string">packer</span>
+  <span class="hljs-attr">uses:</span> <span class="hljs-string">hashicorp/setup-packer@main</span>
+</code></pre>
+</li>
+<li>
+<p>Initialize the packer template and install all plugins referenced by the template.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Packer</span> <span class="hljs-string">Init</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">packer</span> <span class="hljs-string">init</span> <span class="hljs-string">.</span>
+</code></pre>
+</li>
+<li>
+<p>Build the images defined in the root directory. Before we run the <code>packer build</code> command we make <code>/dev/kvm</code> world read-writable so that the QEMU builder can use it.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Packer</span> <span class="hljs-string">Build</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">|
+    sudo chmod o+rw /dev/kvm
+    packer build .
+</span></code></pre>
+</li>
+<li>
+<p>Upload the images as GitHub release artifacts. This job only runs for tagged commits.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Upload</span> <span class="hljs-string">images</span> <span class="hljs-string">and</span> <span class="hljs-string">their</span> <span class="hljs-string">SHA</span> <span class="hljs-string">to</span> <span class="hljs-string">Github</span> <span class="hljs-string">Release</span>
+  <span class="hljs-attr">if:</span> <span class="hljs-string">startsWith(github.ref,</span> <span class="hljs-string">'refs/tags/v'</span><span class="hljs-string">)</span>
+  <span class="hljs-attr">uses:</span> <span class="hljs-string">alexellis/upload-assets@0.4.0</span>
+  <span class="hljs-attr">env:</span>
+    <span class="hljs-attr">GITHUB_TOKEN:</span> <span class="hljs-string">${{</span> <span class="hljs-string">secrets.GITHUB_TOKEN</span> <span class="hljs-string">}}</span>
+  <span class="hljs-attr">with:</span>
+    <span class="hljs-attr">asset_paths:</span> <span class="hljs-string">'["./artifacts/qemu/*/*"]'</span>
+</code></pre>
+</li>
+</ol>
+<h2>Taking it further</h2>
+<p>We created a GitHub actions workflow that can run a Packer build with QEMU to create a custom Ubuntu image. The resulting <code>qcow2</code> image is automatically uploaded to the GitHub release assets on each release.</p>
+<p>The released image can be downloaded and used to spin up a VM instance on your private hardware or on different cloud providers.</p>
+<p>We exported the image in <code>qcow2</code> format but you might need a different image format. The QEMU builder also supports outputting images in <code>raw</code> format. In our Packer template the output format can be changed by setting the <code>format</code> variable.</p>
+<p>Additional tools like the <a href="https://www.qemu.org/docs/master/tools/qemu-img.html">qemu disk image utility</a> can also be used to convert images between different formats. A <a href="https://developer.hashicorp.com/packer/docs/templates/hcl_templates/blocks/build/post-processor">post-processor</a> would be the ideal place for these kinds of extra processing steps.</p>
+<p>AWS also supports importing VM images and converting them to an AMI so they can be used to launch EC2 instances. See: <a href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html">Create an AMI from a VM image</a></p>
+<p>If you'd like to know more about nested virtualisation support, check out: <a href="https://actuated.dev/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Understand your usage of GitHub Actions]]></title>
             <link>https://actuated.dev/blog/github-actions-usage-cli</link>
@@ -29,7 +269,7 @@
 <li>Or in a GitHub Action</li>
 </ul>
 <p>I'll show you each briefly, but the one I like the most is the third option because it's kind of recursive.</p>
-<p>Before we get started, download arkade, and use it to install the tool:</p>
+<p>Before we get started, download <a href="https://arkade.dev">arkade</a>, and use it to install the tool:</p>
 <pre><code class="hljs language-bash"><span class="hljs-comment"># Move the binary yourself into $PATH</span>
 curl -sLS https://get.arkade.dev | sh
 
