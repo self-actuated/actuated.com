@@ -29,7 +29,7 @@ You can run the tool in three ways:
 
 I'll show you each briefly, but the one I like the most is the third option because it's kind of recursive.
 
-Before we get started, download arkade, and use it to install the tool:
+Before we get started, download [arkade](https://arkade.dev), and use it to install the tool:
 
 ```bash
 # Move the binary yourself into $PATH
