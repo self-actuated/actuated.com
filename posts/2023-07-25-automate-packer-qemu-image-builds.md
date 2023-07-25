@@ -1,24 +1,25 @@
 ---
-title: Automate Packer QEMU image builds with Actuated
-description: "Learn how to build machine images in CI with Packer and the Qemu builder."
+title: Automate Packer Images with QEMU and Actuated
+description: "Learn how to automate Packer images using QEMU and nested virtualisation through actuated."
 tags:
-- cicd
+- images
 - packer
 - qemu
 - kvm
 author_img: welteki
-image: ""
-date: "2023-07-20"
+image: "/images/2023-07-packer/background.png"
+date: "2023-07-25"
 ---
 
-One of the most popular tools for creating machine images is [Packer](https://www.packer.io/). Packer automates the process of building images for a variety of platforms from a single source configuration. Different builders can be used to create machines and generate images from those machines.
+One of the most popular tools for creating images for virtual machines is [Packer](https://www.packer.io/) by [Hashicorp](https://hashicorp.com). Packer automates the process of building images for a variety of platforms from a single source configuration. Different builders can be used to create machines and generate images from those machines.
 
 In this tutorial we will use the [QEMU builder](https://developer.hashicorp.com/packer/plugins/builders/qemu) to create a [KVM](https://www.linux-kvm.org/page/Main_Page) virtual machine image.
 
 We will see how the Packer build can be completely automated by integrating Packer into a continuous integration (CI) pipeline with GitHub Actions. The workflow will automatically trigger image builds on changes and publish the resulting images as GitHub release artifacts.
 
-With Actuated we support launching a Virtual Machine (VM) within a GitHub Action. This makes  
-it possible to run the Packer QEMU builder in GitHub Action workflows. Something that is not possible with GitHub's default hosted runners.
+Actuated supports nested virtualsation where a VM can make use of KVM to launch additional VMs within a GitHub Action. This makes it possible to run the Packer QEMU builder in GitHub Action workflows. Something that is not possible with GitHub's default hosted runners.
+
+> See also: [How to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions)
 
 ## Create the Packer template
 
@@ -26,7 +27,7 @@ We will be starting from a [Ubuntu Cloud Image](https://cloud-images.ubuntu.com/
 
 Variables are used in the packer template to set the `iso_url` and `iso_checksum`. In addition to these we also use variables to configure the `disk_size`, `ram`, `cpu`, `ssh_password` and `ssh_username`:
 
-```hcl
+```
 variable "cpu" {
   type    = string
   default = "2"
@@ -85,7 +86,7 @@ variable "format" {
 
 The Packer source configuration:
 
-```hcl
+```
 source "qemu" "jammy" {
   accelerator      = "kvm"
   boot_command     = []
@@ -148,7 +149,7 @@ The ISO can be mounted by QEMU to provide the configuration data to `cloud-init`
 
 The `-cdrom` flag is used in the `qemuargs` field to mount the `cidata.iso` file:
 
-```hcl
+```
   qemuargs = [
     ["-m", "${var.ram}M"],
     ["-smp", "${var.cpu}"],
@@ -162,7 +163,7 @@ The build section of the Packer template is used to define provisioners that can
 
 In this example we are installing python3 but you can run any script you want or use tools like [Ansible](https://www.ansible.com/) to automate the configuration.
 
-```hcl
+```
 build {
   sources = ["source.qemu.jammy"]
 
@@ -184,7 +185,7 @@ Packer supports post-processors. They only run after Packer saves an instance as
 
 We will add a post processing step to the packer template to run the `prepare-image.sh` script. This script renames the image artifacts and calculates the shasum to prepare them to be uploaded as release artifacts on GitHub.
 
-```hcl
+```
   post-processor "shell-local" {
     environment_vars = ["IMAGE_NAME=${var.name}", "IMAGE_VERSION=${var.version}", "IMAGE_FORMAT=${var.format}"]
     script           = "scripts/prepare-image.sh"
@@ -209,7 +210,7 @@ artifacts
         └── jammy.qcow2.sha256sum
 ```
 
-## Automate image releases with GitHub actions.
+## Automate image releases with GitHub Actions.
 
 For the QEMU builder to run at peak performance it requires hardware acceleration. This is not always possible in CI runners. GitHub's hosted runners do not support nested virtualization. With Actuated we added support for launching Virtual Machines in GitHub Action pipelines. This makes it possible to run the Packer QEMU builder in your workflows.
 
@@ -298,3 +299,5 @@ We exported the image in `qcow2` format but you might need a different image for
 Additional tools like the [qemu disk image utility](https://www.qemu.org/docs/master/tools/qemu-img.html) can also be used to convert images between different formats. A [post-processor](https://developer.hashicorp.com/packer/docs/templates/hcl_templates/blocks/build/post-processor) would be the ideal place for these kinds of extra processing steps.
 
 AWS also supports importing VM images and converting them to an AMI so they can be used to launch EC2 instances. See: [Create an AMI from a VM image](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html)
+
+If you'd like to know more about nested virtualisation support, check out: [How to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions)
