@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 31 Jul 2023 09:47:40 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 31 Jul 2023 09:58:23 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -20,6 +20,9 @@
             <description><![CDATA[Learn how to update the microcode on your AMD CPU to avoid the Zenbleed exploit.]]></description>
             <content:encoded><![CDATA[<p>On 24th July 2023, <a href="https://www.theregister.com/2023/07/24/amd_zenbleed_bug/">The Register covered a new exploit</a> for certain AMD CPUs based upon the Zen architecture. The exploit, dubbed Zenbleed, allows an attacker to read arbitrary physical memory locations on the host system. It works by allowing memory to be read after it's been set to be freed up aka "use-after-free". This is a serious vulnerability, and you should update your AMD hosts as soon as possible.</p>
 <p>Even more dangerous was the claim by The Register that any level of VM isolation prevents the exploit from working. This is not true. We tested the exploit with a sample GitHub Action running within Firecracker.</p>
+<blockquote>
+<p>"If you stick any emulation layer in between, such as Qemu, then the exploit understandably fails."</p>
+</blockquote>
 <p>We ran a matrix build that creates many VMs running different versions of K3s, then we started a PoC Zenbleed exploit written by <a href="https://twitter.com/taviso">Tavis Ormandy</a>, a security researcher at Google, which scanned for 1000 pieces of data in memory.</p>
 <p>We found that the exploit was able to read the memory of the host system, and that the exploit was able to read the memory of other VMs running on the same host.</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">build</span>
@@ -76,6 +79,7 @@
 </code></pre>
 <p><img src="/images/2023-07-zenbleed/microcode.png" alt="An update to the CPU microcode is required"></p>
 <p>For some unknown reason, both of the Equinix AMD hosts that we use internally broke after running the OS upgrade, so I had to reinstall Ubuntu 22.04 using the dashboard. If for whatever reason the machine won't come up after the microcode update, then you should reinstall the Operating System (OS) using your vendor's rescue system or out of band console, both Equinix Metal and Hetzner have an "easy button" that you can click for this. If there is still an issue after that, reach out to your vendor's support team.</p>
+<p>New machines provisioned after this date should already contain the microcode fix or have the "chicken bit" enabled. We provisioned a new AMD Epyc server on Equinix Metal to make sure, and as expected, thanks to their hard work - it was not vulnerable.</p>
 <p>We offer 500 USD of free credit for new Equinix Metal customers to use with actuated, and Equinix Metal have also written up their own guide on workaround here:</p>
 <ul>
 <li><a href="https://deploy.equinix.com/blog/an-update-on-the-amd-zen-2-cpu-vulnerability/">An Update On the AMD Zen 2 CPU Vulnerability</a></li>
