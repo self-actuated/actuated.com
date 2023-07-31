@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 31 Jul 2023 09:58:23 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 31 Jul 2023 10:01:36 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -23,7 +23,8 @@
 <blockquote>
 <p>"If you stick any emulation layer in between, such as Qemu, then the exploit understandably fails."</p>
 </blockquote>
-<p>We ran a matrix build that creates many VMs running different versions of K3s, then we started a PoC Zenbleed exploit written by <a href="https://twitter.com/taviso">Tavis Ormandy</a>, a security researcher at Google, which scanned for 1000 pieces of data in memory.</p>
+<p>We proved this to be wrong, QEMU &#x26; Firecracker (both use KVM), Docker, etc are all affected in the same way as running a malicious process directly on the host.</p>
+<p>To test this, we ran a GitHub actions matrix build that creates many VMs running different versions of K3s. About the same time, we triggered a build which runs a Zenbleed exploit PoC written by <a href="https://twitter.com/taviso">Tavis Ormandy</a>, a security researcher at Google.</p>
 <p>We found that the exploit was able to read the memory of the host system, and that the exploit was able to read the memory of other VMs running on the same host.</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">build</span>
 
@@ -57,7 +58,7 @@
           <span class="hljs-attr">run:</span> <span class="hljs-string">|
             ./zenbleed/zenbleed -m 1000
 </span></code></pre>
-<p>Full details of the exploit can be found on a microsite created by the security researcher who discovered the vulnerability.</p>
+<p>Full details of the exploit can be found on a microsite created by the security researcher who discovered the vulnerability. The <code>-m 1000</code> flag reads 1000 pieces of memory and then exits.</p>
 <p><a href="https://lock.cmpxchg8b.com/zenbleed.html#vulnerability">Zenbleed by Tavis Ormandy</a></p>
 <p>We didn't see any secrets printed out during the scan, but we did see part of a public SSH key, console output from etcd running within K3s, and instructions from containerd. So we can assume anything that was within memory within one of the other VMs on the host, or even the host itself, could be read by the exploit.</p>
 <p><img src="/images/2023-07-zenbleed/gha.png" alt="GHA output from the zenbleed exploit"></p>
