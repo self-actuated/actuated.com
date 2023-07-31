@@ -15,6 +15,8 @@ On 24th July 2023, [The Register covered a new exploit](https://www.theregister.
 
 Even more dangerous was the claim by The Register that any level of VM isolation prevents the exploit from working. This is not true. We tested the exploit with a sample GitHub Action running within Firecracker.
 
+> "If you stick any emulation layer in between, such as Qemu, then the exploit understandably fails."
+
 We ran a matrix build that creates many VMs running different versions of K3s, then we started a PoC Zenbleed exploit written by [Tavis Ormandy](https://twitter.com/taviso), a security researcher at Google, which scanned for 1000 pieces of data in memory.
 
 We found that the exploit was able to read the memory of the host system, and that the exploit was able to read the memory of other VMs running on the same host.
@@ -83,6 +85,8 @@ sudo apt update -qy && \
 ![An update to the CPU microcode is required](/images/2023-07-zenbleed/microcode.png)
 
 For some unknown reason, both of the Equinix AMD hosts that we use internally broke after running the OS upgrade, so I had to reinstall Ubuntu 22.04 using the dashboard. If for whatever reason the machine won't come up after the microcode update, then you should reinstall the Operating System (OS) using your vendor's rescue system or out of band console, both Equinix Metal and Hetzner have an "easy button" that you can click for this. If there is still an issue after that, reach out to your vendor's support team.
+
+New machines provisioned after this date should already contain the microcode fix or have the "chicken bit" enabled. We provisioned a new AMD Epyc server on Equinix Metal to make sure, and as expected, thanks to their hard work - it was not vulnerable.
 
 We offer 500 USD of free credit for new Equinix Metal customers to use with actuated, and Equinix Metal have also written up their own guide on workaround here:
 
