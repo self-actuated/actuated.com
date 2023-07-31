@@ -17,7 +17,9 @@ Even more dangerous was the claim by The Register that any level of VM isolation
 
 > "If you stick any emulation layer in between, such as Qemu, then the exploit understandably fails."
 
-We ran a matrix build that creates many VMs running different versions of K3s, then we started a PoC Zenbleed exploit written by [Tavis Ormandy](https://twitter.com/taviso), a security researcher at Google, which scanned for 1000 pieces of data in memory.
+We proved this to be wrong, QEMU & Firecracker (both use KVM), Docker, etc are all affected in the same way as running a malicious process directly on the host.
+
+To test this, we ran a GitHub actions matrix build that creates many VMs running different versions of K3s. About the same time, we triggered a build which runs a Zenbleed exploit PoC written by [Tavis Ormandy](https://twitter.com/taviso), a security researcher at Google.
 
 We found that the exploit was able to read the memory of the host system, and that the exploit was able to read the memory of other VMs running on the same host.
 
@@ -55,7 +57,7 @@ jobs:
             ./zenbleed/zenbleed -m 1000
 ```
 
-Full details of the exploit can be found on a microsite created by the security researcher who discovered the vulnerability.
+Full details of the exploit can be found on a microsite created by the security researcher who discovered the vulnerability. The `-m 1000` flag reads 1000 pieces of memory and then exits.
 
 [Zenbleed by Tavis Ormandy](https://lock.cmpxchg8b.com/zenbleed.html#vulnerability)
 
