@@ -121,8 +121,15 @@ Thread 0x7fd0d38e7700 running on CPU 1
 ...
 ```
 
+You can also run the following command to print out the microcode version. This is the output from the Equinix Metal server (c3.medium) that ran an OS update on:
+
+```bash
+$ grep 'microcode' /proc/cpuinfo
+microcode	: 0x830107a
+```
+
 ## Wrapping up
 
-Actuated uses Firecracker, an open source Virtual Machine Manager that works with Linux KVM to run isolated systems on a host. We have verified that the exploit works on Firecracker, and that the mitigation works too. So whilst VM-level isolation and an immutable filesystem is much more appropriate than a container for CI, this is an example of why we must still be vigilant and ready to respond to security vulnerabilities. 
+Actuated uses [Firecracker](https://firecracker-microvm.github.io/), an open source Virtual Machine Manager (VMM) that works with Linux KVM to run isolated systems on a host. We have verified that the exploit works on Firecracker, and that the mitigation works too. So whilst VM-level isolation and an immutable filesystem is much more appropriate than a container for CI, this is an example of why we must still be vigilant and ready to respond to security vulnerabilities. 
 
 This is an unfortunate, and serious vulnerability. It affects bare-metal, VMs and containers, which is why it's important to update your systems as soon as possible.
