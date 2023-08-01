@@ -13,13 +13,15 @@ date: "2023-07-31"
 
 On 24th July 2023, [The Register covered a new exploit](https://www.theregister.com/2023/07/24/amd_zenbleed_bug/) for certain AMD CPUs based upon the Zen architecture. The exploit, dubbed Zenbleed, allows an attacker to read arbitrary physical memory locations on the host system. It works by allowing memory to be read after it's been set to be freed up aka "use-after-free". This is a serious vulnerability, and you should update your AMD hosts as soon as possible.
 
-Even more dangerous was the claim by The Register that any level of VM isolation prevents the exploit from working. This is not true. We tested the exploit with a sample GitHub Action running within Firecracker.
+The Register made the claim that "any level of emulation such as QEMU" would prevent the exploit from working. This is misleading because QEMU only makes sense in production when used with hardware acceleration (KVM). We were able to run the exploit with a GitHub Action using actuated on an AMD Epyc server from Equinix Metal using Firecracker and KVM.
 
 > "If you stick any emulation layer in between, such as Qemu, then the exploit understandably fails."
 
-We proved this to be wrong, QEMU & Firecracker (both use KVM), Docker, etc are all affected in the same way as running a malicious process directly on the host.
+The editors at The Register have since reached out and updated their article.
 
-To test this, we ran a GitHub actions matrix build that creates many VMs running different versions of K3s. About the same time, we triggered a build which runs a Zenbleed exploit PoC written by [Tavis Ormandy](https://twitter.com/taviso), a security researcher at Google.
+Even Firecracker with its isolated guest Kernel is vulnerable, which shows how serious the bug is, it's within the hardware itself. Of course it goes without saying that this also affects containerd, Docker (and by virtue Kubernetes) which share the host Kernel.
+
+To test this, we ran a GitHub Actions matrix build that creates many VMs running different versions of K3s. About the same time, we triggered a build which runs a Zenbleed exploit PoC written by [Tavis Ormandy](https://twitter.com/taviso), a security researcher at Google.
 
 We found that the exploit was able to read the memory of the host system, and that the exploit was able to read the memory of other VMs running on the same host.
 
