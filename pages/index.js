@@ -91,6 +91,10 @@ export default function Home() {
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/toolpath.png" alt="Toolpath" />
+              </div>
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
                 <img className="h-12" src="./images/waffle-labs.png" alt="Waffle Labs" />
               </div>
 
