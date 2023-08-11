@@ -19,9 +19,9 @@ Different architecture builds can be slow using the Github Actions hosted runner
 
 [Calyptia](https://calyptia.io) maintains the OSS and [Cloud Native Computing Foundation (CNCF)](https://cncf.io) graduated Fluent projects including [Fluent Bit](https://docs.fluentbit.io). We then add value to the open-source core by providing commercial services and enterprise-level features.
 
-> Fluent Bit is a Fast and Lightweight Telemetry Agent for Logs, Metrics, and Traces for Linux, macOS, Windows, and BSD family operating systems. It has been made with a strong focus on performance to allow the collection and processing of telemetry data from different sources without complexity.
-
-> Fluent Bit is a CNCF graduated sub-project under the umbrella of Fluentd. Fluent Bit is licensed under the terms of the Apache License v2.0. It was originally created by Eduardo Silva and is now an independent project.
+> Fluent Bit is a Fast and Lightweight Telemetry Agent for Logs, Metrics, and Traces for Linux, macOS, Windows, and BSD family operating systems. It has been made with a strong focus on performance to allow the collection and processing of telemetry data from different sources without complexity. 
+> 
+> It was originally created by Eduardo Silva and is now an independent project.
 
 To learn about Fluent Bit, the Open Source telemetry agent that Calyptia maintains, [check out their docs](https://docs.fluentbit.io/manual/about/what-is-fluent-bit). 
 
