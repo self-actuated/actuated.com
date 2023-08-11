@@ -17,7 +17,11 @@ This is a case-study, and guest article by [Patrick Stephens, Tech Lead of Infra
 
 Different architecture builds can be slow using the Github Actions hosted runners due to emulation of the non-native architecture for the build. This blog shows a simple way to make use of self-hosted runners for dedicated builds but in a secure and easy to maintain fashion.
 
-[Calyptia](https://calyptia.io) maintains the OSS and [Cloud Native Computing Foundation (CNCF)](https://cncf.io) graduated Fluent projects including [Fluent Bit](https://docs.fluentbit.io). We then add value to the open-source core by providing commercial services and enterprise-level features. Add a few sentences on what the Fluent projects are. Why do companies adopt the Fluent technologies? What problems does it solve for them? Introduce a high-level of the challenges presented by having to manage both the OSS and commercial tech. 
+[Calyptia](https://calyptia.io) maintains the OSS and [Cloud Native Computing Foundation (CNCF)](https://cncf.io) graduated Fluent projects including [Fluent Bit](https://docs.fluentbit.io). We then add value to the open-source core by providing commercial services and enterprise-level features.
+
+> Fluent Bit is a Fast and Lightweight Telemetry Agent for Logs, Metrics, and Traces for Linux, macOS, Windows, and BSD family operating systems. It has been made with a strong focus on performance to allow the collection and processing of telemetry data from different sources without complexity.
+
+> Fluent Bit is a CNCF graduated sub-project under the umbrella of Fluentd. Fluent Bit is licensed under the terms of the Apache License v2.0. It was originally created by Eduardo Silva and is now an independent project.
 
 To learn about Fluent Bit, the Open Source telemetry agent that Calyptia maintains, [check out their docs](https://docs.fluentbit.io/manual/about/what-is-fluent-bit). 
 
