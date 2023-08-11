@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 11 Aug 2023 15:38:51 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 11 Aug 2023 15:39:40 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -24,9 +24,7 @@
 <p><a href="https://calyptia.io">Calyptia</a> maintains the OSS and <a href="https://cncf.io">Cloud Native Computing Foundation (CNCF)</a> graduated Fluent projects including <a href="https://docs.fluentbit.io">Fluent Bit</a>. We then add value to the open-source core by providing commercial services and enterprise-level features.</p>
 <blockquote>
 <p>Fluent Bit is a Fast and Lightweight Telemetry Agent for Logs, Metrics, and Traces for Linux, macOS, Windows, and BSD family operating systems. It has been made with a strong focus on performance to allow the collection and processing of telemetry data from different sources without complexity.</p>
-</blockquote>
-<blockquote>
-<p>Fluent Bit is a CNCF graduated sub-project under the umbrella of Fluentd. Fluent Bit is licensed under the terms of the Apache License v2.0. It was originally created by Eduardo Silva and is now an independent project.</p>
+<p>It was originally created by Eduardo Silva and is now an independent project.</p>
 </blockquote>
 <p>To learn about Fluent Bit, the Open Source telemetry agent that Calyptia maintains, <a href="https://docs.fluentbit.io/manual/about/what-is-fluent-bit">check out their docs</a>.</p>
 <h3>The Problem</h3>
