@@ -53,6 +53,15 @@ const testimonials = [
         '/images/ivan-subotic.jpg',
     },
   },
+  {
+    body: 'One of our Julia builds was taking 5 hours of compute time to complete, and was costing us over 1500USD / mo. Alex\'s team got us a 3x improvement on speed and lowered our costs at the same time. Actuated is working great for us.',
+    author: {
+      name: 'Justin Gray, Ph.D.',
+      handle: 'CTO & Co-founder at Toolpath',
+      imageUrl:
+      '/images/justin-gray.png',
+    }
+  }
 ]
 
 export default function Testimonial() {
