@@ -21,7 +21,7 @@ Different architecture builds can be slow using the Github Actions hosted runner
 
 > Fluent Bit is a Fast and Lightweight Telemetry Agent for Logs, Metrics, and Traces for Linux, macOS, Windows, and BSD family operating systems. It has been made with a strong focus on performance to allow the collection and processing of telemetry data from different sources without complexity. 
 > 
-> It was originally created by Eduardo Silva and is now an independent project.
+> It was originally created by [Eduardo Silva](https://twitter.com/edsiper) and is now an independent project.
 
 To learn about Fluent Bit, the Open Source telemetry agent that Calyptia maintains, [check out their docs](https://docs.fluentbit.io/manual/about/what-is-fluent-bit). 
 
