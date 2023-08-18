@@ -141,7 +141,7 @@ export default function NavBar({ children }) {
               Sign in
             </a>
             <a
-              href="https://openfaas-subscribe.lemonsqueezy.com/checkout/buy/6869822f-d5bd-40be-9b93-c45c25dcf2f1"
+              href="https://docs.actuated.dev/register/"
               className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
               Sign-up

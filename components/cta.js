@@ -12,7 +12,7 @@ export default function Cta() {
                 You can try out actuated on a monthly basis, with no commitment beyond that. 
               </p>
               <a
-                href="https://openfaas-subscribe.lemonsqueezy.com/checkout/buy/6869822f-d5bd-40be-9b93-c45c25dcf2f1"
+                href="https://docs.actuated.dev/register/"
                 className="mt-8 inline-flex items-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-indigo-600 shadow hover:bg-indigo-50"
               >
                 Make your builds faster today
