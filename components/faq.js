@@ -10,15 +10,15 @@ const faqs = [
       action: "Watch our Firecracker webinar"
   },
   {
-    question: "How do we try out actuated for our team?",
+    question: "Can we talk to you before signing up for a plan?",
     answer:
       "Just fill out the form for a call with our founder. If you think our solution is a good fit, you can be up and running on the same day.",
       link: "https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform",
-      action: "Register Interest"
+      action: "Schedule a call"
   },
   {
     question: "How much does it cost? What is the right plan for our team?",
-    answer: "For the pilot, we are offering unmetered billing with a flat-rate monthly subscription. You can use as many minutes as you like.",
+    answer: "We are offering unmetered billing with a flat-rate monthly subscription. You can use as many minutes as you like.",
   },
   {
     question: "What kind of support do you offer?",
