@@ -1,8 +1,7 @@
 
 import { KeyIcon} from '@heroicons/react/20/solid'
 import { CommandLineIcon} from '@heroicons/react/20/solid'
-import {FireIcon} from '@heroicons/react/20/solid'
-import {CpuChipIcon,BanknotesIcon} from '@heroicons/react/20/solid'
+import {CpuChipIcon, BanknotesIcon} from '@heroicons/react/20/solid'
 import {ServerStackIcon} from '@heroicons/react/20/solid'
 
 export default function Solutions() {

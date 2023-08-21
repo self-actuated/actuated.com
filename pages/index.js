@@ -7,6 +7,7 @@ import Testimonial from '../components/testimonial'
 import TestimonialPrimary from '../components/testimonial-primary'
 import GitHubQuote from '../components/GitHubQuote'
 import BlogRollup from '../components/rollup'
+import Subscribe from '../components/subscribe'
 
 export default function Home() {
   return (
@@ -103,6 +104,8 @@ export default function Home() {
         </div>
       </div>
       <TestimonialPrimary></TestimonialPrimary>
+
+      <Subscribe></Subscribe>
 
       <Solutions></Solutions>
 
