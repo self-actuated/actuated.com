@@ -1,5 +1,5 @@
 ---
-title: Grab your lab coat - we're building microVM from a container
+title: Grab your lab coat - we're building a microVM from a container
 description: "No more broken tutorials, build a microVM from a container, boot it, access the Internet"
 tags:
 - firecracker
