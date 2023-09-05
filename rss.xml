@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 22 Aug 2023 10:28:34 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 05 Sep 2023 10:11:16 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,202 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Grab your lab coat - we're building microVM from a container]]></title>
+            <link>https://actuated.dev/blog/firecracker-container-lab</link>
+            <guid>https://actuated.dev/blog/firecracker-container-lab</guid>
+            <pubDate>Tue, 05 Sep 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[No more broken tutorials, build a microVM from a container, boot it, access the Internet]]></description>
+            <content:encoded><![CDATA[<p>When I started learning Firecracker, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use.</p>
+<p>So I wrote a lab that takes a container image and converts it to a microVM. You'll your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
+<p>Why would you want to explore Firecracker? A friend of mine, <a href="https://iximiuz.com/en/about/">Ivan Velichko</a> is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.</p>
+<p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
+<p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of Docker In Docker's (DIND) Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and developed <a href="https://docs.actuated.dev">actuated.dev</a> as a result.</p>
+<p>So let's get you running that microVM?</p>
+<h2>How it works 🔬</h2>
+<p>How to build a microVM from a container</p>
+<p><img src="/images/2023-09-firecracker-lab/conceptual.png" alt="/images/2023-09-firecracker-lab/conceptual.png"></p>
+<blockquote>
+<p>Conceptual archicture of the lab</p>
+</blockquote>
+<p>Here's what we'll be doing:</p>
+<ul>
+<li>Build a root-filesystem from a container image from the Docker Hub</li>
+<li>Download a pre-built Linux Kernel from the Firecracker team</li>
+<li>Build an init system written in Go</li>
+<li>Build a disk image with the init system and root-filesystem</li>
+<li>Configure a networking tap device and IP masquerading</li>
+<li>Start a Firecracker process in the background</li>
+<li>Configure the Firecracker process via curl statements to a UNIX socket</li>
+<li>Finally, issue a boot command and try it out</li>
+</ul>
+<p>Let's look at why we need a init, instead of just running the entrypoint of a container.</p>
+<p>Whilst in theory, you can start a microVM where the first process (PID 1) is your workload, in the same way as Docker, it will leave you with a system which is not properly initialised with things like a /proc/ filesystem, tempfs, hostname, and other things that you'd expect to find in a Linux system.</p>
+<p>For that reason, you'll need to either install systemd into the container image you want to use, or build your own basic init system, which sets up the machine, then starts your workload.</p>
+<p>We're doing the later here.</p>
+<p>In the below program, you'll see key devices and files mounted, to make a functional system. The hostname is then set by using a syscall, and finally <code>/bin/sh</code> is started. You could also start a specific binary, or build an agent into the init for Remote Procedure Calls (RPC) to start and stop your workload, and to query metrics.</p>
+<p>The team at <a href="https://fly.io">Fly.io</a> built their own init and agent combined, and opened-sourced a very early version: <a href="https://github.com/superfly/init-snapshot">github.com/superfly/init-snapshot</a>.</p>
+<p>You'll find my init in: <code>./init/main.go</code>:</p>
+<pre><code class="hljs language-go"><span class="hljs-comment">// Copyright Alex Ellis 2023</span>
+
+<span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"fmt"</span>
+	<span class="hljs-string">"log"</span>
+	<span class="hljs-string">"os"</span>
+	<span class="hljs-string">"os/exec"</span>
+
+	<span class="hljs-string">"syscall"</span>
+)
+
+<span class="hljs-keyword">const</span> paths = <span class="hljs-string">"PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"</span>
+
+<span class="hljs-comment">// main starts an init process that can prepare an environment and start a shell</span>
+<span class="hljs-comment">// after the Kernel has started.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+	fmt.Printf(<span class="hljs-string">"Lab init booting\nCopyright Alex Ellis 2022, OpenFaaS Ltd\n"</span>)
+
+	mount(<span class="hljs-string">"none"</span>, <span class="hljs-string">"/proc"</span>, <span class="hljs-string">"proc"</span>, <span class="hljs-number">0</span>)
+	mount(<span class="hljs-string">"none"</span>, <span class="hljs-string">"/dev/pts"</span>, <span class="hljs-string">"devpts"</span>, <span class="hljs-number">0</span>)
+	mount(<span class="hljs-string">"none"</span>, <span class="hljs-string">"/dev/mqueue"</span>, <span class="hljs-string">"mqueue"</span>, <span class="hljs-number">0</span>)
+	mount(<span class="hljs-string">"none"</span>, <span class="hljs-string">"/dev/shm"</span>, <span class="hljs-string">"tmpfs"</span>, <span class="hljs-number">0</span>)
+	mount(<span class="hljs-string">"none"</span>, <span class="hljs-string">"/sys"</span>, <span class="hljs-string">"sysfs"</span>, <span class="hljs-number">0</span>)
+	mount(<span class="hljs-string">"none"</span>, <span class="hljs-string">"/sys/fs/cgroup"</span>, <span class="hljs-string">"cgroup"</span>, <span class="hljs-number">0</span>)
+
+	setHostname(<span class="hljs-string">"lab-vm"</span>)
+
+	fmt.Printf(<span class="hljs-string">"Lab starting /bin/sh\n"</span>)
+
+	cmd := exec.Command(<span class="hljs-string">"/bin/sh"</span>)
+
+	cmd.Env = <span class="hljs-built_in">append</span>(cmd.Env, paths)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Start()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(fmt.Sprintf(<span class="hljs-string">"could not start /bin/sh, error: %s"</span>, err))
+	}
+
+	err = cmd.Wait()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(fmt.Sprintf(<span class="hljs-string">"could not wait for /bin/sh, error: %s"</span>, err))
+	}
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">setHostname</span><span class="hljs-params">(hostname <span class="hljs-type">string</span>)</span></span> {
+	err := syscall.Sethostname([]<span class="hljs-type">byte</span>(hostname))
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(fmt.Sprintf(<span class="hljs-string">"cannot set hostname to %s, error: %s"</span>, hostname, err))
+	}
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mount</span><span class="hljs-params">(source, target, filesystemtype <span class="hljs-type">string</span>, flags <span class="hljs-type">uintptr</span>)</span></span> {
+
+	<span class="hljs-keyword">if</span> _, err := os.Stat(target); os.IsNotExist(err) {
+		err := os.MkdirAll(target, <span class="hljs-number">0755</span>)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			<span class="hljs-built_in">panic</span>(fmt.Sprintf(<span class="hljs-string">"error creating target folder: %s %s"</span>, target, err))
+		}
+	}
+
+	err := syscall.Mount(source, target, filesystemtype, flags, <span class="hljs-string">""</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Printf(<span class="hljs-string">"%s"</span>, fmt.Errorf(<span class="hljs-string">"error mounting %s to %s, error: %s"</span>, source, target, err))
+	}
+}
+</code></pre>
+<h2>What you'll need</h2>
+<p><a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a> is a Virtual Machine Monitor (VMM) that leans on Linux's KVM functionality to run VMs. Its beauty is in its simplicity, however even though it doesn't need a lot, you will need KVM to be available. If you have a bare-metal machine, like your own PC, or an old server or laptop, you're all set. There's also plenty of options for bare-metal in the cloud - billed either on a per minute/hour basis or per month.</p>
+<p>And finally, for quick testing, <a href="https://m.do.co/c/8d4e75e9886f">DigitalOcean</a>, GCP, Azure and DigitalOcean all support what is known as "Nested Virtualization". That's where you obtain a VM, which itself can start further VMs, it's not as fast as bare-metal, but it's cheap and works.</p>
+<p>Finally, whilst Firecracker and actuated (our CI product) both support Arm, and Raspberry Pi, this tutorial is only available for `x86_64`` to keep the instructions simple.</p>
+<h2>Provision the machine</h2>
+<p>I'd recommend you use Ubuntu 22.04, so that you can copy and paste instructions from this tutorial.</p>
+<p>Install Docker CE</p>
+<pre><code class="hljs language-bash">curl -fsSL https://get.docker.com  | sudo sh
+</code></pre>
+<p>Install arkade, which gives you an easy way to install Firecracker:</p>
+<pre><code class="hljs language-bash">curl -sLS https://get.arkade.dev | sudo sh
+</code></pre>
+<p>Install Firecracker:</p>
+<pre><code class="hljs language-bash">arkade system install firecracker
+</code></pre>
+<h2>Clone the lab</h2>
+<p>Clone the lab onto the machine:</p>
+<pre><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> https://github.com/alexellis/firecracker-init-lab
+</code></pre>
+<h3>Update the networking script</h3>
+<p>Find out what the primary interface is on the machine, for my Linux workstation it's <code>enp8s0</code>, edit <code>./setup-networking.sh</code> with yours:</p>
+<pre><code>IFNAME=enp8s0
+</code></pre>
+<p>The setup-networking.sh script will configure a tap device which bridges microVMs to your host, then sets up IP forwarding and masquerading so that the microVMs can access the Internet.</p>
+<h3>Download the Kernel</h3>
+<p>Run <code>make kernel</code> to download the quickstart Kernel made available by the Firecracker team. Of course, you can build your own, but bear in mind that Firecracker does not have PCI support, so many of the ones you'll find on the Internet will not be appropriate.</p>
+<p>The Firecracker team provide a base / sample in the Firecracker repository that can be extended as required.</p>
+<h3>Make the container image</h3>
+<p>Here's the Dockerfile we'll use to build the init system in a multi-stage build, then derive from Alpine Linux for the runtime, this could of course be anything like Ubuntu 22.04, Python, or Node.</p>
+<pre><code>FROM golang:1.20-alpine as build
+
+WORKDIR /go/src/github.com/alexellis/firecracker-init-lab/init
+
+COPY init .
+
+RUN go build --tags netgo --ldflags '-s -w -extldflags "-lm -lstdc++ -static"' -o init main.go
+
+FROM alpine:3.18 as runtime
+
+RUN apk add --no-cache curl ca-certificates htop
+
+COPY --from=build /go/src/github.com/alexellis/firecracker-init-lab/init/init /init
+</code></pre>
+<p>I've added in a few extra packages to play with.</p>
+<p>Run <code>make root</code>, and you'll see an image in your library:</p>
+<pre><code>docker images | grep alexellis2/custom-init
+
+REPOSITORY                                                          TAG                                                                      IMAGE ID       CREATED         SIZE
+alexellis2/custom-init                                              latest                                                                   f89aa7f3dd27   20 hours ago    13.7MB
+</code></pre>
+<h3>Build the disk image</h3>
+<p>Firecracker needs a disk image, or an exist block device as its boot drive. You can make this dynamically as required, run <code>make extract</code> to extract the container image into the local filesystem as <code>rootfs.tar</code>.</p>
+<p>Extract <code>rootfs.tar</code> if you wish to <code>/tmp/</code> and have a look around.</p>
+<p>This step uses <code>docker create</code> followed by <code>docker extract</code>.</p>
+<p>Then run <code>make image</code>. Here, a loopback file allocated with 5GB, then formatted as ext4, under the name <code>rootfs.img</code>. The script mounts the drive and then extracts the contents of the <code>rootfs.tar</code> file into it before unmounting the file.</p>
+<h3>Start a Firecracker process</h3>
+<p>Now, this may feel a little odd or different to Docker users. For each Firecracker VM you want to launch, you'll need to start a process, configure it via curl over a UNIX socket, then issue a boot command.</p>
+<p>To run multiple Firecracker microVMs at once, configure a different socket path for each.</p>
+<pre><code>make start
+</code></pre>
+<h3>Boot the microVM</h3>
+<p>In another window, issue the boot command:</p>
+<pre><code>make boot
+</code></pre>
+<h3>Explore the system</h3>
+<p>You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. That said, you can now explore a little:</p>
+<pre><code class="hljs language-bash">free -m
+<span class="hljs-built_in">cat</span> /proc/cpuinfo
+ip addr
+ip route
+
+ping -c1 1.1.1.1
+
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"nameserver 1.1.1.1"</span> > /etc/resolv.conf
+ping -c 4 google.com
+
+apk add --no-cache curl
+
+curl -i https://inlets.dev
+</code></pre>
+<p>For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.</p>
+<h2>Wrapping up</h2>
+<p>I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and and am keeping it up date.</p>
+<p>For production use, you could use a HTTP client to make the API requests to the UNIX socket, or an SDK, which abstracts away some of the complexity. There's an <a href="https://github.com/firecracker-microvm/firecracker-go-sdk">official SDK for Go</a> and several <a href="https://lib.rs/crates/firec">unofficial ones for Rust</a>. If you look at the sample code for either, you'll see that they are doing the same things we did in the lab, so you should find it relatively easy to convert the lab to use an SDK instead.</p>
+<p>Did you enjoy the lab? Have you got a use-case for Firecracker? Let me know on Twitter <a href="https://x.com/alexellisuk">@alexellisuk</a></p>
+<p>If you'd like to see how we've applied Firecracker to bring fast and secure CI to teams, check out our product <a href="https://actuated.dev/">actuated.dev</a></p>
+<p>Here's a quick demo of our control-plane, scheduler and bare-metal agent in action:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2o28iUC-J1w?si=xAt7YG4YCJ_ZleCA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[How to develop a great CLI with Go]]></title>
             <link>https://actuated.dev/blog/develop-a-great-go-cli</link>
