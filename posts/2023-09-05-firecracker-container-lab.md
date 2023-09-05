@@ -12,7 +12,7 @@ date: "2023-09-05"
 
 When I started learning [Firecracker](https://github.com/firecracker-microvm/firecracker), I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use. (You can still get a copy of the [original Firecracker quickstart in our tutorial on nested virtualisation](https://actuated.dev/blog/kvm-in-github-actions))
 
-So I wrote a lab that takes a container image and converts it to a microVM. You'll your hands dirty, you'll run a microVM, you'll be able to use `curl` and `ssh`, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.
+So I wrote a lab that takes a container image and converts it to a microVM. You'll get your hands dirty, you'll run a microVM, you'll be able to use `curl` and `ssh`, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.
 
 Why would you want to explore Firecracker? A friend of mine, [Ivan Velichko](https://iximiuz.com/en/about/) is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.
 
@@ -131,7 +131,7 @@ func mount(source, target, filesystemtype string, flags uintptr) {
 
 [Firecracker](https://github.com/firecracker-microvm/firecracker) is a Virtual Machine Monitor (VMM) that leans on Linux's KVM functionality to run VMs. Its beauty is in its simplicity, however even though it doesn't need a lot, you will need KVM to be available. If you have a bare-metal machine, like your own PC, or an old server or laptop, you're all set. There's also plenty of options for bare-metal in the cloud - billed either on a per minute/hour basis or per month.
 
-And finally, for quick testing, [DigitalOcean](https://m.do.co/c/8d4e75e9886f), GCP, Azure and DigitalOcean all support what is known as "Nested Virtualization". That's where you obtain a VM, which itself can start further VMs, it's not as fast as bare-metal, but it's cheap and works.
+And finally, for quick testing, [DigitalOcean](https://m.do.co/c/8d4e75e9886f), GCP, and Azure all support what is known as "Nested Virtualization". That's where you obtain a VM, which itself can start further VMs, it's not as fast as bare-metal, but it's cheap and works.
 
 Finally, whilst Firecracker and actuated (our CI product) both support Arm, and Raspberry Pi, this tutorial is only available for `x86_64`` to keep the instructions simple.
 
@@ -218,7 +218,7 @@ Firecracker needs a disk image, or an exist block device as its boot drive. You 
 
 Extract `rootfs.tar` if you wish to `/tmp/` and have a look around.
 
-This step uses `docker create` followed by `docker extract`.
+This step uses `docker create` followed by `docker export`.
 
 Then run `make image`. Here, a loopback file allocated with 5GB, then formatted as ext4, under the name `rootfs.img`. The script mounts the drive and then extracts the contents of the `rootfs.tar` file into it before unmounting the file.
 
@@ -264,7 +264,7 @@ For proper remote administration, you should install an OpenSSH server and then 
 
 ## Wrapping up
 
-I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and and am keeping it up date.
+I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and am keeping it up to date.
 
 For production use, you could use a HTTP client to make the API requests to the UNIX socket, or an SDK, which abstracts away some of the complexity. There's an [official SDK for Go](https://github.com/firecracker-microvm/firecracker-go-sdk) and several [unofficial ones for Rust](https://lib.rs/crates/firec). If you look at the sample code for either, you'll see that they are doing the same things we did in the lab, so you should find it relatively easy to convert the lab to use an SDK instead.
 
