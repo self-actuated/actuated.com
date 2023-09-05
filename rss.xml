@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 05 Sep 2023 10:58:51 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 05 Sep 2023 11:01:52 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -18,7 +18,7 @@
             <guid>https://actuated.dev/blog/firecracker-container-lab</guid>
             <pubDate>Tue, 05 Sep 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[No more broken tutorials, build a microVM from a container, boot it, access the Internet]]></description>
-            <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use.</p>
+            <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use. (You can still get a copy of the <a href="https://actuated.dev/blog/kvm-in-github-actions">original Firecracker quickstart in our tutorial on nested virtualisation</a>)</p>
 <p>So I wrote a lab that takes a container image and converts it to a microVM. You'll your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
 <p>Why would you want to explore Firecracker? A friend of mine, <a href="https://iximiuz.com/en/about/">Ivan Velichko</a> is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.</p>
 <p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
