@@ -10,7 +10,7 @@ image: /images/2023-09-firecracker-lab/background.png
 date: "2023-09-05"
 ---
 
-When I started learning Firecracker, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use.
+When I started learning [Firecracker](https://github.com/firecracker-microvm/firecracker), I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use.
 
 So I wrote a lab that takes a container image and converts it to a microVM. You'll your hands dirty, you'll run a microVM, you'll be able to use `curl` and `ssh`, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.
 
