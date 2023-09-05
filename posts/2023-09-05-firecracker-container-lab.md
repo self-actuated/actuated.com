@@ -20,7 +20,7 @@ So when he wanted to build an [online labs and training environment](https://lab
 
 For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of [Docker In Docker's (DIND)](https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/) Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and [developed actuated.dev](https://actuated.dev/blog/blazing-fast-ci-with-microvms) as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a [tech preview for GitLab CI](https://actuated.dev/blog/secure-microvm-ci-gitlab) where a job can be running within 1 second of pushing a "commit".
 
-So let's get you running that microVM?
+So let's get that microVM running for you?
 
 ## How it works 🔬
 
