@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 05 Sep 2023 10:11:16 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 05 Sep 2023 10:58:51 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -18,12 +18,12 @@
             <guid>https://actuated.dev/blog/firecracker-container-lab</guid>
             <pubDate>Tue, 05 Sep 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[No more broken tutorials, build a microVM from a container, boot it, access the Internet]]></description>
-            <content:encoded><![CDATA[<p>When I started learning Firecracker, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use.</p>
+            <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use.</p>
 <p>So I wrote a lab that takes a container image and converts it to a microVM. You'll your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
 <p>Why would you want to explore Firecracker? A friend of mine, <a href="https://iximiuz.com/en/about/">Ivan Velichko</a> is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.</p>
 <p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
-<p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of Docker In Docker's (DIND) Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and developed <a href="https://docs.actuated.dev">actuated.dev</a> as a result.</p>
-<p>So let's get you running that microVM?</p>
+<p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of <a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/">Docker In Docker's (DIND)</a> Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">developed actuated.dev</a> as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a <a href="https://actuated.dev/blog/secure-microvm-ci-gitlab">tech preview for GitLab CI</a> where a job can be running within 1 second of pushing a "commit".</p>
+<p>So let's get that microVM running for you?</p>
 <h2>How it works 🔬</h2>
 <p>How to build a microVM from a container</p>
 <p><img src="/images/2023-09-firecracker-lab/conceptual.png" alt="/images/2023-09-firecracker-lab/conceptual.png"></p>
