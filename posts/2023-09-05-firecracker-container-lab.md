@@ -16,7 +16,7 @@ So I wrote a lab that takes a container image and converts it to a microVM. You'
 
 Why would you want to explore Firecracker? A friend of mine, [Ivan Velichko](https://iximiuz.com/en/about/) is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.
 
-So when he wanted to build an [online labs and training environment](https://labs.iximiuz.com/), why did he pick Firecracker instead? Simply put, he told that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.
+So when he wanted to build an [online labs and training environment](https://labs.iximiuz.com/), why did he pick Firecracker instead? Simply put, he told us that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.
 
 For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of [Docker In Docker's (DIND)](https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/) Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and [developed actuated.dev](https://actuated.dev/blog/blazing-fast-ci-with-microvms) as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a [tech preview for GitLab CI](https://actuated.dev/blog/secure-microvm-ci-gitlab) where a job can be running within 1 second of pushing a "commit".
 
@@ -46,7 +46,7 @@ Whilst in theory, you can start a microVM where the first process (PID 1) is you
 
 For that reason, you'll need to either install systemd into the container image you want to use, or build your own basic init system, which sets up the machine, then starts your workload.
 
-We're doing the later here.
+We're doing the latter here.
 
 In the below program, you'll see key devices and files mounted, to make a functional system. The hostname is then set by using a syscall, and finally `/bin/sh` is started. You could also start a specific binary, or build an agent into the init for Remote Procedure Calls (RPC) to start and stop your workload, and to query metrics.
 
@@ -214,7 +214,7 @@ alexellis2/custom-init                                              latest      
 
 ### Build the disk image
 
-Firecracker needs a disk image, or an exist block device as its boot drive. You can make this dynamically as required, run `make extract` to extract the container image into the local filesystem as `rootfs.tar`.
+Firecracker needs a disk image, or an existing block device as its boot drive. You can make this dynamically as required, run `make extract` to extract the container image into the local filesystem as `rootfs.tar`.
 
 Extract `rootfs.tar` if you wish to `/tmp/` and have a look around.
 
