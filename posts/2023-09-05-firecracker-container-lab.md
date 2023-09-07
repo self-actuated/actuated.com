@@ -145,6 +145,8 @@ Install Docker CE
 curl -fsSL https://get.docker.com  | sudo sh
 ```
 
+Docker will be used to fetch an initial Operating System, to build the init system, and to customise the root filesystem.
+
 Install arkade, which gives you an easy way to install Firecracker:
 
 ```bash
@@ -154,7 +156,7 @@ curl -sLS https://get.arkade.dev | sudo sh
 Install Firecracker:
 
 ```bash
-arkade system install firecracker
+sudo arkade system install firecracker
 ```
 
 ## Clone the lab
@@ -162,28 +164,42 @@ arkade system install firecracker
 Clone the lab onto the machine:
 
 ```bash
-git clone https://github.com/alexellis/firecracker-init-lab
+git clone https://github.com/alexellis/firecracker-init-lab --depth=1
+
+cd firecracker-init-lab
 ```
 
 ### Update the networking script
 
-Find out what the primary interface is on the machine, for my Linux workstation it's `enp8s0`, edit `./setup-networking.sh` with yours:
+Find out what the primary interface is on the machine using `ip addr` or `ifconfig`.
+
+Edit `./setup-networking.sh`:
 
 ```
 IFNAME=enp8s0
 ```
 
-The setup-networking.sh script will configure a tap device which bridges microVMs to your host, then sets up IP forwarding and masquerading so that the microVMs can access the Internet.
+The script will configure a TAP device which bridges microVMs to your host, then sets up IP forwarding and masquerading so that the microVMs can access the Internet.
+
+Run `./setup-networking.sh` to setup the TAP device.
 
 ### Download the Kernel
 
+Add `make` via `build-essential`:
+
+```bash
+sudo apt update && sudo apt install -y build-essential
+```
+
 Run `make kernel` to download the quickstart Kernel made available by the Firecracker team. Of course, you can build your own, but bear in mind that Firecracker does not have PCI support, so many of the ones you'll find on the Internet will not be appropriate.
 
-The Firecracker team provide a base / sample in the Firecracker repository that can be extended as required.
+This Makefile target will not actually build a new Kernel, but wil download one that the Firecracker team have pre-built and uploaded to S3.
 
 ### Make the container image
 
 Here's the Dockerfile we'll use to build the init system in a multi-stage build, then derive from Alpine Linux for the runtime, this could of course be anything like Ubuntu 22.04, Python, or Node.
+
+`./Dockerfile`:
 
 ```
 FROM golang:1.20-alpine as build
@@ -216,11 +232,15 @@ alexellis2/custom-init                                              latest      
 
 Firecracker needs a disk image, or an exist block device as its boot drive. You can make this dynamically as required, run `make extract` to extract the container image into the local filesystem as `rootfs.tar`.
 
-Extract `rootfs.tar` if you wish to `/tmp/` and have a look around.
+This step uses `docker create` followed by `docker export` to create a temporary container, and then to save its filesystem contents into a tar file.
 
-This step uses `docker create` followed by `docker export`.
+Run `make extract`
 
-Then run `make image`. Here, a loopback file allocated with 5GB, then formatted as ext4, under the name `rootfs.img`. The script mounts the drive and then extracts the contents of the `rootfs.tar` file into it before unmounting the file.
+If you want to see what a filesystem looks like, you could extract `rootfs.tar` into `/tmp` and have a poke around. This is not a required step.
+
+Then run `make image`.
+
+Here, a loopback file allocated with 5GB, then formatted as ext4, under the name `rootfs.img`. The script mounts the drive and then extracts the contents of the `rootfs.tar` file into it before unmounting the file.
 
 ### Start a Firecracker process
 
@@ -242,25 +262,46 @@ make boot
 
 ### Explore the system
 
-You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. That said, you can now explore a little:
+You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.
+
+That said, you can now explore a little.
+
+Add a DNS server to `/etc/resolv.conf`:
+
+```
+echo "nameserver 8.8.8.8" > /etc/resolv.conf
+```
+
+Then try to reach the Internet:
 
 ```bash
+ping -c 1 8.8.8.8
+
+ping -c 4 google.com
+
+curl --connect-timeout 1 -4 -i https://inlets.dev
+```
+
+Check out the system specifications:
+
+```
 free -m
 cat /proc/cpuinfo
 ip addr
 ip route
-
-ping -c1 1.1.1.1
-
-echo "nameserver 1.1.1.1" > /etc/resolv.conf
-ping -c 4 google.com
-
-apk add --no-cache curl
-
-curl -i https://inlets.dev
 ```
 
-For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.
+Add the htop package and try it out:
+
+```
+apk add --no-cache htop
+
+htop
+```
+
+I had no issues with masquerading on Equinix Metal or on my own hardware, however on DigitalOcean I saw pings working, but HTTPs failed. You could try changing the MTU to a lower value than 1500: `ifconfig eth0 mtu 1300`, or turn off IPv6: `sysctl -w net.ipv6.conf.all.disable_ipv6=1 && sysctl -w net.ipv6.conf.default.disable_ipv6=1`.
+
+When you're done, kill the firecracker process with `sudo killall firecracker`, or type in `halt` to the serial console.
 
 ## Wrapping up
 
