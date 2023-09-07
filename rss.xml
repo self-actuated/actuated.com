@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 07 Sep 2023 09:21:51 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 07 Sep 2023 09:32:39 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -195,7 +195,7 @@ alexellis2/custom-init                                              latest      
 <pre><code>make boot
 </code></pre>
 <h3>Explore the system</h3>
-<p>You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.</p>
+<p>You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work like Control + C. The serial console is really just designed for showing boot-up information, not interactive use. For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.</p>
 <p>That said, you can now explore a little.</p>
 <p>Add a DNS server to <code>/etc/resolv.conf</code>:</p>
 <pre><code>echo "nameserver 8.8.8.8" > /etc/resolv.conf
@@ -205,6 +205,8 @@ alexellis2/custom-init                                              latest      
 
 ping -c 4 google.com
 
+curl --connect-timeout 1 -4 -i http://captive.apple.com/
+
 curl --connect-timeout 1 -4 -i https://inlets.dev
 </code></pre>
 <p>Check out the system specifications:</p>
@@ -213,12 +215,6 @@ cat /proc/cpuinfo
 ip addr
 ip route
 </code></pre>
-<p>Add the htop package and try it out:</p>
-<pre><code>apk add --no-cache htop
-
-htop
-</code></pre>
-<p>I had no issues with masquerading on Equinix Metal or on my own hardware, however on DigitalOcean I saw pings working, but HTTPs failed. You could try changing the MTU to a lower value than 1500: <code>ifconfig eth0 mtu 1300</code>, or turn off IPv6: <code>sysctl -w net.ipv6.conf.all.disable_ipv6=1 &#x26;&#x26; sysctl -w net.ipv6.conf.default.disable_ipv6=1</code>.</p>
 <p>When you're done, kill the firecracker process with <code>sudo killall firecracker</code>, or type in <code>halt</code> to the serial console.</p>
 <h2>Wrapping up</h2>
 <p>I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and am keeping it up to date.</p>
