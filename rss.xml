@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 05 Sep 2023 11:03:59 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 07 Sep 2023 09:21:51 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -19,7 +19,7 @@
             <pubDate>Tue, 05 Sep 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[No more broken tutorials, build a microVM from a container, boot it, access the Internet]]></description>
             <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use. (You can still get a copy of the <a href="https://actuated.dev/blog/kvm-in-github-actions">original Firecracker quickstart in our tutorial on nested virtualisation</a>)</p>
-<p>So I wrote a lab that takes a container image and converts it to a microVM. You'll your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
+<p>So I wrote a lab that takes a container image and converts it to a microVM. You'll get your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
 <p>Why would you want to explore Firecracker? A friend of mine, <a href="https://iximiuz.com/en/about/">Ivan Velichko</a> is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.</p>
 <p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
 <p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of <a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/">Docker In Docker's (DIND)</a> Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">developed actuated.dev</a> as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a <a href="https://actuated.dev/blog/secure-microvm-ci-gitlab">tech preview for GitLab CI</a> where a job can be running within 1 second of pushing a "commit".</p>
@@ -121,33 +121,42 @@
 </code></pre>
 <h2>What you'll need</h2>
 <p><a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a> is a Virtual Machine Monitor (VMM) that leans on Linux's KVM functionality to run VMs. Its beauty is in its simplicity, however even though it doesn't need a lot, you will need KVM to be available. If you have a bare-metal machine, like your own PC, or an old server or laptop, you're all set. There's also plenty of options for bare-metal in the cloud - billed either on a per minute/hour basis or per month.</p>
-<p>And finally, for quick testing, <a href="https://m.do.co/c/8d4e75e9886f">DigitalOcean</a>, GCP, Azure and DigitalOcean all support what is known as "Nested Virtualization". That's where you obtain a VM, which itself can start further VMs, it's not as fast as bare-metal, but it's cheap and works.</p>
+<p>And finally, for quick testing, <a href="https://m.do.co/c/8d4e75e9886f">DigitalOcean</a>, GCP, and Azure all support what is known as "Nested Virtualization". That's where you obtain a VM, which itself can start further VMs, it's not as fast as bare-metal, but it's cheap and works.</p>
 <p>Finally, whilst Firecracker and actuated (our CI product) both support Arm, and Raspberry Pi, this tutorial is only available for `x86_64`` to keep the instructions simple.</p>
 <h2>Provision the machine</h2>
 <p>I'd recommend you use Ubuntu 22.04, so that you can copy and paste instructions from this tutorial.</p>
 <p>Install Docker CE</p>
 <pre><code class="hljs language-bash">curl -fsSL https://get.docker.com  | sudo sh
 </code></pre>
+<p>Docker will be used to fetch an initial Operating System, to build the init system, and to customise the root filesystem.</p>
 <p>Install arkade, which gives you an easy way to install Firecracker:</p>
 <pre><code class="hljs language-bash">curl -sLS https://get.arkade.dev | sudo sh
 </code></pre>
 <p>Install Firecracker:</p>
-<pre><code class="hljs language-bash">arkade system install firecracker
+<pre><code class="hljs language-bash">sudo arkade system install firecracker
 </code></pre>
 <h2>Clone the lab</h2>
 <p>Clone the lab onto the machine:</p>
-<pre><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> https://github.com/alexellis/firecracker-init-lab
+<pre><code class="hljs language-bash">git <span class="hljs-built_in">clone</span> https://github.com/alexellis/firecracker-init-lab --depth=1
+
+<span class="hljs-built_in">cd</span> firecracker-init-lab
 </code></pre>
 <h3>Update the networking script</h3>
-<p>Find out what the primary interface is on the machine, for my Linux workstation it's <code>enp8s0</code>, edit <code>./setup-networking.sh</code> with yours:</p>
+<p>Find out what the primary interface is on the machine using <code>ip addr</code> or <code>ifconfig</code>.</p>
+<p>Edit <code>./setup-networking.sh</code>:</p>
 <pre><code>IFNAME=enp8s0
 </code></pre>
-<p>The setup-networking.sh script will configure a tap device which bridges microVMs to your host, then sets up IP forwarding and masquerading so that the microVMs can access the Internet.</p>
+<p>The script will configure a TAP device which bridges microVMs to your host, then sets up IP forwarding and masquerading so that the microVMs can access the Internet.</p>
+<p>Run <code>./setup-networking.sh</code> to setup the TAP device.</p>
 <h3>Download the Kernel</h3>
+<p>Add <code>make</code> via <code>build-essential</code>:</p>
+<pre><code class="hljs language-bash">sudo apt update &#x26;&#x26; sudo apt install -y build-essential
+</code></pre>
 <p>Run <code>make kernel</code> to download the quickstart Kernel made available by the Firecracker team. Of course, you can build your own, but bear in mind that Firecracker does not have PCI support, so many of the ones you'll find on the Internet will not be appropriate.</p>
-<p>The Firecracker team provide a base / sample in the Firecracker repository that can be extended as required.</p>
+<p>This Makefile target will not actually build a new Kernel, but wil download one that the Firecracker team have pre-built and uploaded to S3.</p>
 <h3>Make the container image</h3>
 <p>Here's the Dockerfile we'll use to build the init system in a multi-stage build, then derive from Alpine Linux for the runtime, this could of course be anything like Ubuntu 22.04, Python, or Node.</p>
+<p><code>./Dockerfile</code>:</p>
 <pre><code>FROM golang:1.20-alpine as build
 
 WORKDIR /go/src/github.com/alexellis/firecracker-init-lab/init
@@ -171,9 +180,11 @@ alexellis2/custom-init                                              latest      
 </code></pre>
 <h3>Build the disk image</h3>
 <p>Firecracker needs a disk image, or an exist block device as its boot drive. You can make this dynamically as required, run <code>make extract</code> to extract the container image into the local filesystem as <code>rootfs.tar</code>.</p>
-<p>Extract <code>rootfs.tar</code> if you wish to <code>/tmp/</code> and have a look around.</p>
-<p>This step uses <code>docker create</code> followed by <code>docker extract</code>.</p>
-<p>Then run <code>make image</code>. Here, a loopback file allocated with 5GB, then formatted as ext4, under the name <code>rootfs.img</code>. The script mounts the drive and then extracts the contents of the <code>rootfs.tar</code> file into it before unmounting the file.</p>
+<p>This step uses <code>docker create</code> followed by <code>docker export</code> to create a temporary container, and then to save its filesystem contents into a tar file.</p>
+<p>Run <code>make extract</code></p>
+<p>If you want to see what a filesystem looks like, you could extract <code>rootfs.tar</code> into <code>/tmp</code> and have a poke around. This is not a required step.</p>
+<p>Then run <code>make image</code>.</p>
+<p>Here, a loopback file allocated with 5GB, then formatted as ext4, under the name <code>rootfs.img</code>. The script mounts the drive and then extracts the contents of the <code>rootfs.tar</code> file into it before unmounting the file.</p>
 <h3>Start a Firecracker process</h3>
 <p>Now, this may feel a little odd or different to Docker users. For each Firecracker VM you want to launch, you'll need to start a process, configure it via curl over a UNIX socket, then issue a boot command.</p>
 <p>To run multiple Firecracker microVMs at once, configure a different socket path for each.</p>
@@ -184,24 +195,33 @@ alexellis2/custom-init                                              latest      
 <pre><code>make boot
 </code></pre>
 <h3>Explore the system</h3>
-<p>You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. That said, you can now explore a little:</p>
-<pre><code class="hljs language-bash">free -m
-<span class="hljs-built_in">cat</span> /proc/cpuinfo
-ip addr
-ip route
+<p>You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.</p>
+<p>That said, you can now explore a little.</p>
+<p>Add a DNS server to <code>/etc/resolv.conf</code>:</p>
+<pre><code>echo "nameserver 8.8.8.8" > /etc/resolv.conf
+</code></pre>
+<p>Then try to reach the Internet:</p>
+<pre><code class="hljs language-bash">ping -c 1 8.8.8.8
 
-ping -c1 1.1.1.1
-
-<span class="hljs-built_in">echo</span> <span class="hljs-string">"nameserver 1.1.1.1"</span> > /etc/resolv.conf
 ping -c 4 google.com
 
-apk add --no-cache curl
-
-curl -i https://inlets.dev
+curl --connect-timeout 1 -4 -i https://inlets.dev
 </code></pre>
-<p>For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.</p>
+<p>Check out the system specifications:</p>
+<pre><code>free -m
+cat /proc/cpuinfo
+ip addr
+ip route
+</code></pre>
+<p>Add the htop package and try it out:</p>
+<pre><code>apk add --no-cache htop
+
+htop
+</code></pre>
+<p>I had no issues with masquerading on Equinix Metal or on my own hardware, however on DigitalOcean I saw pings working, but HTTPs failed. You could try changing the MTU to a lower value than 1500: <code>ifconfig eth0 mtu 1300</code>, or turn off IPv6: <code>sysctl -w net.ipv6.conf.all.disable_ipv6=1 &#x26;&#x26; sysctl -w net.ipv6.conf.default.disable_ipv6=1</code>.</p>
+<p>When you're done, kill the firecracker process with <code>sudo killall firecracker</code>, or type in <code>halt</code> to the serial console.</p>
 <h2>Wrapping up</h2>
-<p>I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and and am keeping it up date.</p>
+<p>I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and am keeping it up to date.</p>
 <p>For production use, you could use a HTTP client to make the API requests to the UNIX socket, or an SDK, which abstracts away some of the complexity. There's an <a href="https://github.com/firecracker-microvm/firecracker-go-sdk">official SDK for Go</a> and several <a href="https://lib.rs/crates/firec">unofficial ones for Rust</a>. If you look at the sample code for either, you'll see that they are doing the same things we did in the lab, so you should find it relatively easy to convert the lab to use an SDK instead.</p>
 <p>Did you enjoy the lab? Have you got a use-case for Firecracker? Let me know on Twitter <a href="https://x.com/alexellisuk">@alexellisuk</a></p>
 <p>If you'd like to see how we've applied Firecracker to bring fast and secure CI to teams, check out our product <a href="https://actuated.dev/">actuated.dev</a></p>
