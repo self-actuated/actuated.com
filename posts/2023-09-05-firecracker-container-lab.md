@@ -262,7 +262,7 @@ make boot
 
 ### Explore the system
 
-You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work, and is really designed for boot-up information, not interactive use. For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.
+You're now booted into a serial console, this isn't a fully functional TTY, so some things won't work like Control + C. The serial console is really just designed for showing boot-up information, not interactive use. For proper remote administration, you should install an OpenSSH server and then connect to the VM using its IP address.
 
 That said, you can now explore a little.
 
@@ -279,6 +279,8 @@ ping -c 1 8.8.8.8
 
 ping -c 4 google.com
 
+curl --connect-timeout 1 -4 -i http://captive.apple.com/
+
 curl --connect-timeout 1 -4 -i https://inlets.dev
 ```
 
@@ -290,16 +292,6 @@ cat /proc/cpuinfo
 ip addr
 ip route
 ```
-
-Add the htop package and try it out:
-
-```
-apk add --no-cache htop
-
-htop
-```
-
-I had no issues with masquerading on Equinix Metal or on my own hardware, however on DigitalOcean I saw pings working, but HTTPs failed. You could try changing the MTU to a lower value than 1500: `ifconfig eth0 mtu 1300`, or turn off IPv6: `sysctl -w net.ipv6.conf.all.disable_ipv6=1 && sysctl -w net.ipv6.conf.default.disable_ipv6=1`.
 
 When you're done, kill the firecracker process with `sudo killall firecracker`, or type in `halt` to the serial console.
 
