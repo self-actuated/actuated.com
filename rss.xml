@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 07 Sep 2023 09:32:39 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 25 Oct 2023 08:57:02 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,87 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Announcing managed Arm CI for CNCF projects]]></title>
+            <link>https://actuated.dev/blog/arm-ci-cncf-ampere</link>
+            <guid>https://actuated.dev/blog/arm-ci-cncf-ampere</guid>
+            <pubDate>Wed, 25 Oct 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Ampere Computing and The Cloud Native Computing Foundation are sponsoring a pilot of actuated's managed Arm CI for CNCF projects.]]></description>
+            <content:encoded><![CDATA[<p>In this post, we'll cover why <a href="https://amperecomputing.com/">Ampere Computing</a> and <a href="https://www.cncf.io/">The Cloud Native Computing Foundation (CNCF)</a> are sponsoring a pilot of actuated for open source projects, how you can get involved.</p>
+<p>We'll also give you a quick one year recap on actuated, if you haven't checked in with us for a while.</p>
+<h2>Managed Arm CI for CNCF projects</h2>
+<p>At KubeCon EU, I spoke to <a href="https://www.linkedin.com/in/caniszczyk/">Chris Aniszczyk</a>, CTO at the CNCF, and told him about some of the results we'd been seeing with actuated customers, including Fluent Bit, which is a CNCF project. Chris told me that many teams were either putting off Arm support all together, were suffering with the slow builds that come from using QEMU, or were managing their own infrastructure which was underutilized.</p>
+<p><a href="https://deploy.equinix.com/">Equinix</a> provides a generous amount of credits to the CNCF under <a href="https://github.com/cncf/cluster">CNCF Community Infrastructure Lab (CIL)</a>, including access to powerful Ampere Q80 Arm servers (<a href="https://deploy.equinix.com/product/servers/c3-large-arm64/">c3.large.arm64</a>), that may at times be required by Equinix customers for their own Arm workloads.</p>
+<p>As you can imagine, over time, different projects have deployed 1-3 of their own runner servers, each with 256GB of RAM and 80 Cores, which remain idle most of the time, and are not available to other projects or Equinix customers when they may need them suddenly. So, if actuated can reduce this number, whilst also improving the experience for maintainers, then that's a win-win.</p>
+<p>Around the same time as speaking to Chris, Ampere reached out and asked how they could help secure actuated for a number of CNCF projects.</p>
+<p>Together, Ampere and the CNCF are now sponsoring an initial 1-year pilot of managed Arm CI provided by actuated, for CNCF projects, with the view to expand it, if the pilot is a success.</p>
+<p><a href="https://www.linkedin.com/in/edwardvielmetti/">Ed Vielmetti</a>, Developer Partner Manager at Equinix said:</p>
+<blockquote>
+<p>I'm really happy to see this all come together. If all goes according to plan, we'll have better runner isolation, faster builds, and a smaller overall machine footprint.</p>
+</blockquote>
+<p><a href="https://www.linkedin.com/in/dneary/">Dave Neary</a>, Director of Developer Relations at Ampere Computing added:</p>
+<blockquote>
+<p>Actuated offers a faster, more secure way for projects to run 64-bit Arm builds, and will also more efficiently use the Ampere Altra-based servers being used by the projects.</p>
+<p>We're happy to support CNCF projects running their CI on Ampere Computing's Cloud Native Processors, hosted by Equinix.</p>
+</blockquote>
+<h2>One year recap on actuated</h2>
+<p>In case you are hearing about actuated for the first time, I wanted to give you a quick one year recap.</p>
+<p>Just over 12 months ago, we <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">announced the work we'd been doing with actuated</a> to improve self-hosted runner security and management. We were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.</p>
+<p>Fast forward to today, and we have run over 140,000 individual Firecracker VMs for customers on their own hardware. Rather than the fully managed service that GitHub offers, we believe that you should be able to bring your own hardware, and pay a flat-rate fee for the service, rather than being charged per-minute.</p>
+<p>The CNCF project brings about 64-bit Arm support, but we see a good mix of <code>x86_64</code> and Arm builds from customers, with both closed and open-source repositories being used.</p>
+<p>The main benefits are having access to bigger, faster and more specialist hardware.</p>
+<ul>
+<li>For <code>x86_64</code> builds, we see about a 3x speed-up vs. using GitHub's hosted runners, in addition to being able to add more RAM and disk space to builds.</li>
+<li>For Arm64, we see builds which take several hours or which fail to complete within a 6 hour window using QEMU, go down to 3-5 minutes.</li>
+</ul>
+<p>Vendors and consumers are becoming increasingly aware of the importance of the supply chain, GitHub's self-hosted runner is <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">not recommended for open source repos</a>. Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.</p>
+<p>If you're wanting to know more about why we think microVMs are the only tool that makes sense for secure CI, then I'd recommend my talk from Cloud Native Rejekts earlier in the year: <a href="https://www.youtube.com/watch?v=pTQ_jVYhAoc">Face off: VMs vs. Containers vs Firecracker</a>.</p>
+<h2>What are maintainers saying?</h2>
+<p><a href="https://www.linkedin.com/in/ellmh">Ellie Huxtable</a> is the maintainer of <a href="https://atuin.sh/">Atuin</a>, a popular open-source tool to sync, search and backup shell history. Her Rust build for the CLI took 90 minutes with QEMU, but was reduced to just 3 minutes with actuated, and a native Arm server.</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Thanks to <a href="https://twitter.com/selfactuated?ref_src=twsrc%5Etfw">@selfactuated</a>, Atuin now has very speedy ARM docker builds in our GitHub actions! Thank you <a href="https://twitter.com/alexellisuk?ref_src=twsrc%5Etfw">@alexellisuk</a> 🙏<br><br>Docker builds on QEMU: nearly 90 mins<br>Docker builds on ARM with Actuated: ~3 mins</p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715261549172936776?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>For Fluent Bit, one of their Arm builds was taking over 6 hours, which meant it always failed with a timed-out on a hosted runner. <a href="https://www.linkedin.com/in/patrickjkstephens/?originalSubdomain=uk">Patrick Stephens</a>, Tech Lead of Infrastructure at Calyptia reached out to work with us. We got the time down to 5 minutes by changing <code>runs-on: ubuntu-latest</code> to <code>runs-on: actuated-arm64</code>.</p>
+<p>Patrick shares about the experience on the Calyptia blog, including the benefits to their <code>x86_64</code> builds for the commercial Calyptia product: <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Scaling ARM builds with Actuated</a>.</p>
+<p>A number of CNCF maintainers and community leaders such as <a href="https://www.linkedin.com/in/davanum/">Davanum Srinivas (Dims)</a>, Principal Engineer at AWS have come forward with project suggestions, and we're starting to work through them, with the first two being Fluent Bit and etcd.</p>
+<p><a href="https://fluentbit.io/">Fluent Bit</a> describes itself as:</p>
+<blockquote>
+<p>..a super fast, lightweight, and highly scalable logging and metrics processor and forwarder. It is the preferred choice for cloud and containerized environments.</p>
+</blockquote>
+<p><a href="https://etcd.io">etcd</a> is a core component of almost every Kubernetes installation and is responsible for storing the state of the cluster.</p>
+<blockquote>
+<p>A distributed, reliable key-value store for the most critical data of a distributed system</p>
+</blockquote>
+<p>In the case of etcd, there were <a href="https://github.com/etcd-io/etcd/pull/16801/files#diff-b8f5f4d0db4fb959d72d74463e2fd2637feb69f6b9e1dce61ad47ee031806dbd">two servers being maintained by five individual maintainers</a>, all of that work goes away by adopting actuated.</p>
+<p>We even sent etcd <a href="https://github.com/etcd-io/etcd/pull/16801">a minimal Pull Request</a> to make the process smoother.</p>
+<p><a href="https://github.com/jmhbnz">James Blair, Specialist Solution Architect at Red Hat</a>, commented:</p>
+<blockquote>
+<p>I believe managed on demand arm64 CI hosts will definitely be a big win for the project. Keen to trial this.</p>
+</blockquote>
+<p>Another maintainer also commented that they will <a href="https://github.com/etcd-io/etcd/pull/16801#issuecomment-1774024719">no longer need to worry about "leaky containers"</a>.</p>
+<p><a href="https://github.com/etcd-io/etcd/actions/runs/6635037153"><img src="/images/2023-10-cncf/etcd-nightly.png" alt="One of the first nightly jobs running within an isolated Firecracker VM"></a></p>
+<blockquote>
+<p>One of the first nightly workflows running within 4x separate isolated Firecracker VMs, one per job</p>
+</blockquote>
+<p>Prior to adopting actuated, the two servers were only configured to run one job at a time, afterwards, the jobs are scheduled by the control-plane, according to the amount of available RAM and CPU in the target servers.</p>
+<h2>How do we get access?</h2>
+<p>If you are working on a CNCF project and would like access, <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">please contact us via this form</a>. If your project gets selected for the pilot, there are a couple of things you may need to do.</p>
+<ol>
+<li>If you are already using the GitHub Actions runner hosted on Equinix, then change the <code>runs-on: self-hosted</code> label to: <code>runs-on: actuated-arm64-8cpu-16gb</code>. Then after you've seen a build or two pass, delete the old runner.</li>
+<li>If you are using QEMU, the best next step is to "split" the build into two jobs which can run on <code>x86_64</code> and <code>arm64</code> natively, that's what Ellie did and it only took her a few minutes.</li>
+</ol>
+<p>The label for <code>runs-on:</code> allows for dynamic configuration of vCPU and GBs of RAM, just edit the label to match your needs, for etcd, the team asked for 8vCPU and 32GB of RAM, so they used <code>runs-on: actuated-arm64-8cpu-32gb</code>.</p>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I had to split the docker build so that the ARM half would build on ARM, and x86 on x86, and then a step to combine the two - overall this works out to be a very significant improvement<a href="https://t.co/69cIxjYRcW">https://t.co/69cIxjYRcW</a></p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715266936592904446?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>We have full instructions for 2, in the following tutorial: <a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a>.</p>
+<h2>Learn more about actuated</h2>
+<p>We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">please reach out to us to talk</a>.</p>
+<ul>
+<li>Read one of our <a href="https://actuated.dev/blog">recent blog posts</a></li>
+<li>Learn more about <a href="https://docs.actuated.dev">actuated in the docs</a></li>
+<li><a href="https://actuated.dev">Read what our customers are saying about our service</a></li>
+</ul>
+<blockquote>
+<p>Did you know? <a href="https://actuated.dev/blog/secure-microvm-ci-gitlab">Actuated for GitLab CI is now in technical preview, watch a demo here</a>.</p>
+</blockquote>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Grab your lab coat - we're building a microVM from a container]]></title>
             <link>https://actuated.dev/blog/firecracker-container-lab</link>
@@ -21,7 +102,7 @@
             <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use. (You can still get a copy of the <a href="https://actuated.dev/blog/kvm-in-github-actions">original Firecracker quickstart in our tutorial on nested virtualisation</a>)</p>
 <p>So I wrote a lab that takes a container image and converts it to a microVM. You'll get your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
 <p>Why would you want to explore Firecracker? A friend of mine, <a href="https://iximiuz.com/en/about/">Ivan Velichko</a> is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.</p>
-<p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
+<p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told us that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
 <p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of <a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/">Docker In Docker's (DIND)</a> Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">developed actuated.dev</a> as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a <a href="https://actuated.dev/blog/secure-microvm-ci-gitlab">tech preview for GitLab CI</a> where a job can be running within 1 second of pushing a "commit".</p>
 <p>So let's get that microVM running for you?</p>
 <h2>How it works 🔬</h2>
@@ -44,7 +125,7 @@
 <p>Let's look at why we need a init, instead of just running the entrypoint of a container.</p>
 <p>Whilst in theory, you can start a microVM where the first process (PID 1) is your workload, in the same way as Docker, it will leave you with a system which is not properly initialised with things like a /proc/ filesystem, tempfs, hostname, and other things that you'd expect to find in a Linux system.</p>
 <p>For that reason, you'll need to either install systemd into the container image you want to use, or build your own basic init system, which sets up the machine, then starts your workload.</p>
-<p>We're doing the later here.</p>
+<p>We're doing the latter here.</p>
 <p>In the below program, you'll see key devices and files mounted, to make a functional system. The hostname is then set by using a syscall, and finally <code>/bin/sh</code> is started. You could also start a specific binary, or build an agent into the init for Remote Procedure Calls (RPC) to start and stop your workload, and to query metrics.</p>
 <p>The team at <a href="https://fly.io">Fly.io</a> built their own init and agent combined, and opened-sourced a very early version: <a href="https://github.com/superfly/init-snapshot">github.com/superfly/init-snapshot</a>.</p>
 <p>You'll find my init in: <code>./init/main.go</code>:</p>
@@ -179,7 +260,7 @@ REPOSITORY                                                          TAG         
 alexellis2/custom-init                                              latest                                                                   f89aa7f3dd27   20 hours ago    13.7MB
 </code></pre>
 <h3>Build the disk image</h3>
-<p>Firecracker needs a disk image, or an exist block device as its boot drive. You can make this dynamically as required, run <code>make extract</code> to extract the container image into the local filesystem as <code>rootfs.tar</code>.</p>
+<p>Firecracker needs a disk image, or an existing block device as its boot drive. You can make this dynamically as required, run <code>make extract</code> to extract the container image into the local filesystem as <code>rootfs.tar</code>.</p>
 <p>This step uses <code>docker create</code> followed by <code>docker export</code> to create a temporary container, and then to save its filesystem contents into a tar file.</p>
 <p>Run <code>make extract</code></p>
 <p>If you want to see what a filesystem looks like, you could extract <code>rootfs.tar</code> into <code>/tmp</code> and have a poke around. This is not a required step.</p>
