@@ -7,7 +7,7 @@ tags:
 - opensource
 author_img: alex
 image: /images/2023-10-cncf/background.png
-date: "2023-10-24"
+date: "2023-10-25"
 ---
 
 In this post, we'll cover why [Ampere Computing](https://amperecomputing.com/) and [The Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) are sponsoring a pilot of actuated for open source projects, how you can get involved.
