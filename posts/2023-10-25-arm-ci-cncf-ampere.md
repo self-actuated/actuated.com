@@ -20,6 +20,8 @@ At KubeCon EU, I spoke to [Chris Aniszczyk](https://www.linkedin.com/in/caniszcz
 
 [Equinix](https://deploy.equinix.com/) provides a generous amount of credits to the CNCF under [CNCF Community Infrastructure Lab (CIL)](https://github.com/cncf/cluster), including access to powerful Ampere Q80 Arm servers ([c3.large.arm64](https://deploy.equinix.com/product/servers/c3-large-arm64/)), that may at times be required by Equinix customers for their own Arm workloads.
 
+You can find out more about [Ampere's Altra platform here](https://amperecomputing.com/products/processors), which is being branded as a "Cloud Native" CPU, due to its low power consumption, high core count, and ubiquitous availability across Google Cloud, Oracle Cloud Platform, Azure, Equinix Metal, Hetzner Cloud, and Alibaba Cloud.
+
 As you can imagine, over time, different projects have deployed 1-3 of their own runner servers, each with 256GB of RAM and 80 Cores, which remain idle most of the time, and are not available to other projects or Equinix customers when they may need them suddenly. So, if actuated can reduce this number, whilst also improving the experience for maintainers, then that's a win-win.
 
 Around the same time as speaking to Chris, Ampere reached out and asked how they could help secure actuated for a number of CNCF projects.
