@@ -88,6 +88,8 @@ Another maintainer also commented that they will [no longer need to worry about 
 [![One of the first nightly jobs running within an isolated Firecracker VM](/images/2023-10-cncf/etcd-nightly.png)](https://github.com/etcd-io/etcd/actions/runs/6635037153)
 > One of the first nightly workflows running within 4x separate isolated Firecracker VMs, one per job
 
+Prior to adopting actuated, the two servers were only configured to run one job at a time, afterwards, the jobs are scheduled by the control-plane, according to the amount of available RAM and CPU in the target servers.
+
 ## How do we get access?
 
 If you are working on a CNCF project and would like access, [please contact us via this form](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform). If your project gets selected for the pilot, there are a couple of things you may need to do.
