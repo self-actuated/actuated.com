@@ -1,5 +1,5 @@
 ---
-title: Announcing managed Arm CI for CNCF projects (draft post)
+title: Announcing managed Arm CI for CNCF projects
 description: "Ampere Computing and The Cloud Native Computing Foundation are sponsoring a pilot of actuated's managed Arm CI for CNCF projects."
 tags:
 - cloudnative
@@ -10,34 +10,13 @@ image: /images/2023-10-cncf/background.png
 date: "2023-10-24"
 ---
 
-> This is a draft blog post, it has not been published yet.
+In this post, we'll cover why [Ampere Computing](https://amperecomputing.com/) and [The Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) are sponsoring a pilot of actuated for open source projects, how you can get involved.
 
-In this post, I'll explain the benefits of using native Arm servers for CI, why [Ampere Computing](https://amperecomputing.com/) and [The Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) are sponsoring a pilot of actuated for open source projects, and how you can get involved.
+We'll also give you a quick one year recap on actuated, if you haven't checked in with us for a while.
 
-## One year recap on actuated
+## Managed Arm CI for CNCF projects
 
-Over a year ago, we [announced actuated](https://actuated.dev/blog/blazing-fast-ci-with-microvms) and we were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.
-
-Fast forward today, and we have already run around 140k Firecracker VMs for customers. We see a mix of 64-Arm servers and fast bare-metal `x86_64` servers for CI, with both closed and open-source repositories being used.
-
-The main benefits are having access to bigger, faster and more specialist hardware.
-
-* For `x86_64` builds, we see about a 3x speed-up vs. using GitHub's hosted runners, in addition to being able to add more RAM and disk space to builds.
-* For Arm64, we see builds which take several hours or which fail to complete within a 6 hour window using QEMU, go down to 3-5 minutes.
-
-Vendors and consumers are becoming increasingly aware of the importance of the supply chain, [GitHub's self-hosted runner is not recommended for open source rpos](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions). Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.
-
-[Ellie Huxtable](https://www.linkedin.com/in/ellmh) is the maintainer of [Atuin](https://atuin.sh/), a popular open-source tool to sync, search and backup shell history. Her Rust build for the CLI took 90 minutes with QEMU, but was reduced to just 3 minutes with actuated, and a native Arm server.
-
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Thanks to <a href="https://twitter.com/selfactuated?ref_src=twsrc%5Etfw">@selfactuated</a>, Atuin now has very speedy ARM docker builds in our GitHub actions! Thank you <a href="https://twitter.com/alexellisuk?ref_src=twsrc%5Etfw">@alexellisuk</a> 🙏<br><br>Docker builds on QEMU: nearly 90 mins<br>Docker builds on ARM with Actuated: ~3 mins</p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715261549172936776?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-For Fluent Bit, one of their Arm builds was taking over 6 hours, which meant it always failed with a timed-out on a hosted runner. [Patrick Stephens](https://www.linkedin.com/in/patrickjkstephens/?originalSubdomain=uk), Tech Lead of Infrastructure at Calyptia reached out to work with us. We got the time down to 5 minutes by changing `runs-on: ubuntu-latest` to `runs-on: actuated-arm64`.
-
-Patrick shares about the experience on the Calyptia blog, including the benefits to their `x86_64` builds for the commercial Calyptia product: [Scaling ARM builds with Actuated](https://calyptia.com/blog/scaling-builds-with-actuated).
-
-## Announcing managed Arm CI for CNCF projects
-
-At KubeCon EU, I spoke to [Chris Aniszczyk](https://www.linkedin.com/in/caniszczyk/), CTO at the CNCF, and told him about some of the results we'd been seeing with customers and for Fluent Bit, which is a CNCF project. Chris told me that many teams were either putting off Arm support all together, were suffering with the slow builds that come from using QEMU, or were managing their own infrastructure which was underutilized.
+At KubeCon EU, I spoke to [Chris Aniszczyk](https://www.linkedin.com/in/caniszczyk/), CTO at the CNCF, and told him about some of the results we'd been seeing with actuated customers, including Fluent Bit, which is a CNCF project. Chris told me that many teams were either putting off Arm support all together, were suffering with the slow builds that come from using QEMU, or were managing their own infrastructure which was underutilized.
 
 [Equinix](https://deploy.equinix.com/) provides a generous amount of credits to the CNCF under [CNCF Community Infrastructure Lab (CIL)](https://github.com/cncf/cluster), including access to powerful Ampere Q80 Arm servers ([c3.large.arm64](https://deploy.equinix.com/product/servers/c3-large-arm64/)), that may at times be required by Equinix customers for their own Arm workloads.
 
@@ -53,19 +32,48 @@ Together, Ampere and the CNCF are now sponsoring an initial 1-year pilot of mana
 
 [Dave Neary](https://www.linkedin.com/in/dneary/), Director of Developer Relations at Ampere Computing added:
 
-> It's a faster, more secure way to run Arm builds, and will also more efficiently use the servers that Equinix is making available to the CNCF as part of its open source program credits.
+> Actuated offers a faster, more secure way for projects to run 64-bit Arm builds, and will also more efficiently use the Ampere Altra-based servers being used by the projects.
+> 
+> We're happy to support CNCF projects running their CI on Ampere Computing's Cloud Native Processors, hosted by Equinix.
+
+## One year recap on actuated
+
+In case you are hearing about actuated for the first time, I wanted to give you a quick one year recap.
+
+Just over 12 months ago, we [announced the work we'd been doing with actuated](https://actuated.dev/blog/blazing-fast-ci-with-microvms) to improve self-hosted runner security and management. We were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.
+
+Fast forward to today, and we have run over 140,000 individual Firecracker VMs for customers on their own hardware. Rather than the fully managed service that GitHub offers, we believe that you should be able to bring your own hardware, and pay a flat-rate fee for the service, rather than being charged per-minute.
+
+The CNCF project brings about 64-bit Arm support, but we see a good mix of `x86_64` and Arm builds from customers, with both closed and open-source repositories being used.
+
+The main benefits are having access to bigger, faster and more specialist hardware.
+
+* For `x86_64` builds, we see about a 3x speed-up vs. using GitHub's hosted runners, in addition to being able to add more RAM and disk space to builds.
+* For Arm64, we see builds which take several hours or which fail to complete within a 6 hour window using QEMU, go down to 3-5 minutes.
+
+Vendors and consumers are becoming increasingly aware of the importance of the supply chain, GitHub's self-hosted runner is [not recommended for open source repos](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions). Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.
+
+If you're wanting to know more about why we think microVMs are the only tool that makes sense for secure CI, then I'd recommend my talk from Cloud Native Rejekts earlier in the year: [Face off: VMs vs. Containers vs Firecracker](https://www.youtube.com/watch?v=pTQ_jVYhAoc).
 
 ## What are maintainers saying?
 
-A number of maintainers and community leaders have come forward with project suggestions, and we're starting to work through them, with the first two being Fluent Bit and etcd.
+[Ellie Huxtable](https://www.linkedin.com/in/ellmh) is the maintainer of [Atuin](https://atuin.sh/), a popular open-source tool to sync, search and backup shell history. Her Rust build for the CLI took 90 minutes with QEMU, but was reduced to just 3 minutes with actuated, and a native Arm server.
 
-[Fluent Bit](https://fluentbit.io/):
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Thanks to <a href="https://twitter.com/selfactuated?ref_src=twsrc%5Etfw">@selfactuated</a>, Atuin now has very speedy ARM docker builds in our GitHub actions! Thank you <a href="https://twitter.com/alexellisuk?ref_src=twsrc%5Etfw">@alexellisuk</a> 🙏<br><br>Docker builds on QEMU: nearly 90 mins<br>Docker builds on ARM with Actuated: ~3 mins</p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715261549172936776?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-> "Fluent Bit is a super fast, lightweight, and highly scalable logging and metrics processor and forwarder. It is the preferred choice for cloud and containerized environments."
+For Fluent Bit, one of their Arm builds was taking over 6 hours, which meant it always failed with a timed-out on a hosted runner. [Patrick Stephens](https://www.linkedin.com/in/patrickjkstephens/?originalSubdomain=uk), Tech Lead of Infrastructure at Calyptia reached out to work with us. We got the time down to 5 minutes by changing `runs-on: ubuntu-latest` to `runs-on: actuated-arm64`.
+
+Patrick shares about the experience on the Calyptia blog, including the benefits to their `x86_64` builds for the commercial Calyptia product: [Scaling ARM builds with Actuated](https://calyptia.com/blog/scaling-builds-with-actuated).
+
+A number of CNCF maintainers and community leaders such as [Davanum Srinivas (Dims)](https://www.linkedin.com/in/davanum/), Principal Engineer at AWS have come forward with project suggestions, and we're starting to work through them, with the first two being Fluent Bit and etcd.
+
+[Fluent Bit](https://fluentbit.io/) describes itself as:
+
+> ..a super fast, lightweight, and highly scalable logging and metrics processor and forwarder. It is the preferred choice for cloud and containerized environments.
 
 [etcd](https://etcd.io) is a core component of almost every Kubernetes installation and is responsible for storing the state of the cluster.
 
-> "A distributed, reliable key-value store for the most critical data of a distributed system"
+> A distributed, reliable key-value store for the most critical data of a distributed system
 
 In the case of etcd, there were [two servers being maintained by five individual maintainers](https://github.com/etcd-io/etcd/pull/16801/files#diff-b8f5f4d0db4fb959d72d74463e2fd2637feb69f6b9e1dce61ad47ee031806dbd), all of that work goes away by adopting actuated.
 
@@ -76,6 +84,9 @@ We even sent etcd [a minimal Pull Request](https://github.com/etcd-io/etcd/pull/
 > I believe managed on demand arm64 CI hosts will definitely be a big win for the project. Keen to trial this.
 
 Another maintainer also commented that they will [no longer need to worry about "leaky containers"](https://github.com/etcd-io/etcd/pull/16801#issuecomment-1774024719).
+
+[![One of the first nightly jobs running within an isolated Firecracker VM](/images/2023-10-cncf/etcd-nightly.png)](https://github.com/etcd-io/etcd/actions/runs/6635037153)
+> One of the first nightly workflows running within 4x separate isolated Firecracker VMs, one per job
 
 ## How do we get access?
 
