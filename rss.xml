@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 25 Oct 2023 09:08:35 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 02 Nov 2023 10:16:25 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -85,6 +85,7 @@
 <p>We have full instructions for 2, in the following tutorial: <a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a>.</p>
 <h2>Learn more about actuated</h2>
 <p>We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">please reach out to us to talk</a>.</p>
+<p>Ampere who are co-sponsoring our service with the CNCF have their own announcement here: <a href="https://amperecomputing.com/blogs/ampere-computing-and-cncf-supporting-arm-native-ci-for-ncf-projects">Ampere Computing and CNCF Supporting Arm Native CI for CNCF Projects</a>.</p>
 <ul>
 <li>Read one of our <a href="https://actuated.dev/blog">recent blog posts</a></li>
 <li>Learn more about <a href="https://docs.actuated.dev">actuated in the docs</a></li>
