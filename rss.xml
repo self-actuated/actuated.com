@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 02 Nov 2023 10:16:25 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 07 Nov 2023 12:02:42 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -2088,7 +2088,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 <p>Want to know more about the security of self-hosted runners? <a href="https://docs.actuated.dev/faq/">Read more in our FAQ</a>.</p>
 <p>Want to talk to us about your CI/CD needs? We're happy to help.</p>
 <ul>
-<li><a href="https://docs.actuated.dev/register/#sign-up-for-the-pilot">Contact us about a PoC</a></li>
+<li><a href="/pricing#sign-up-for-the-pilot">Contact us about a PoC</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
@@ -2392,7 +2392,7 @@ curl --unix-socket /tmp/firecracker.socket -i \
 <li><a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
 </ul>
 <p>Want to see a demo or talk to our team? <a href="https://forms.gle/8XmpTTWXbZwWkfqT6">Contact us here</a></p>
-<p>Just want to try it out instead? <a href="https://docs.actuated.dev/register/">Register your GitHub Organisation and set-up a subscription</a></p>]]></content:encoded>
+<p>Just want to try it out instead? <a href="/pricing">Register your GitHub Organisation and set-up a subscription</a></p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Make your builds run faster with Caching for GitHub Actions]]></title>
@@ -3058,7 +3058,7 @@ The first customer for actuated, which I'll mention later in the article was a t
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2o28iUC-J1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 <p>Want to know how actuated works? <a href="https://docs.actuated.dev/faq/">Read the FAQ for more technical details</a>.</p>
 <ul>
-<li><a href="https://docs.actuated.dev/register/">Find a server for your builds</a></li>
+<li><a href="/pricing">Find a server for your builds</a></li>
 <li><a href="https://docs.actuated.dev/provision-server/">Register for actuated</a></li>
 </ul>
 <p>Follow us on Twitter - <a href="https://twitter.com/selfactuated">selfactuated</a></p>]]></content:encoded>
