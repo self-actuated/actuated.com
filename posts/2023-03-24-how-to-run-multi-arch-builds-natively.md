@@ -303,5 +303,5 @@ Want to know more about the security of self-hosted runners? [Read more in our F
 
 Want to talk to us about your CI/CD needs? We're happy to help.
 
-* [Contact us about a PoC](https://docs.actuated.dev/register/#sign-up-for-the-pilot)
+* [Contact us about a PoC](/pricing#sign-up-for-the-pilot)
 

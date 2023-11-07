@@ -12,7 +12,7 @@ export default function Cta() {
                 You can try out actuated on a monthly basis, with no commitment beyond that. 
               </p>
               <a
-                href="https://docs.actuated.dev/register/"
+                href="/pricing"
                 className="mt-8 inline-flex items-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-indigo-600 shadow hover:bg-indigo-50"
               >
                 Make your builds faster today

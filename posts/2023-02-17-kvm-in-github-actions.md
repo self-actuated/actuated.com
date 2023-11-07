@@ -238,4 +238,4 @@ While it is possible to deploy your own self-hosted runners to run jobs that nee
 
 Want to see a demo or talk to our team? [Contact us here](https://forms.gle/8XmpTTWXbZwWkfqT6)
 
-Just want to try it out instead? [Register your GitHub Organisation and set-up a subscription](https://docs.actuated.dev/register/)
+Just want to try it out instead? [Register your GitHub Organisation and set-up a subscription](/pricing)
