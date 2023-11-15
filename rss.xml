@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 07 Nov 2023 12:02:42 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 15 Nov 2023 08:54:06 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -84,7 +84,7 @@
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I had to split the docker build so that the ARM half would build on ARM, and x86 on x86, and then a step to combine the two - overall this works out to be a very significant improvement<a href="https://t.co/69cIxjYRcW">https://t.co/69cIxjYRcW</a></p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715266936592904446?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>We have full instructions for 2, in the following tutorial: <a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a>.</p>
 <h2>Learn more about actuated</h2>
-<p>We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">please reach out to us to talk</a>.</p>
+<p>We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, please reach out to us to talk <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">using this form</a>.</p>
 <p>Ampere who are co-sponsoring our service with the CNCF have their own announcement here: <a href="https://amperecomputing.com/blogs/ampere-computing-and-cncf-supporting-arm-native-ci-for-ncf-projects">Ampere Computing and CNCF Supporting Arm Native CI for CNCF Projects</a>.</p>
 <ul>
 <li>Read one of our <a href="https://actuated.dev/blog">recent blog posts</a></li>
