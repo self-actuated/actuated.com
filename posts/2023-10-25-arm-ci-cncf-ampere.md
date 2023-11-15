@@ -107,7 +107,7 @@ We have full instructions for 2, in the following tutorial: [How to split up mul
 
 ## Learn more about actuated
 
-We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, [please reach out to us to talk](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform).
+We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, please reach out to us to talk [using this form](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform).
 
 Ampere who are co-sponsoring our service with the CNCF have their own announcement here: [Ampere Computing and CNCF Supporting Arm Native CI for CNCF Projects](https://amperecomputing.com/blogs/ampere-computing-and-cncf-supporting-arm-native-ci-for-ncf-projects).
 
