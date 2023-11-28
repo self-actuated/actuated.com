@@ -58,12 +58,12 @@ The workflow instals Firecracker, configures and boots a guest VM and then waits
 Here is the workflow file used by this job:
 
 ```yaml
-name: vm-run
+name: run-vm
 
 on: push
 jobs:
   vm-run:
-    runs-on: actuated
+    runs-on: actuated-4cpu-8gb
     steps:
       - uses: actions/checkout@master
         with:
@@ -71,9 +71,10 @@ jobs:
       - name: Install arkade
         uses: alexellis/setup-arkade@v2
       - name: Install firecracker
-        run: sudo arkade system install firecracker
+        run: |
+          sudo arkade system install firecracker
       - name: Run microVM
-        run: sudo ./run-vm.sh
+        run: sudo -E ./run-vm.sh
 ```
 
 The [setup-arkade](https://github.com/alexellis/setup-arkade) is to install arkade on the runner. Next firecracker is installed from the arkade system apps.
