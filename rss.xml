@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 15 Nov 2023 08:54:06 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 28 Nov 2023 18:15:05 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -2231,12 +2231,12 @@ Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and A
 <p>Running a firecracker microVM in a GitHub Actions job</p>
 </blockquote>
 <p>Here is the workflow file used by this job:</p>
-<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">vm-run</span>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">run-vm</span>
 
 <span class="hljs-attr">on:</span> <span class="hljs-string">push</span>
 <span class="hljs-attr">jobs:</span>
   <span class="hljs-attr">vm-run:</span>
-    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated-4cpu-8gb</span>
     <span class="hljs-attr">steps:</span>
       <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@master</span>
         <span class="hljs-attr">with:</span>
@@ -2244,9 +2244,10 @@ Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and A
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">arkade</span>
         <span class="hljs-attr">uses:</span> <span class="hljs-string">alexellis/setup-arkade@v2</span>
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">firecracker</span>
-        <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">arkade</span> <span class="hljs-string">system</span> <span class="hljs-string">install</span> <span class="hljs-string">firecracker</span>
-      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">microVM</span>
-        <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">./run-vm.sh</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
+          sudo arkade system install firecracker
+</span>      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">microVM</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">-E</span> <span class="hljs-string">./run-vm.sh</span>
 </code></pre>
 <p>The <a href="https://github.com/alexellis/setup-arkade">setup-arkade</a> is to install arkade on the runner. Next firecracker is installed from the arkade system apps.</p>
 <p>As a last step we run a firecracker microVM. The <code>run-vm.sh</code> script is based on the <a href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/getting-started.md">firecracker quickstart</a> and collects all the steps into a single script that can be run in the CI pipeline.</p>
