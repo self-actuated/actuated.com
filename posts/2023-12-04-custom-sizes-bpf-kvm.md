@@ -28,15 +28,15 @@ To update your servers, log in via SSH and edit `/etc/default/actuated`.
 For amd64:
 
 ```
-IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:x86_64-latest"
-KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:x86_64-latest"
+AGENT_IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:x86_64-latest"
+AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:x86_64-latest"
 ```
 
 For arm64:
 
 ```
-IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:aarch64-latest"
-KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
+AGENT_IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:aarch64-latest"
+AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 ```
 
 Once you have the new images in place, reboot the server. Updates to the Kernel and root filesystem will be delivered Over The Air (OTA) automatically by our team.
