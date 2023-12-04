@@ -16,7 +16,7 @@ In this December update, we've got three new updates to the platform that we thi
 
 And as part of our work to provide hosted [Arm CI for CNCF projects](/blog/arm-ci-cncf-ampere), including [Tetragon](https://github.com/cilium/tetragon) and [Cilium](https://github.com/cilium/cilium), we've now enabled eBPF and BTF features within the Kernel.
 
-> [Berkley Packet Filter (BPF)](https://en.wikipedia.org/wiki/Berkeley_Packet_Filter) is an advanced way to integrate with with the Kernel, for observability, security and networking. You'll see it included in various CNCF projects like Cilium, [Falco](https://github.com/falcosecurity/falco), [Kepler](https://www.cncf.io/projects/kepler/), and others.
+> [Berkley Packet Filter (BPF)](https://en.wikipedia.org/wiki/Berkeley_Packet_Filter) is an advanced way to integrate with the Kernel, for observability, security and networking. You'll see it included in various CNCF projects like Cilium, [Falco](https://github.com/falcosecurity/falco), [Kepler](https://www.cncf.io/projects/kepler/), and others.
 
 Whilst BPF is powerful, it's also a very fast moving space, and was particularly complicated to patch to Firecracker's minimal Kernel configuration. We want to say a thank you to [Mahé Tardy
 ](https://twitter.com/mtardy_?lang=en) who maintains Tetragon and to [Duffie Coolie](https://www.linkedin.com/in/mauilion) both from [Isovalent](https://isovalent.com/) for pointers and collaboration.
@@ -75,7 +75,7 @@ Thanks to [Patrick Stephens at Fluent/Calyptia](https://uk.linkedin.com/in/patri
 
 When we started actuated over 12 months ago, there was no support for using KVM acceleration, or running a VM within a GitHub Actions job within GitHub's infrastructure. We made it available for our customers first, with a custom Kernel configuration for *x86_64* servers. Arm support for launching VMs within VMs is not currently available in the current generation of Ampere servers, but may be available within the next generation of chips and Kernels.
 
-We have several tutorials including how to run Firecracker itself within a CI job, Packer, nix and more.
+We have several tutorials including how to run Firecracker itself within a CI job, Packer, Nix and more.
 
 When you run Packer in a VM, instead of with one of the cloud drivers, you save on time and costs, by not having to fire up cloud resources on AWS, GCP, Azure, and so forth. Instead, you can run a local VM to build the image, then convert it to an AMI or another format.
 
