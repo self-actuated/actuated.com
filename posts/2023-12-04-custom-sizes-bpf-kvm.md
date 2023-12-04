@@ -1,5 +1,5 @@
 ---
-title: "December Boost: Custom Job Sizes, eBPF Support, & KVM Acceleration"
+title: "December Boost: Custom Job Sizes, eBPF Support & KVM Acceleration"
 description: "You can now request custom amounts of RAM and vCPU for jobs, run eBPF within jobs, and use KVM acceleration."
 tags:
 - ebpf
@@ -71,15 +71,30 @@ The change makes the product better value for money, and we had always wanted it
 
 Thanks to [Patrick Stephens at Fluent/Calyptia](https://uk.linkedin.com/in/patrickjkstephens) for the suggestion and for helping us test it out.
 
-## Nested virt, KVM, and running VMs in your jobs
+## KVM acceleration aka running VMs in your CI pipeline
 
-When we started actuated over 12 months ago, there was no support for nested virtualisation in any part of GitHub's infrastructure, and so we made it available first for our customers.
+When we started actuated over 12 months ago, there was no support for using KVM acceleration, or running a VM within a GitHub Actions job within GitHub's infrastructure. We made it available for our customers first, with a custom Kernel configuration for *x86_64* servers. Arm support for launching VMs within VMs is not currently available in the current generation of Ampere servers, but may be available within the next generation of chips and Kernels.
 
 We have several tutorials including how to run Firecracker itself within a CI job, Packer, nix and more.
 
 When you run Packer in a VM, instead of with one of the cloud drivers, you save on time and costs, by not having to fire up cloud resources on AWS, GCP, Azure, and so forth. Instead, you can run a local VM to build the image, then convert it to an AMI or another format.
 
 One of our customers has started exploring launching a VM during a CI job in order to test air-gapped support for enterprise customers. This is a great example of how you can use nested virtualisation to test your own product in a repeatable way.
+
+Nix benefits particularly from being able to create a clean, isolated environment within a CI pipeline, to get a repeatable build. [Graham Christensen](https://twitter.com/grhmc) from [Determinate Systems reached out to collaborate on testing their Nix installer](https://github.com/determinateSystems/nix-installer-action) in actuated.
+
+He didn't expect it to run, but when it worked first time, he remarked: "Nice, perfect!"
+
+```yaml
+jobs:
+  specs:
+    name: ci
+    runs-on: [actuated-16cpu-32gb]
+    steps:
+      - uses: DeterminateSystems/nix-installer-action@main
+      - run: |
+            nix-build '<nixpkgs/nixos/tests/doas.nix>'
+```
 
 * [How to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions)
 * [Automate Packer Images with QEMU and Actuated](https://actuated.dev/blog/automate-packer-qemu-image-builds)
