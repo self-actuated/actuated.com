@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 04 Dec 2023 09:01:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 04 Dec 2023 09:04:25 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -13,7 +13,7 @@
             <link>https://actuated.dev</link>
         </image>
         <item>
-            <title><![CDATA[December Boost: Custom Job Sizes, eBPF Support, & KVM Acceleration]]></title>
+            <title><![CDATA[December Boost: Custom Job Sizes, eBPF Support & KVM Acceleration]]></title>
             <link>https://actuated.dev/blog/custom-sizes-bpf-kvm</link>
             <guid>https://actuated.dev/blog/custom-sizes-bpf-kvm</guid>
             <pubDate>Mon, 04 Dec 2023 00:00:00 GMT</pubDate>
@@ -57,6 +57,17 @@ KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 <p>We have several tutorials including how to run Firecracker itself within a CI job, Packer, nix and more.</p>
 <p>When you run Packer in a VM, instead of with one of the cloud drivers, you save on time and costs, by not having to fire up cloud resources on AWS, GCP, Azure, and so forth. Instead, you can run a local VM to build the image, then convert it to an AMI or another format.</p>
 <p>One of our customers has started exploring launching a VM during a CI job in order to test air-gapped support for enterprise customers. This is a great example of how you can use nested virtualisation to test your own product in a repeatable way.</p>
+<p>Nix benefits particularly from being able to create a clean, isolated environment within a CI pipeline, to get a repeatable build. <a href="https://twitter.com/grhmc">Graham Christensen</a> from <a href="https://github.com/determinateSystems/nix-installer-action">Determinate Systems reached out to collaborate on testing their Nix installer</a> in actuated.</p>
+<p>He didn't expect it to run, but when it worked first time, he remarked: "Nice, perfect!"</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">specs:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">ci</span>
+    <span class="hljs-attr">runs-on:</span> [<span class="hljs-string">actuated-16cpu-32gb</span>]
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">DeterminateSystems/nix-installer-action@main</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            nix-build '&#x3C;nixpkgs/nixos/tests/doas.nix>'
+</span></code></pre>
 <ul>
 <li><a href="https://actuated.dev/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></li>
 <li><a href="https://actuated.dev/blog/automate-packer-qemu-image-builds">Automate Packer Images with QEMU and Actuated</a></li>
