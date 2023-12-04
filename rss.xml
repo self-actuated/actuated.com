@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 04 Dec 2023 10:52:27 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 04 Dec 2023 16:03:28 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -29,12 +29,12 @@
 <p>We've made a big jump in the supported Kernel version from 5.10.77 up to 5.10.201, with newer revisions being made available on a continual basis.</p>
 <p>To update your servers, log in via SSH and edit <code>/etc/default/actuated</code>.</p>
 <p>For amd64:</p>
-<pre><code>IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:x86_64-latest"
-KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:x86_64-latest"
+<pre><code>AGENT_IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:x86_64-latest"
+AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:x86_64-latest"
 </code></pre>
 <p>For arm64:</p>
-<pre><code>IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:aarch64-latest"
-KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
+<pre><code>AGENT_IMAGE_REF="ghcr.io/openfaasltd/actuated-ubuntu22.04:aarch64-latest"
+AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 </code></pre>
 <p>Once you have the new images in place, reboot the server. Updates to the Kernel and root filesystem will be delivered Over The Air (OTA) automatically by our team.</p>
 <h2>Request custom vCPU and RAM per job</h2>
@@ -58,7 +58,7 @@ KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 <p>When you run Packer in a VM, instead of with one of the cloud drivers, you save on time and costs, by not having to fire up cloud resources on AWS, GCP, Azure, and so forth. Instead, you can run a local VM to build the image, then convert it to an AMI or another format.</p>
 <p>One of our customers has started exploring launching a VM during a CI job in order to test air-gapped support for enterprise customers. This is a great example of how you can use nested virtualisation to test your own product in a repeatable way.</p>
 <p>Nix benefits particularly from being able to create a clean, isolated environment within a CI pipeline, to get a repeatable build. <a href="https://twitter.com/grhmc">Graham Christensen</a> from <a href="https://github.com/determinateSystems/nix-installer-action">Determinate Systems reached out to collaborate on testing their Nix installer</a> in actuated.</p>
-<p>He didn't expect it to run, but when it worked first time, he remarked: "Perfect! I'm impressed and happy that our action works out of the box."</p>
+<p>He didn't expect it to run, but when it worked first time, he remarked: "Nice, perfect!"</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">jobs:</span>
   <span class="hljs-attr">specs:</span>
     <span class="hljs-attr">name:</span> <span class="hljs-string">ci</span>
