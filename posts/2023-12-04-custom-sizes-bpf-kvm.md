@@ -83,7 +83,7 @@ One of our customers has started exploring launching a VM during a CI job in ord
 
 Nix benefits particularly from being able to create a clean, isolated environment within a CI pipeline, to get a repeatable build. [Graham Christensen](https://twitter.com/grhmc) from [Determinate Systems reached out to collaborate on testing their Nix installer](https://github.com/determinateSystems/nix-installer-action) in actuated.
 
-He didn't expect it to run, but when it worked first time, he remarked: "Nice, perfect!"
+He didn't expect it to run, but when it worked first time, he remarked: "Perfect! I'm impressed and happy that our action works out of the box."
 
 ```yaml
 jobs:
