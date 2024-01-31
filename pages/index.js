@@ -89,7 +89,7 @@ export default function Home() {
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
-                <img className="h-12" src="./images/settlemint.png" alt="Settlemint" />
+                <img className="h-12" src="./images/cncf.png" alt="Cloud Native Computing Foundation (CNCF)" />
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
