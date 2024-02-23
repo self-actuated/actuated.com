@@ -11,7 +11,7 @@ image: /images/2024-02-local-caching-for-github-actions/background.png
 date: "2024-02-23"
 ---
 
-We heard from the [Discourse](https://github.com/discourse/discourse) project last year because they were looking to speed up their builds. After trying out a couple of self-hosted runner solutions they found out the cache became the new bottleneck. We ran some tests to compare using a local S3 cache with the GitHub actions cache on self-hosted runners. Here is what we found.
+We heard from the [Discourse](https://github.com/discourse/discourse) project last year because they were looking to speed up their builds. After trying out a couple of solutions that automated self-hosted runners, they found out that whilst faster CPUs were nice, reliability was a problem and the cache hosted on GitHub's network became the new bottleneck. We ran some tests to compare the hosted cache with hosted runners, to self-hosted with a local cache running with S3. This post will cover what we found.
 
 <img src="/images/2024-02-local-caching-for-github-actions/discourse-readme-logo.png" width="200" alt="Discourse logo">
 
@@ -69,9 +69,19 @@ If we take a look at the yarn cache, which is the biggest cache, we can see that
 
 Depending on your workflow and the cache size this can add up quickly. If a pipeline has multiple steps or when you are running matrix builds a cache step may need to run multiple times. In the case of the Discourse repo this cache step runs nine times which adds up to 1m12s that can be saved per workflow run.
 
+When Discourse approached us, we found that they had around a dozen jobs running for each pull request, all with varying sizes of caches. At busy times of the day, their global team could have 10 or more of those pull requests running, so these savings could add up to a significant amount.
+
 **What if you also cached git checkout**
 
-If your repository is a monorepo or has lots of large artifacts, you may get a speed boost caching the git checkout too. Pulling from GitHub can add quite some latency compared to restoring from a local cache as we demonstrate in [this use case from a customer](/blog/faster-self-hosted-cache). They saw a cached checkout go from 2m40s to 11s.
+If your repository is a monorepo or has lots of large artifacts, you may get a speed boost caching the `git checkout` step too. Depending on where your runners are hosted, pulling from GitHub can take some time vs. restoring the same files from a local cache.
+
+We demonstrated what impact that had for Settlemint's CTO in [this case study](/blog/faster-self-hosted-cache). They saw a cached checkout using a GitHub's hosted cache from from 2m40s to 11s.
+
+**How we improved testpkg's custom action**
+
+During our testing we noticed that every cache restore took a minimum of 10 seconds regardless of the cache size. It turned out to be an issue with timeouts in the `tespkg/actions-cache` action when listing objects in S3. We reported it and sent them [a pull request with a fix](https://github.com/tespkg/actions-cache/pull/44).
+
+With the fix in place restoring small caches from the local cache dropped from 10s to sub 1s.
 
 ## Conclusion
 
@@ -86,15 +96,12 @@ In addition to the reduced latency, switching to a self hosted cache has a coupl
 
 GitHub's caching action does not yet support using a custom S3 server, so we had to make some minor adjustments to the Discourse's workflow files. For this reason, if you use something like setup-go or setup-node, you won't be able to just set `cache: true`. Instead you'll need an independent caching step with the `testpkg/actions-cache` action.
 
-A cache for Actuated that is compatible with the default `actions/cache` is something we may look into in the future. It would simplify switching to a local cache on self-hosted Actuated runners even further.
-
-### How we improved the action-cache action
-
-During our testing we noticed that every cache restore took a minimum of 10 seconds regardless of the cache size. It turned out to be an issue with timeouts in the `tespkg/actions-cache` action when listing objects in S3. We reported it and sent them [a pull request with a fix](https://github.com/tespkg/actions-cache/pull/44).
-
-With the fix in place restoring small caches from the local cache dropped from 10s to sub 1s.
+If you'd like to reach out to us and see if we can advise you on how to optmise your builds, you can [set up a call with us here.](https://actuated.dev/pricing).
 
 If you want to learn more about caching for GitHub Actions checkout some of our other blog posts:
 
+You may also like:
+
 - [Make your builds run faster with Caching for GitHub Actions](https://actuated.dev/blog/caching-in-github-actions)
 - [Fixing the cache latency for self-hosted GitHub Actions](https://actuated.dev/blog/faster-self-hosted-cache)
+- [Is GitHub's self-hosted runner safe for open source?](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions)
