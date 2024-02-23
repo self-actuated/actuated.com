@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 23 Feb 2024 18:57:16 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 23 Feb 2024 20:32:49 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -18,7 +18,7 @@
             <guid>https://actuated.dev/blog/local-caching-for-github-actions</guid>
             <pubDate>Fri, 23 Feb 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[We compare the impact of switching Discourse's GitHub Actions from self-hosted runners and a hosted cache, to a local cache with S3.]]></description>
-            <content:encoded><![CDATA[<p>We heard from the <a href="https://github.com/discourse/discourse">Discourse</a> project last year because they were looking to speed up their builds. After trying out a couple of self-hosted runner solutions they found out the cache became the new bottleneck. We ran some tests to compare using a local S3 cache with the GitHub actions cache on self-hosted runners. Here is what we found.</p>
+            <content:encoded><![CDATA[<p>We heard from the <a href="https://github.com/discourse/discourse">Discourse</a> project last year because they were looking to speed up their builds. After trying out a couple of solutions that automated self-hosted runners, they found out that whilst faster CPUs were nice, reliability was a problem and the cache hosted on GitHub's network became the new bottleneck. We ran some tests to compare the hosted cache with hosted runners, to self-hosted with a local cache running with S3. This post will cover what we found.</p>
 <img src="/images/2024-02-local-caching-for-github-actions/discourse-readme-logo.png" width="200" alt="Discourse logo">
 <blockquote>
 <p>Discourse is the online home for your community. We offer a 100% open source community platform to those who want complete control over how and where their site is run.</p>
@@ -87,8 +87,13 @@
 <p>While the GitHub runner and the self-hosted runner with a local cache perform very similarly, cache restores on the self-hosted runner that uses the GitHub cache take a bit longer.</p>
 <p>If we take a look at the yarn cache, which is the biggest cache, we can see that switching to the local S3 cache saved 8s for the cache size in this test vs using GitHub's cache from a self-hosted runner. This is a 42% improvement.</p>
 <p>Depending on your workflow and the cache size this can add up quickly. If a pipeline has multiple steps or when you are running matrix builds a cache step may need to run multiple times. In the case of the Discourse repo this cache step runs nine times which adds up to 1m12s that can be saved per workflow run.</p>
+<p>When Discourse approached us, we found that they had around a dozen jobs running for each pull request, all with varying sizes of caches. At busy times of the day, their global team could have 10 or more of those pull requests running, so these savings could add up to a significant amount.</p>
 <p><strong>What if you also cached git checkout</strong></p>
-<p>If your repository is a monorepo or has lots of large artifacts, you may get a speed boost caching the git checkout too. Pulling from GitHub can add quite some latency compared to restoring from a local cache as we demonstrate in <a href="/blog/faster-self-hosted-cache">this use case from a customer</a>. They saw a cached checkout go from 2m40s to 11s.</p>
+<p>If your repository is a monorepo or has lots of large artifacts, you may get a speed boost caching the <code>git checkout</code> step too. Depending on where your runners are hosted, pulling from GitHub can take some time vs. restoring the same files from a local cache.</p>
+<p>We demonstrated what impact that had for Settlemint's CTO in <a href="/blog/faster-self-hosted-cache">this case study</a>. They saw a cached checkout using a GitHub's hosted cache from from 2m40s to 11s.</p>
+<p><strong>How we improved testpkg's custom action</strong></p>
+<p>During our testing we noticed that every cache restore took a minimum of 10 seconds regardless of the cache size. It turned out to be an issue with timeouts in the <code>tespkg/actions-cache</code> action when listing objects in S3. We reported it and sent them <a href="https://github.com/tespkg/actions-cache/pull/44">a pull request with a fix</a>.</p>
+<p>With the fix in place restoring small caches from the local cache dropped from 10s to sub 1s.</p>
 <h2>Conclusion</h2>
 <p>After switching to a local S3 cache we saw a very significant improvement in the cache latency. Depending on how the cache is used in your workflow and the size of your cache artifacts switching to a local S3 cache might even have a bigger impact.</p>
 <p>Both Seaweedfs and Minio were tested in our setup and they performed in a very similar way. Both have different open source licenses, so we'd recommend reading those before picking one or the other. Of course you could also use AWS S3, Google Cloud Storage, or another S3 compatible hosted service.</p>
@@ -98,14 +103,13 @@
 <li>No egress costs for pushing data to the cache from self-hosted runners.</li>
 </ul>
 <p>GitHub's caching action does not yet support using a custom S3 server, so we had to make some minor adjustments to the Discourse's workflow files. For this reason, if you use something like setup-go or setup-node, you won't be able to just set <code>cache: true</code>. Instead you'll need an independent caching step with the <code>testpkg/actions-cache</code> action.</p>
-<p>A cache for Actuated that is compatible with the default <code>actions/cache</code> is something we may look into in the future. It would simplify switching to a local cache on self-hosted Actuated runners even further.</p>
-<h3>How we improved the action-cache action</h3>
-<p>During our testing we noticed that every cache restore took a minimum of 10 seconds regardless of the cache size. It turned out to be an issue with timeouts in the <code>tespkg/actions-cache</code> action when listing objects in S3. We reported it and sent them <a href="https://github.com/tespkg/actions-cache/pull/44">a pull request with a fix</a>.</p>
-<p>With the fix in place restoring small caches from the local cache dropped from 10s to sub 1s.</p>
+<p>If you'd like to reach out to us and see if we can advise you on how to optmise your builds, you can <a href="https://actuated.dev/pricing">set up a call with us here.</a>.</p>
 <p>If you want to learn more about caching for GitHub Actions checkout some of our other blog posts:</p>
+<p>You may also like:</p>
 <ul>
 <li><a href="https://actuated.dev/blog/caching-in-github-actions">Make your builds run faster with Caching for GitHub Actions</a></li>
 <li><a href="https://actuated.dev/blog/faster-self-hosted-cache">Fixing the cache latency for self-hosted GitHub Actions</a></li>
+<li><a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is GitHub's self-hosted runner safe for open source?</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
@@ -154,7 +158,7 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 <p>When you run Packer in a VM, instead of with one of the cloud drivers, you save on time and costs, by not having to fire up cloud resources on AWS, GCP, Azure, and so forth. Instead, you can run a local VM to build the image, then convert it to an AMI or another format.</p>
 <p>One of our customers has started exploring launching a VM during a CI job in order to test air-gapped support for enterprise customers. This is a great example of how you can use nested virtualisation to test your own product in a repeatable way.</p>
 <p>Nix benefits particularly from being able to create a clean, isolated environment within a CI pipeline, to get a repeatable build. <a href="https://twitter.com/grhmc">Graham Christensen</a> from <a href="https://github.com/determinateSystems/nix-installer-action">Determinate Systems reached out to collaborate on testing their Nix installer</a> in actuated.</p>
-<p>He didn't expect it to run, but when it worked first time, he remarked: "Nice, perfect!"</p>
+<p>He didn't expect it to run, but when it worked first time, he remarked: "Perfect! I'm impressed and happy that our action works out of the box."</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">jobs:</span>
   <span class="hljs-attr">specs:</span>
     <span class="hljs-attr">name:</span> <span class="hljs-string">ci</span>
