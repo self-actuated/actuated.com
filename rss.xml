@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 31 Jan 2024 14:10:41 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 23 Feb 2024 18:57:16 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,102 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Testing the impact of a local cache for building Discourse]]></title>
+            <link>https://actuated.dev/blog/local-caching-for-github-actions</link>
+            <guid>https://actuated.dev/blog/local-caching-for-github-actions</guid>
+            <pubDate>Fri, 23 Feb 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[We compare the impact of switching Discourse's GitHub Actions from self-hosted runners and a hosted cache, to a local cache with S3.]]></description>
+            <content:encoded><![CDATA[<p>We heard from the <a href="https://github.com/discourse/discourse">Discourse</a> project last year because they were looking to speed up their builds. After trying out a couple of self-hosted runner solutions they found out the cache became the new bottleneck. We ran some tests to compare using a local S3 cache with the GitHub actions cache on self-hosted runners. Here is what we found.</p>
+<img src="/images/2024-02-local-caching-for-github-actions/discourse-readme-logo.png" width="200" alt="Discourse logo">
+<blockquote>
+<p>Discourse is the online home for your community. We offer a 100% open source community platform to those who want complete control over how and where their site is run.</p>
+</blockquote>
+<h2>Set up a local cache</h2>
+<p>Hosted runners are placed close to the cache which means the latency is very low. Self-hosted runners can also make good use of this cache but the added latency can negate the advantage of switching to these faster runners. Running a local S3 cache with <a href="https://github.com/minio/minio">Minio</a> or <a href="https://github.com/seaweedfs/seaweedfs">Seaweedfs</a> on the self hosted runner or in the same region/network can solve this problem.</p>
+<p>For this test we ran the cache on the runner host. <a href="https://docs.actuated.dev/tasks/local-github-cache/">Instructions</a> to set up a local S3 cache with Seaweedfs can be found in our docs.</p>
+<p>The Discourse repo is already using the <code>actions/cache</code>in their tests workflow which makes it easy to switch out the official <a href="https://github.com/actions/cache">actions/cache</a> with <a href="https://github.com/tespkg/actions-cache">tespkg/actions-cache</a>.</p>
+<p>The S3 cache is not directly compatible with the official <a href="https://github.com/actions/cache">actions/cache</a> and some changes to the workflows are required to start using the cache.</p>
+<p>The <code>tespkg/actions-cache</code> supports the same properties as the actions cache and only requires some additional parameters to configure the S3 connection.</p>
+<pre><code class="hljs language-diff"> - name: Bundler cache
+<span class="hljs-deletion">-  uses: actions/cache@v3</span>
+<span class="hljs-addition">+  uses: tespkg/actions-cache@v1</span>
+   with:
+<span class="hljs-addition">+    endpoint: "192.168.128.1"</span>
+<span class="hljs-addition">+    port: 8333</span>
+<span class="hljs-addition">+    insecure: true</span>
+<span class="hljs-addition">+    accessKey: ${{ secrets.ACTIONS_CACHE_ACCESS_KEY }}</span>
+<span class="hljs-addition">+    secretKey: ${{ secrets.ACTIONS_CACHE_SECRET_KEY }}</span>
+<span class="hljs-addition">+    bucket: actuated-runners</span>
+<span class="hljs-addition">+    region: local</span>
+<span class="hljs-addition">+    use-fallback: false</span>
+
+     path: vendor/bundle
+     key: ${{ runner.os }}-${{ matrix.ruby }}-gem-${{ hashFiles('**/Gemfile.lock') }}-cachev2
+</code></pre>
+<p>The endpoint could also be a HTTPS URL to a S3 server hosted within the same network as the self-hosted runners.</p>
+<p>If you are relying on the built-in cache support that is included in some actions like <a href="https://github.com/actions/setup-node#caching-global-packages-data">setup-node</a> and <a href="https://github.com/actions/setup-go">setup-go</a> you will need to add an additional caching step to your workflow as they are not directly compatible with the self-hosted S3 cache.</p>
+<h2>The impact of switching to a local cache.</h2>
+<p>The <a href="https://github.com/discourse/discourse/actions/workflows/tests.yml">Tests workflow</a> from the <a href="https://github.com/discourse/discourse">Discourse repository</a> was used to test the impact of switching to a local cache. We ran the workflow on a self-hosted Actuated runner, both with the S3 local cache and with the GitHub cache.</p>
+<p>Next we looked at the time required to restore the caches in our two environments and compared it with the times we saw on GitHub hosted runners:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Bundler cache<br>(±273MB)</th>
+<th>Yarn cache<br>(±433MB)</th>
+<th>Plugins gems cache<br>(±51MB)</th>
+<th>App state cache<br>(±1MB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actuated with local cache</strong></td>
+<td>5s</td>
+<td>11s</td>
+<td>1s</td>
+<td>0s</td>
+</tr>
+<tr>
+<td><strong>Actuated with hosted cache</strong></td>
+<td>13s</td>
+<td>19s</td>
+<td>3s</td>
+<td>2s</td>
+</tr>
+<tr>
+<td><strong>Runner &#x26; cache hosted on GitHub</strong></td>
+<td>6s</td>
+<td>11s</td>
+<td>3s</td>
+<td>2s</td>
+</tr>
+</tbody>
+</table>
+<p>While the GitHub runner and the self-hosted runner with a local cache perform very similarly, cache restores on the self-hosted runner that uses the GitHub cache take a bit longer.</p>
+<p>If we take a look at the yarn cache, which is the biggest cache, we can see that switching to the local S3 cache saved 8s for the cache size in this test vs using GitHub's cache from a self-hosted runner. This is a 42% improvement.</p>
+<p>Depending on your workflow and the cache size this can add up quickly. If a pipeline has multiple steps or when you are running matrix builds a cache step may need to run multiple times. In the case of the Discourse repo this cache step runs nine times which adds up to 1m12s that can be saved per workflow run.</p>
+<p><strong>What if you also cached git checkout</strong></p>
+<p>If your repository is a monorepo or has lots of large artifacts, you may get a speed boost caching the git checkout too. Pulling from GitHub can add quite some latency compared to restoring from a local cache as we demonstrate in <a href="/blog/faster-self-hosted-cache">this use case from a customer</a>. They saw a cached checkout go from 2m40s to 11s.</p>
+<h2>Conclusion</h2>
+<p>After switching to a local S3 cache we saw a very significant improvement in the cache latency. Depending on how the cache is used in your workflow and the size of your cache artifacts switching to a local S3 cache might even have a bigger impact.</p>
+<p>Both Seaweedfs and Minio were tested in our setup and they performed in a very similar way. Both have different open source licenses, so we'd recommend reading those before picking one or the other. Of course you could also use AWS S3, Google Cloud Storage, or another S3 compatible hosted service.</p>
+<p>In addition to the reduced latency, switching to a self hosted cache has a couple of other benefits.</p>
+<ul>
+<li>No limit on the cache size. The GitHub cache has a size limit of 10GB before the oldest cache entries start to get pruned.</li>
+<li>No egress costs for pushing data to the cache from self-hosted runners.</li>
+</ul>
+<p>GitHub's caching action does not yet support using a custom S3 server, so we had to make some minor adjustments to the Discourse's workflow files. For this reason, if you use something like setup-go or setup-node, you won't be able to just set <code>cache: true</code>. Instead you'll need an independent caching step with the <code>testpkg/actions-cache</code> action.</p>
+<p>A cache for Actuated that is compatible with the default <code>actions/cache</code> is something we may look into in the future. It would simplify switching to a local cache on self-hosted Actuated runners even further.</p>
+<h3>How we improved the action-cache action</h3>
+<p>During our testing we noticed that every cache restore took a minimum of 10 seconds regardless of the cache size. It turned out to be an issue with timeouts in the <code>tespkg/actions-cache</code> action when listing objects in S3. We reported it and sent them <a href="https://github.com/tespkg/actions-cache/pull/44">a pull request with a fix</a>.</p>
+<p>With the fix in place restoring small caches from the local cache dropped from 10s to sub 1s.</p>
+<p>If you want to learn more about caching for GitHub Actions checkout some of our other blog posts:</p>
+<ul>
+<li><a href="https://actuated.dev/blog/caching-in-github-actions">Make your builds run faster with Caching for GitHub Actions</a></li>
+<li><a href="https://actuated.dev/blog/faster-self-hosted-cache">Fixing the cache latency for self-hosted GitHub Actions</a></li>
+</ul>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[December Boost: Custom Job Sizes, eBPF Support & KVM Acceleration]]></title>
             <link>https://actuated.dev/blog/custom-sizes-bpf-kvm</link>
@@ -654,7 +750,7 @@ status.`</span>,
 <blockquote>
 <p>"Actuated aims to give teams the closest possible experience to managed runners, but with native arm support flat rate billing, and secure VM-level isolation. Since Calyptia adopted actuated, we’ve also shipped an SSH debug experience (like you’d find with CircleCI) and detailed reports and insights on usage across repos, users and organisations."</p>
 </blockquote>
-<p>To use Actuated, you have to provision a machine with the Actuated agent, which is trivial and well documented: https://docs.actuated.dev/install-agent/.</p>
+<p>To use Actuated, you have to provision a machine with the Actuated agent, which is trivial and well documented: <a href="https://docs.actuated.dev/install-agent/">https://docs.actuated.dev/install-agent/</a>.</p>
 <p>We deployed an Ampere Altra Q80 server with 256GB of RAM and 80 cores ARM64 machine via Equinix (Equinix donates resources to the CNCF which we use for Fluent Bit so this satisfies the cost side of things) and installed the Actuated agent on it per the Actuated docs.</p>
 <p>The update required to start using Actuated in OSS Fluent Bit is a one-liner. (Thanks in part to my excellent work refactoring the CI workflows, or so I like to think. You can see the actual PR here for the change: <a href="https://github.com/fluent/fluent-bit/pull/7527">https://github.com/fluent/fluent-bit/pull/7527</a>.)</p>
 <p>The following is the code required to start using Actuated:</p>
@@ -1008,7 +1104,7 @@ chpasswd:
 </ul>
 <p>To configure your Actuated Agent for KVM support follow the <a href="https://docs.actuated.dev/examples/kvm-guest/">instructions in the docs</a>.</p>
 <h3>The GitHub actions workflow</h3>
-<p>The default GitHub hosted runners come with Packer pre-installed. On self-hosted runners you will need a step to install the Packer binary. The official [setup-packer][https://github.com/hashicorp/setup-packer] action can be used for this.</p>
+<p>The default GitHub hosted runners come with Packer pre-installed. On self-hosted runners you will need a step to install the Packer binary. The official [setup-packer][<a href="https://github.com/hashicorp/setup-packer">https://github.com/hashicorp/setup-packer</a>] action can be used for this.</p>
 <p>We set <code>runs-on</code> to <code>actuated</code> so that the build workflow will run on an Actuated runner:</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">Build</span>
 
