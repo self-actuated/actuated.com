@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 04 Mar 2024 12:30:55 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 04 Mar 2024 18:15:53 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -84,8 +84,8 @@
 </tbody>
 </table>
 <p><em>Ranked by build minutes consumed</em></p>
-<p>Some organisations have been actuated on multiple projects like etcd-io, with boltdb adding to their minutes, and cilium where tetragon and ebpf-go are also now running Arm builds.</p>
-<p>It's tempting to look at build minutes as the only metric, however, now that containerd, runc, cilium, etcd, and various other core projects are built by actuated, the security of the supply chain has become far more certain.</p>
+<p>Some organisations have been actuated on multiple projects like <a href="https://github.com/etcd-io/etcd">etcd-io</a>, with <a href="https://github.com/etcd-io/bbolt">boltdb</a> adding to their minutes, and <a href="https://github.com/cilium">cilium</a> where <a href="https://isovalent.com/blog/post/can-i-use-tetragon-without-cilium-yes/">tetragon</a> and <a href="https://github.com/cilium/ebpf">ebpf-go</a> are also now running Arm builds.</p>
+<p>It's tempting to look at build minutes as the only metric, however, now that <a href="https://github.com/containerd/containerd">containerd</a>, <a href="https://github.com/opencontainers/runc">runc</a>, cilium, etcd, and various other core projects are built by actuated, the security of the supply chain has become far more certain.</p>
 <p><strong>From 10,000ft</strong></p>
 <p>Here's what we aimed for and have managed to achieve in a very short period of time:</p>
 <ul>
@@ -105,7 +105,7 @@
 </blockquote>
 <p>It would clear itself down in time, but we spent a little time to automate adding in 1-2 extra servers for this period of the week, and we managed to get the queue cleared several times quicker. When the machines are no longer needed, they drain themselves and get deleted. This is important for efficient use of the CNCF's credits and Equinix Metal's fleet of Ampere Altra Q80 Arm servers.</p>
 <p><strong>Giving insights to maintainers</strong></p>
-<p>I got to meet up with Phil Estes from the containerd project at FOSDEM. We are old friends and used to be Docker Captains together.</p>
+<p>I got to meet up with <a href="https://twitter.com/estesp">Phil Estes</a> from the containerd project at FOSDEM. We are old friends and used to be Docker Captains together.</p>
 <p>We looked at the daily usage stats, looked at the total amount of contributors that month and how many builds they'd had.</p>
 <p><a href="https://twitter.com/alexellisuk/status/1753769476871405804/photo/3"><img src="https://pbs.twimg.com/media/GFakCn-WsAAMlR9?format=jpg&#x26;name=medium" alt="Phil checking out the actuated dashboard"></a></p>
 <p>Then we opened up the organisation insights page and found that containerd had accounted for 14% of the total build minutes having only been onboarded in Dec 2023.</p>
