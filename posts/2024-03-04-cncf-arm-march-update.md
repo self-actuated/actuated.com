@@ -6,7 +6,7 @@ tags:
 - githubactions
 - metering
 author_img: alex
-image:./public/images/2024-03-cncf-update/background.png
+image: /images/2024-03-cncf-update/background.png
 date: "2024-03-04"
 ---
 
@@ -28,19 +28,19 @@ Today, our records show that the CNCF projects enrolled have run a total of 70.3
 
 Here's a list of the organisations we've onboarded so far, ordered by the total amount of build minutes. We added the date of their first actuated build to help add some context. As I mentioned in the introduction, fluent have been a paying customer since June 2023.
 
-Organisation    | Date of first actuated build 
-----------------|------------------ 
- etcd-io (etcd, boltdb)        | 2023-10-24  |
- fluent         | 2023-06-07  |
- falcosecurity  | 2023-12-06  |
- containerd     | 2023-12-02  |
- cilium (tetragon, cilium, ebpf-go)         | 2023-10-31  |
- cri-o          | 2023-11-27  |
- open-telemetry | 2024-02-14  |
- opencontainers (runc) | 2023-12-15  |
- argoproj       | 2024-01-30  |
+Rank  | Organisation    | Date of first actuated build 
+------|-----------------|------------------ 
+1 | etcd-io (etcd, boltdb)        | 2023-10-24  |
+2 | fluent         | 2023-06-07  |
+3 | falcosecurity  | 2023-12-06  |
+4 | containerd     | 2023-12-02  |
+5 | cilium (tetragon, cilium, ebpf-go)         | 2023-10-31  |
+6 | cri-o          | 2023-11-27  |
+7 | open-telemetry | 2024-02-14  |
+8 | opencontainers (runc) | 2023-12-15  |
+9 | argoproj       | 2024-01-30  |
 
-*Data sorted by most Arm minutes consumed*
+*Ranked by build minutes consumed*
 
 Some organisations have been actuated on multiple projects like etcd-io, with boltdb adding to their minutes, and cilium where tetragon and ebpf-go are also now running Arm builds.
 
