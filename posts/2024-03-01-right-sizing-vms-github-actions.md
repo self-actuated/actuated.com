@@ -51,7 +51,7 @@ The first set installs arkade, which we then use to extract vmmeter from a conta
 
 Then `self-actuated/vmmeter-action` is used to run the tool in the background, and also runs a post-setup setup to stop the measurements, and upload the results to the workflow run.
 
-To show you how the tool works, I ran a simple build of the Linux Kernel without any additional modules or options added in.
+To show you how the tool works, I ran a simple [build of the Linux Kernel](https://github.com/actuated-samples/kernel-builder-linux-6.0/blob/master/.github/workflows/microvm-kernel.yml) without any additional modules or options added in.
 
 Here's the summary text that was uploaded to the workflow run:
 
@@ -63,34 +63,27 @@ Max 1 min: 5.63 (17.59%)
 Max 5 min: 1.25 (3.91%)
 Max 15 min: 0.41 (1.28%)
 
-
 RAM usage (10 samples):
 Max RAM usage: 2.528GB
-
 
 Max 10s avg RAM usage: 1.73GB
 Max 1 min avg RAM usage: 1.208GB
 Max 5 min avg RAM usage: 1.208GB
-
 
 Disk read: 374.2MB
 Disk write: 458.2MB
 Max disk I/O inflight: 0
 Free: 45.57GB	Used: 4.249GB	(Total: 52.52GB)
 
-
 Egress adapter RX: 271.4MB
 Egress adapter TX: 1.535MB
-
 
 Entropy min: 256
 Entropy max: 256
 
-
 Max open connections: 125
 Max open files: 1696
 Processes since boot: 18081
-
 
 Run time: 45s
 ```

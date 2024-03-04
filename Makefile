@@ -2,5 +2,5 @@ deploy:
 	npm run build
 	npm run deploy
 
-local:
+dev:
 	npm run dev

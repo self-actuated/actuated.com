@@ -16,7 +16,7 @@ We'll also give you a quick one year recap on actuated, if you haven't checked i
 
 ## Managed Arm CI for CNCF projects
 
-At KubeCon EU, I spoke to [Chris Aniszczyk](https://www.linkedin.com/in/caniszczyk/), CTO at the CNCF, and told him about some of the results we'd been seeing with actuated customers, including Fluent Bit, which is a CNCF project. Chris told me that many teams were either putting off Arm support all together, were suffering with the slow builds that come from using QEMU, or were managing their own infrastructure which was underutilized.
+At KubeCon EU, I spoke to [Chris Aniszczyk](https://www.linkedin.com/in/caniszczyk/), CTO at the [Cloud Native Computing Foundation (CNCF)](https://cncf.io), and told him about some of the results we'd been seeing with actuated customers, including Fluent Bit, which is a CNCF project. Chris told me that many teams were either putting off Arm support all together, were suffering with the slow builds that come from using QEMU, or were managing their own infrastructure which was underutilized.
 
 [Equinix](https://deploy.equinix.com/) provides a generous amount of credits to the CNCF under [CNCF Community Infrastructure Lab (CIL)](https://github.com/cncf/cluster), including access to powerful Ampere Q80 Arm servers ([c3.large.arm64](https://deploy.equinix.com/product/servers/c3-large-arm64/)), that may at times be required by Equinix customers for their own Arm workloads.
 
@@ -63,7 +63,7 @@ If you're wanting to know more about why we think microVMs are the only tool tha
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Thanks to <a href="https://twitter.com/selfactuated?ref_src=twsrc%5Etfw">@selfactuated</a>, Atuin now has very speedy ARM docker builds in our GitHub actions! Thank you <a href="https://twitter.com/alexellisuk?ref_src=twsrc%5Etfw">@alexellisuk</a> 🙏<br><br>Docker builds on QEMU: nearly 90 mins<br>Docker builds on ARM with Actuated: ~3 mins</p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715261549172936776?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-For Fluent Bit, one of their Arm builds was taking over 6 hours, which meant it always failed with a timed-out on a hosted runner. [Patrick Stephens](https://www.linkedin.com/in/patrickjkstephens/?originalSubdomain=uk), Tech Lead of Infrastructure at Calyptia reached out to work with us. We got the time down to 5 minutes by changing `runs-on: ubuntu-latest` to `runs-on: actuated-arm64`.
+For Fluent Bit, one of their Arm builds was taking over 6 hours, which meant it always failed with a timed-out on a hosted runner. [Patrick Stephens](https://www.linkedin.com/in/patrickjkstephens/?originalSubdomain=uk), Tech Lead of Infrastructure at Calyptia reached out to work with us. We got the time down to 5 minutes by changing `runs-on: ubuntu-latest` to `runs-on: actuated-arm64-4cpu-16gb`, and if you need more or less RAM/CPU, you can tune those numbers as you wish.
 
 Patrick shares about the experience on the Calyptia blog, including the benefits to their `x86_64` builds for the commercial Calyptia product: [Scaling ARM builds with Actuated](https://calyptia.com/blog/scaling-builds-with-actuated).
 
@@ -104,6 +104,24 @@ The label for `runs-on:` allows for dynamic configuration of vCPU and GBs of RAM
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I had to split the docker build so that the ARM half would build on ARM, and x86 on x86, and then a step to combine the two - overall this works out to be a very significant improvement<a href="https://t.co/69cIxjYRcW">https://t.co/69cIxjYRcW</a></p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715266936592904446?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 We have full instructions for 2, in the following tutorial: [How to split up multi-arch Docker builds to run natively](https://actuated.dev/blog/how-to-run-multi-arch-builds-natively).
+
+**Is there access for AMD64?**
+
+This program is limited to CNCF projects and Arm CI only. That said, most actuated customers run AMD64 builds with us.
+
+GitHub already provides access to AMD64 runners for free for open source projects, that should cover most OSS project's needs.
+
+So why would you want dedicated AMD64 support from actuated? Firstly, our recommended provider makes builds up to 3x quicker, secondly, you can run on private repos if required, without accuring a large bill.
+
+**What are all the combinations of CPU and RAM?**
+
+We get this question very often, but have tried to be as clear as possible in this blog post and [in the docs](https://docs.actuated.dev/examples/custom-vm-size/). There are no set combinations. You can come up with what you need.
+
+That helps us make best use of the hardware, you can even have just a couple of cores, and max out to 256GB of RAM, if that's what your build needs.
+
+**What if the sponsored program is full?**
+
+The program has been very popular and there is a limit to the budget and number of projects that Ampere and the CNCF agreed to pay for. If you contact us and we tell you the limit has been reached, then your employer could sponsor the subscription, and we'll give you a special discount - you could get started immediately. Or you'll need to contact [Chris Aniszczyk](https://www.linkedin.com/in/caniszczyk/) and tell him why it would be of value to the OSS project you represent to have native Arm CI. If you get in touch with us, we can introduce you to him via email if needed.
 
 ## Learn more about actuated
 
