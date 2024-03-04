@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 04 Mar 2024 12:28:37 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 04 Mar 2024 12:29:27 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -30,44 +30,54 @@
 <table>
 <thead>
 <tr>
+<th>Rank for build minutes</th>
 <th>Organisation</th>
 <th>Date of first actuated build</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>1</td>
 <td>etcd-io (etcd, boltdb)</td>
 <td>2023-10-24</td>
 </tr>
 <tr>
+<td>2</td>
 <td>fluent</td>
 <td>2023-06-07</td>
 </tr>
 <tr>
+<td>3</td>
 <td>falcosecurity</td>
 <td>2023-12-06</td>
 </tr>
 <tr>
+<td>4</td>
 <td>containerd</td>
 <td>2023-12-02</td>
 </tr>
 <tr>
+<td>5</td>
 <td>cilium (tetragon, cilium, ebpf-go)</td>
 <td>2023-10-31</td>
 </tr>
 <tr>
+<td>6</td>
 <td>cri-o</td>
 <td>2023-11-27</td>
 </tr>
 <tr>
+<td>7</td>
 <td>open-telemetry</td>
 <td>2024-02-14</td>
 </tr>
 <tr>
+<td>8</td>
 <td>opencontainers (runc)</td>
 <td>2023-12-15</td>
 </tr>
 <tr>
+<td>9</td>
 <td>argoproj</td>
 <td>2024-01-30</td>
 </tr>
