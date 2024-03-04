@@ -42,9 +42,9 @@ Rank  | Organisation    | Date of first actuated build
 
 *Ranked by build minutes consumed*
 
-Some organisations have been actuated on multiple projects like etcd-io, with boltdb adding to their minutes, and cilium where tetragon and ebpf-go are also now running Arm builds.
+Some organisations have been actuated on multiple projects like [etcd-io](https://github.com/etcd-io/etcd), with [boltdb](https://github.com/etcd-io/bbolt) adding to their minutes, and [cilium](https://github.com/cilium) where [tetragon](https://isovalent.com/blog/post/can-i-use-tetragon-without-cilium-yes/) and [ebpf-go](https://github.com/cilium/ebpf) are also now running Arm builds.
 
-It's tempting to look at build minutes as the only metric, however, now that containerd, runc, cilium, etcd, and various other core projects are built by actuated, the security of the supply chain has become far more certain.
+It's tempting to look at build minutes as the only metric, however, now that [containerd](https://github.com/containerd/containerd), [runc](https://github.com/opencontainers/runc), cilium, etcd, and various other core projects are built by actuated, the security of the supply chain has become far more certain.
 
 **From 10,000ft**
 
@@ -73,7 +73,7 @@ It would clear itself down in time, but we spent a little time to automate addin
 
 **Giving insights to maintainers**
 
-I got to meet up with Phil Estes from the containerd project at FOSDEM. We are old friends and used to be Docker Captains together.
+I got to meet up with [Phil Estes](https://twitter.com/estesp) from the containerd project at FOSDEM. We are old friends and used to be Docker Captains together.
 
 We looked at the daily usage stats, looked at the total amount of contributors that month and how many builds they'd had.
 
