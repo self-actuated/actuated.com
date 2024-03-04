@@ -107,6 +107,8 @@ Disk, network read/write and open files are potential indicators of I/O contenti
 
 In one case, a build on the etcd-io project was specified with 16 vCPU and 32GB of RAM, but when running vmmeter, they found that less than 2 vCPU was used at peak and less than 3GB of RAM. That's a significant difference.
 
+Toolpath is a commercial customer, and we were able to help them reduce their wall time per pull request from 6 hours to 60 minutes. Or from 6x 1 hour jobs to 6x 15-20 minute jobs running in parallel. Jason Gray told me during a product market fit interview that "the level of expertise and support pays for itself". We'd noticed that his teams jobs were requesting far too much CPU, but not enough RAM and were able to make recommendations. We then saw that disk space was running dangerously low, and were able to reconfigure their dedicated build servers for them, remotely, without them having to even think about it.
+
 If you'd like to try out vmmeter, it's free to use on GitHub's hosted runners and on actuated runners. We wouldn't recommend making it a permanent fixture in your workflow, because if it were to fail or exit early for any reason, it may mark the whole build as a failure.
 
 Instead, we recommend you use it learn and explore, and fine-tune your VM sizes. Getting the numbers closer to a right-size could reduce your costs with hosted runners and your efficiency with actuated runners.
@@ -118,4 +120,5 @@ The source-code for the action is available here: [self-actuated/vmmeter-action]
 
 *What if you're not using GitHub Actions?*
 
-You can run vmmeter with bash on your own system, and may also able to use vmmeter in GitLab CI or Jenkins. We've got [manual instructions for vmmeter here](https://gist.github.com/alexellis/1f33e581c75e11e161fe613c46180771#running-vmmeter-inside-github-actions).
+You can run vmmeter with bash on your own system, and may also able to use vmmeter in GitLab CI or Jenkins. We've got [manual instructions for vmmeter here](https://gist.github.com/alexellis/1f33e581c75e11e161fe613c46180771#running-vmmeter-inside-github-actions). You can even just start it up right now, do some work and then call the collect endpoint to see what was used over that period of time, a bit like a generic profiler.
+
