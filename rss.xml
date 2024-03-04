@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 04 Mar 2024 12:30:34 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 04 Mar 2024 12:30:55 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -83,7 +83,7 @@
 </tr>
 </tbody>
 </table>
-<p><em>Data sorted by most Arm minutes consumed</em></p>
+<p><em>Ranked by build minutes consumed</em></p>
 <p>Some organisations have been actuated on multiple projects like etcd-io, with boltdb adding to their minutes, and cilium where tetragon and ebpf-go are also now running Arm builds.</p>
 <p>It's tempting to look at build minutes as the only metric, however, now that containerd, runc, cilium, etcd, and various other core projects are built by actuated, the security of the supply chain has become far more certain.</p>
 <p><strong>From 10,000ft</strong></p>
