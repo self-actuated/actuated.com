@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 04 Mar 2024 18:15:53 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 11 Mar 2024 09:02:34 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -121,6 +121,20 @@
 <p>We started building eBPF into the Kernel image, and the impact was 2x 2.5 minutes of build time.</p>
 <p>This feature was originally requested by Toolpath, a commercial user of actuated with very intensive Julia builds, and they have been using it to keep their build times in check. We're pleased to be able to offer every enhancement to the CNCF project maintainers too.</p>
 <h2>Wrapping up</h2>
+<p><strong>What are the project maintainers saying?</strong></p>
+<p><a href="https://github.com/atoulme">Antoine Toulme</a>, maintainer of OpenTelemetry collectors:</p>
+<blockquote>
+<p>The OpenTelemetry project has been looking for ways to test arm64 to support it as a top tier distribution. Actuated offers a path for us to test on new operating systems, especially arm64, without having to spend any time setting up or maintaining runners. We were lucky to be the recipient of a loan from Ampere that gave us access to a dedicated ARM server, and it took us months to navigate setting up dedicated runners and has significant maintenance overhead. With Actuated, we just set a tag in our actions and everything else is taken care of.</p>
+</blockquote>
+<p><a href="https://github.com/LucaGuerra">Luca Guerra</a>, maintainer of Falco:</p>
+<blockquote>
+<p>Falco users need to deploy to ARM64 as a platform, and we as maintainers, need to make sure that this architecture is treated as a first class citizen. Falco is a complex piece of software that employs kernel instrumentation and so it is not trivial to properly test. Thanks to Actuated, we were able to quickly add ARM64 to our GitHub Actions CI/CD pipeline making it much easier to maintain, freeing up engineering time from infrastructure work.</p>
+</blockquote>
+<p><a href="https://github.com/saschagrunert">Sascha Grunert</a>, maintainer of Cri-o:</p>
+<blockquote>
+<p>The CRI-O project was able to seamlessly integrate Arm based CI with the support of Actuated. We basically had to convert our existing tests to a GitHub Actions matrix utilizing their powerful Arm runners. Integration and unit testing on Arm is another big step for CRI-O to provide a generally broader platform support. We also had to improve the test suite itself for better compatibility with other architectures than x86_64/arm64. This makes contributing to CRI-O on those platforms even simpler. I personally don’t see any better option than Actuated right now, because managing our own hardware is something we’d like to avoid to mainly focus on open source software development. The simplicity of the integration using Actuated helped us a lot, and our future goal is to extend the CRI-O test scenarios for that.</p>
+</blockquote>
+<h3>Summing up the program so far</h3>
 <p>Through the sponsored program, actuated has now run over 70k build minutes for around 10 CNCF projects, and we've heard from a growing number of projects who would like access.</p>
 <p>We've secured the supply chain by removing unsafe runners that GitHub says should definitely not be used for open source repositories, and we've lessened the burden of server management on already busy maintainers.</p>
 <p>Whilst the original pilot program is now full, we have the capacity to onboard many other projects and would love to work with you. We are happy to offer a discounted subscription if your employer that sponsors your time on the said CNCF project will pay for it. Otherwise, contact us anyway, and we'll put you into email contact with <a href="https://www.linkedin.com/in/caniszczyk/">Chris Aniszczyk</a> so you can let him know how this would help you.</p>]]></content:encoded>
