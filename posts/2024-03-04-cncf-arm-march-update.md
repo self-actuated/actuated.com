@@ -105,6 +105,22 @@ This feature was originally requested by Toolpath, a commercial user of actuated
 
 ## Wrapping up
 
+**What are the project maintainers saying?**
+
+[Antoine Toulme](https://github.com/atoulme), maintainer of OpenTelemetry collectors:
+
+> The OpenTelemetry project has been looking for ways to test arm64 to support it as a top tier distribution. Actuated offers a path for us to test on new operating systems, especially arm64, without having to spend any time setting up or maintaining runners. We were lucky to be the recipient of a loan from Ampere that gave us access to a dedicated ARM server, and it took us months to navigate setting up dedicated runners and has significant maintenance overhead. With Actuated, we just set a tag in our actions and everything else is taken care of.
+
+[Luca Guerra](https://github.com/LucaGuerra), maintainer of Falco:
+
+> Falco users need to deploy to ARM64 as a platform, and we as maintainers, need to make sure that this architecture is treated as a first class citizen. Falco is a complex piece of software that employs kernel instrumentation and so it is not trivial to properly test. Thanks to Actuated, we were able to quickly add ARM64 to our GitHub Actions CI/CD pipeline making it much easier to maintain, freeing up engineering time from infrastructure work.
+
+[Sascha Grunert](https://github.com/saschagrunert), maintainer of Cri-o:
+
+> The CRI-O project was able to seamlessly integrate Arm based CI with the support of Actuated. We basically had to convert our existing tests to a GitHub Actions matrix utilizing their powerful Arm runners. Integration and unit testing on Arm is another big step for CRI-O to provide a generally broader platform support. We also had to improve the test suite itself for better compatibility with other architectures than x86_64/arm64. This makes contributing to CRI-O on those platforms even simpler. I personally don’t see any better option than Actuated right now, because managing our own hardware is something we’d like to avoid to mainly focus on open source software development. The simplicity of the integration using Actuated helped us a lot, and our future goal is to extend the CRI-O test scenarios for that.
+
+### Summing up the program so far
+
 Through the sponsored program, actuated has now run over 70k build minutes for around 10 CNCF projects, and we've heard from a growing number of projects who would like access.
 
 We've secured the supply chain by removing unsafe runners that GitHub says should definitely not be used for open source repositories, and we've lessened the burden of server management on already busy maintainers.
