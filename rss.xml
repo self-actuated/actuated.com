@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 12 Mar 2024 12:33:11 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 12 Mar 2024 12:35:50 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -23,6 +23,8 @@
 <h2>GPUs for GitHub Actions</h2>
 <p>One of our earliest customers moved all their GitHub Actions to actuated for a team of around 30 people, but since Firecracker has no support for GPUs, they had to keep a few self-hosted runners around for testing their models. Their second hand Dell servers were racked in their own datacentre, with 8x 3090 GPUs in each machine.</p>
 <p>Their request for GPU support in actuated predated the hype around OpenAI, and was the catalyst for us doing this work.</p>
+<p>They told us how many issues they had keeping drivers in sync when trying to use self-hosted runners, and the security issues they ran into with mounting Docker sockets or running privileged containers in Kubernetes.</p>
+<p>With a microVM and actuated, you'll be able to test out different versions of drivers as you see fit, and know there will never be side-effects between builds. You can read more in <a href="https://docs.actuated.dev/faq/">our FAQ</a> on how actuated differs from other solutions which rely on the poor isolation afforded by containers. Actuated is the closest you can get to a hosted runner, whilst having full access to your own hardware.</p>
 <p>I'll tell you a bit more about it, how to build your own workstation with commodity hardware, or where to rent a powerful bare-metal host with a capable GPU for less than 200 USD / mo that you can use with actuated.</p>
 <h3>Available in early access</h3>
 <p>So today, we're announcing early access to actuated for GPUs. Whether your machine has one GPU, two, or ten, you can allocate them directly to a microVM for a CI job, giving strong isolation, and the same ephemeral environment that you're used to with GitHub's hosted runners.</p>
