@@ -34,7 +34,7 @@ I'll tell you a bit more about it, how to build your own workstation with commod
 So today, we're announcing early access to actuated for GPUs. Whether your machine has one GPU, two, or ten, you can allocate them directly to a microVM for a CI job, giving strong isolation, and the same ephemeral environment that you're used to with GitHub's hosted runners.
 
 ![Our test rig with 2x 3060s](/images/2024-03-gpus/3060.jpg)
-> Our test rig has with 2x 3060s and is available for customer demos and early testing.
+> Our test rig has 2x Nvidia 3060 GPUs and is available for customer demos and early testing.
 
 We've compiled a list of vendors that provide access to fast, bare-metal compute, but at the moment, there are only a few options for bare-metal with GPUs.
 
