@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 11 Mar 2024 09:02:34 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 12 Mar 2024 12:32:31 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,127 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Accelerate GitHub Actions with dedicated GPUs]]></title>
+            <link>https://actuated.dev/blog/gpus-for-github-actions</link>
+            <guid>https://actuated.dev/blog/gpus-for-github-actions</guid>
+            <pubDate>Tue, 12 Mar 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[You can now accelerate GitHub Actions with dedicated GPUs for machine learning and AI use-cases.]]></description>
+            <content:encoded><![CDATA[<p>With the surge of interest in AI and machine learning models, it's not hard to think of reasons why people want GPUs in their workstations and production environments. They make building &#x26; training, fine-tuning and serving (inference) from a machine learning model just that much quicker than running with a CPU alone.</p>
+<p>So if you build and test code for CPUs in CI pipelines like GitHub Actions, why wouldn't you do the same with code built for GPUs? Why exercise only a portion of your codebase?</p>
+<h2>GPUs for GitHub Actions</h2>
+<p>One of our earliest customers moved all their GitHub Actions to actuated for a team of around 30 people, but since Firecracker has no support for GPUs, they had to keep a few self-hosted runners around for testing their models. Their second hand Dell servers were racked in their own datacentre, with 8x 3090 GPUs in each machine.</p>
+<p>Their request for GPU support in actuated predated the hype around OpenAI, and was the catalyst for us doing this work.</p>
+<p>I'll tell you a bit more about it, how to build your own workstation with commodity hardware, or where to rent a powerful bare-metal host with a capable GPU for less than 200 USD / mo that you can use with actuated.</p>
+<h3>Available in early access</h3>
+<p>So today, we're announcing early access to actuated for GPUs. Whether your machine has one GPU, two, or ten, you can allocate them directly to a microVM for a CI job, giving strong isolation, and the same ephemeral environment that you're used to with GitHub's hosted runners.</p>
+<p><img src="/images/2024-03-gpus/3060.jpg" alt="Our test rig with 2x 3060s"></p>
+<blockquote>
+<p>Our test rig has with 2x 3060s and is available for customer demos and early testing.</p>
+</blockquote>
+<p>We've compiled a list of vendors that provide access to fast, bare-metal compute, but at the moment, there are only a few options for bare-metal with GPUs.</p>
+<ul>
+<li>Self-build a workstation, you'll recover the total cost in &#x3C; 1 month vs hosted</li>
+<li>Use a European bare-metal host like Hetzner or OVH Cloud</li>
+</ul>
+<p>We have a full bill of materials available for anyone who wants to build a workstation with 2x Nvidia 3060 graphics cards, giving 24GB of usage RAM at a relatively low maximum power consumption of 170W. It's ideal for CI and end to end testing.</p>
+<p>If you'd like to go even more premium, the Nvidia RTX 4000 card comes with 20GB of RAM, so two of those would give you 40GB of RAM available for Large Language Models (LLMs).</p>
+<p>For Hetzner, you can get started with an i5 bare-metal host with 14 cores, 64GB RAM and a dedicated Nvidia RTX 4000 for around 184 EUR / mo (less than 200 USD / mo). If that sounds like ridiculously good value, it's because it is.</p>
+<h2>What does the build look like?</h2>
+<p>Once you've installed the actuated agent, it's the same process as a regular bare-metal host.</p>
+<p>It'll show up on your actuated dashboard, and you can start sending jobs to it immediately.</p>
+<p><img src="/images/2024-03-gpus/runner.png" alt="The server with 2x GPUs showing up in the dashboard"></p>
+<blockquote>
+<p>The server with 2x GPUs showing up in the dashboard</p>
+</blockquote>
+<p>Here's how we install the Nvidia driver for a consumer-grade card. The process is very similar for the datacenter range of GPUs found in enterprise servers.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">nvidia-smi</span>
+
+<span class="hljs-attr">jobs:</span>
+    <span class="hljs-attr">nvidia-smi:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">nvidia-smi</span>
+        <span class="hljs-attr">runs-on:</span> [<span class="hljs-string">actuated-8cpu-16gb</span>, <span class="hljs-string">gpu</span>]
+        <span class="hljs-attr">steps:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Download</span> <span class="hljs-string">Nvidia</span> <span class="hljs-string">install</span> <span class="hljs-string">package</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+           curl -s -S -L -O https://us.download.nvidia.com/XFree86/Linux-x86_64/525.60.11/NVIDIA-Linux-x86_64-525.60.11.run \
+              &#x26;&#x26; chmod +x ./NVIDIA-Linux-x86_64-525.60.11.run
+</span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">Nvidia</span> <span class="hljs-string">driver</span> <span class="hljs-string">and</span> <span class="hljs-string">Kernel</span> <span class="hljs-string">module</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+              sudo ./NVIDIA-Linux-x86_64-525.60.11.run \
+                  --accept-license \
+                  --ui=none \
+                  --no-questions \
+                  --no-x-check \
+                  --no-check-for-alternate-installs \
+                  --no-nouveau-check
+</span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">nvidia-smi</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            nvidia-smi
+</span></code></pre>
+<p>This is a very similar approach to installing a driver on your own machine, just without any interactive prompts. It took around 38s which is not very long considering how much time AI and ML operations can run for when doing end to end testing. The process installs some binaries like <code>nvidia-smi</code> and compiles a Kernel module to load the graphics driver, these could easily be cached with GitHub Action's built-in caching mechanism.</p>
+<p>For convenience, we created a composite action that reduces the duplication if you have lots of workflows with the Nvidia driver installed.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">gpu-job</span>
+
+<span class="hljs-attr">jobs:</span>
+    <span class="hljs-attr">gpu-job:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">gpu-job</span>
+        <span class="hljs-attr">runs-on:</span> [<span class="hljs-string">actuated-8cpu-16gb</span>, <span class="hljs-string">gpu</span>]
+        <span class="hljs-attr">steps:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/nvidia-run@master</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">nvidia-smi</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            nvidia-smi
+</span></code></pre>
+<p>Of course, if you have an AMD graphics card, or even an ML accelerator like a PCIe Google Corale, that can also be passed through into a VM in a dedicated way.</p>
+<p>The mechanism being used is called VFIO, and allows a VM to take full, dedicated, isolated control over a PCI device.</p>
+<h2>A quick example to get started</h2>
+<p>To show the difference between using a GPU and CPU, I ran <a href="https://github.com/openai/whisper">OpenAI's Whisper project</a>, which transcribes audio or video to a text file.</p>
+<p>With the <a href="https://www.youtube.com/watch?v=l9VuQZ4a5pc">following demo video of Actuated's SSH gateway</a>, running with the tiny model.</p>
+<ul>
+<li>A AMD Ryzen 9 5950X 16-Core Processor took 39 seconds</li>
+<li>The same host with a 3060 GPU mounted via actuated took 16 seconds</li>
+</ul>
+<p>That's over 2x quicker, for a 5:34 minute video. If you process a lot of clips, or much longer clips then the difference may be even more marked.</p>
+<p>The tiny model is really designed for demos, and in production you'd use the medium or large model which is much more resource intensive.</p>
+<p>Here's a screenshot showing what this looks like with the medium model, which is much larger and more accurate:</p>
+<p><a href="/images/2024-03-gpus/gpu-medium.png">Medium model running on a GPU via actuated</a></p>
+<blockquote>
+<p>Medium model running on a GPU via actuated</p>
+</blockquote>
+<p>With a CPU, even with 16 vCPU, all of them get pinned at 100%, and then it takes a significantly longer time to process.</p>
+<p><img src="/images/2024-03-gpus/cpu-medium.png" alt="You can run the medium model on CPU, but would you want to?"></p>
+<blockquote>
+<p>You can run the medium model on CPU, but would you want to?</p>
+</blockquote>
+<p>With the medium model:</p>
+<ul>
+<li>The CPU took 8 minutes 54 seconds, pinning 16 cores at 100%</li>
+<li>The GPU took only 55s with very little CPU consumption</li>
+</ul>
+<p>The GPU increased the speed by 9x, imagine how much quicker it'd be if you used an Nvidia 3090, 4090, or even an RTX 4000.</p>
+<p>If you want to just explore the system, and run commands interactively, you can use <a href="https://docs.actuated.dev/tasks/debug-ssh/">actuated's SSH feature</a> to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.</p>
+<h2>The technical details</h2>
+<p>Since launch, actuated powered by Firecracker has securely isolated over 220k CI jobs for GitHub Actions users. Whilst it's a complex project to integrate, it has been very reliable in production.</p>
+<p>Now in order to bring GPUs to actuated, we needed to add support for a second Virtual Machine Manager (VMM), and we picked cloud-hypervisor.</p>
+<p>cloud-hypervisor was originally a fork from Firecracker and shares a significant amount of code. One place it diverged was adding support for PCI devices, such as GPUs. Through VFIO, cloud-hypervisor allows for a GPU to be passed through to a VM in a dedicated way, so it can be used in isolation.</p>
+<p>Here's the first demo that I ran when we had everything working, showing the output from <code>nvidia-smi</code>:</p>
+<p><a href="https://twitter.com/alexellisuk/status/1765706313068130695/photo/1"><img src="https://pbs.twimg.com/media/GIEMJZUWMAAS0A8?format=jpg&#x26;name=large" alt="The first run of nvidia-smi"></a></p>
+<blockquote>
+<p>The first run of nvidia-smi</p>
+</blockquote>
+<h2>Reach out for more</h2>
+<p>In a relatively short period of time, we were able to update our codebase to support both Firecracker and cloud-hypervisor, and to enable consumer-grade GPUs to be passed through to VMs in isolation.</p>
+<p>You can rent a really powerful and capable machine from Hetzner for under 200 USD / mo, or build your own workstation with dual graphics cards like our demo rig, for less than 2000 USD and then you own that and can use it as much as you want, plugged in under your desk or left in a cabinet in your office.</p>
+<p><strong>A quick recap on use-cases</strong></p>
+<p>Let's say you want to run end to end tests for an application that uses a GPU? Perhaps it runs on Kubernetes? You can do that.</p>
+<p>Do you want to fine-tune, train, or run a batch of inferences on a model? You can do that. GitHub Actions has a 6 hour timeout, which is plenty for many tasks.</p>
+<p>Would it make sense to run Stable Diffusion in the background, with different versions, different inputs, across a matrix? GitHub Actions makes that easy, and actuated can manage the GPU allocations for you.</p>
+<p>Do you run inference from OpenFaaS functions? We have a tutorial on <a href="https://www.openfaas.com/blog/transcribe-audio-with-openai-whisper/">OpenAI Whisper within a function with GPU acceleration here</a> and a separate one on how to <a href="https://www.openfaas.com/blog/openai-streaming-responses/">serve Server Sent Events (SSE) from OpenAI or self-hosted models</a>, which is popular for chat-style interfaces to AI models.</p>
+<p>If you're interested in GPU support for GitHub Actions, then reach out to talk to us with <a href="https://actuated.dev/pricing">this form</a>.</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[The state of Arm CI for the CNCF]]></title>
             <link>https://actuated.dev/blog/cncf-arm-march-update</link>
