@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 12 Mar 2024 12:35:50 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 12 Mar 2024 13:14:24 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -30,7 +30,7 @@
 <p>So today, we're announcing early access to actuated for GPUs. Whether your machine has one GPU, two, or ten, you can allocate them directly to a microVM for a CI job, giving strong isolation, and the same ephemeral environment that you're used to with GitHub's hosted runners.</p>
 <p><img src="/images/2024-03-gpus/3060.jpg" alt="Our test rig with 2x 3060s"></p>
 <blockquote>
-<p>Our test rig has with 2x 3060s and is available for customer demos and early testing.</p>
+<p>Our test rig has 2x Nvidia 3060 GPUs and is available for customer demos and early testing.</p>
 </blockquote>
 <p>We've compiled a list of vendors that provide access to fast, bare-metal compute, but at the moment, there are only a few options for bare-metal with GPUs.</p>
 <ul>
