@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 12 Mar 2024 13:14:24 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 15 Mar 2024 14:14:12 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -105,7 +105,7 @@
 <p>Medium model running on a GPU via actuated</p>
 </blockquote>
 <p>With a CPU, even with 16 vCPU, all of them get pinned at 100%, and then it takes a significantly longer time to process.</p>
-<p><img src="/images/2024-03-gpus/cpu-medium.png" alt="You can run the medium model on CPU, but would you want to?"></p>
+<p><a href="https://twitter.com/alexellisuk/status/1767252171978871195/"><img src="/images/2024-03-gpus/cpu-medium.png" alt="You can run the medium model on CPU, but would you want to?"></a></p>
 <blockquote>
 <p>You can run the medium model on CPU, but would you want to?</p>
 </blockquote>
@@ -116,6 +116,12 @@
 </ul>
 <p>The GPU increased the speed by 9x, imagine how much quicker it'd be if you used an Nvidia 3090, 4090, or even an RTX 4000.</p>
 <p>If you want to just explore the system, and run commands interactively, you can use <a href="https://docs.actuated.dev/tasks/debug-ssh/">actuated's SSH feature</a> to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.</p>
+<p>We took the SSH debug session for a test-drive. We installed <a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html">the NVIDIA Container Toolkit</a>, then ran the ollama tool to test out some Large Language Models (LLMs).</p>
+<p><a href="https://ollama.com/">Ollama</a> is an open source tool for downloading and testing prepackaged models like Mistral or Llama2.</p>
+<p><a href="https://twitter.com/alexellisuk/status/1767899463471796278/"><img src="https://pbs.twimg.com/media/GIjXEXZWkAAiuKc?format=png&#x26;name=medium" alt="Our experiment with ollama within a GitHub Actions runner"></a></p>
+<blockquote>
+<p>Our experiment with ollama within a GitHub Actions runner</p>
+</blockquote>
 <h2>The technical details</h2>
 <p>Since launch, actuated powered by Firecracker has securely isolated over 220k CI jobs for GitHub Actions users. Whilst it's a complex project to integrate, it has been very reliable in production.</p>
 <p>Now in order to bring GPUs to actuated, we needed to add support for a second Virtual Machine Manager (VMM), and we picked cloud-hypervisor.</p>
