@@ -128,7 +128,7 @@ Here's a screenshot showing what this looks like with the medium model, which is
 
 With a CPU, even with 16 vCPU, all of them get pinned at 100%, and then it takes a significantly longer time to process.
 
-![You can run the medium model on CPU, but would you want to?](/images/2024-03-gpus/cpu-medium.png)
+[![You can run the medium model on CPU, but would you want to?](/images/2024-03-gpus/cpu-medium.png)](https://twitter.com/alexellisuk/status/1767252171978871195/)
 > You can run the medium model on CPU, but would you want to?
 
 With the medium model:
@@ -139,6 +139,13 @@ With the medium model:
 The GPU increased the speed by 9x, imagine how much quicker it'd be if you used an Nvidia 3090, 4090, or even an RTX 4000.
 
 If you want to just explore the system, and run commands interactively, you can use [actuated's SSH feature](https://docs.actuated.dev/tasks/debug-ssh/) to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.
+
+We took the SSH debug session for a test-drive. We installed Nvidia's container runtime toolkit, then ran the ollama tool to test out some Large Language Models (LLMs).
+
+[Ollama](https://ollama.com/) is an open source tool for downloading and testing prepackaged models like Mistral or Llama2.
+
+[![Our experiment with ollama within a GitHub Actions runner](https://pbs.twimg.com/media/GIjXEXZWkAAiuKc?format=png&name=medium)](https://twitter.com/alexellisuk/status/1767899463471796278/)
+> Our experiment with ollama within a GitHub Actions runner
 
 ## The technical details
 
