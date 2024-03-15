@@ -140,7 +140,7 @@ The GPU increased the speed by 9x, imagine how much quicker it'd be if you used 
 
 If you want to just explore the system, and run commands interactively, you can use [actuated's SSH feature](https://docs.actuated.dev/tasks/debug-ssh/) to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.
 
-We took the SSH debug session for a test-drive. We installed Nvidia's container runtime toolkit, then ran the ollama tool to test out some Large Language Models (LLMs).
+We took the SSH debug session for a test-drive. We installed [the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), then ran the ollama tool to test out some Large Language Models (LLMs).
 
 [Ollama](https://ollama.com/) is an open source tool for downloading and testing prepackaged models like Mistral or Llama2.
 
