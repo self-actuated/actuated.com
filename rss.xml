@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 15 Mar 2024 14:14:12 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 20 Mar 2024 08:22:40 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -387,7 +387,7 @@ Run time: 45s
 </code></pre>
 <p>The endpoint could also be a HTTPS URL to a S3 server hosted within the same network as the self-hosted runners.</p>
 <p>If you are relying on the built-in cache support that is included in some actions like <a href="https://github.com/actions/setup-node#caching-global-packages-data">setup-node</a> and <a href="https://github.com/actions/setup-go">setup-go</a> you will need to add an additional caching step to your workflow as they are not directly compatible with the self-hosted S3 cache.</p>
-<h2>The impact of switching to a local cache.</h2>
+<h2>The impact of switching to a local cache</h2>
 <p>The <a href="https://github.com/discourse/discourse/actions/workflows/tests.yml">Tests workflow</a> from the <a href="https://github.com/discourse/discourse">Discourse repository</a> was used to test the impact of switching to a local cache. We ran the workflow on a self-hosted Actuated runner, both with the S3 local cache and with the GitHub cache.</p>
 <p>Next we looked at the time required to restore the caches in our two environments and compared it with the times we saw on GitHub hosted runners:</p>
 <table>
@@ -434,8 +434,79 @@ Run time: 45s
 <p><strong>How we improved testpkg's custom action</strong></p>
 <p>During our testing we noticed that every cache restore took a minimum of 10 seconds regardless of the cache size. It turned out to be an issue with timeouts in the <code>tespkg/actions-cache</code> action when listing objects in S3. We reported it and sent them <a href="https://github.com/tespkg/actions-cache/pull/44">a pull request with a fix</a>.</p>
 <p>With the fix in place restoring small caches from the local cache dropped from 10s to sub 1s.</p>
+<h2>The impact of switching to faster runners</h2>
+<p>The Discourse repo uses the larger GitHub hosted runners to run tests. The jobs we are going to compare are part of the <a href="https://github.com/discourse/discourse/actions/workflows/tests.yml">Tests workflow</a>. They are using runners with 8 CPUs and 32GB of ram so we replaced the <code>runs-on</code> label with an actuated label <code>actuated-8cpu-24gb</code> to run the jobs on similar sized microVMs.</p>
+<p>All jobs ran on the same <a href="https://www.hetzner.com/dedicated-rootserver/ax102/">Hetzner AX102</a> bare metal host.</p>
+<p>This table compares the time it took to run each job on the hosted runner and on our Actuated runner.</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>GitHub hosted runner</th>
+<th>Actuated runner</th>
+<th>Speedup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>core annotations</strong></td>
+<td>3m23s</td>
+<td>1m22s</td>
+<td>59%</td>
+</tr>
+<tr>
+<td><strong>core backend</strong></td>
+<td>7m11s</td>
+<td>6m0s</td>
+<td>16%</td>
+</tr>
+<tr>
+<td><strong>plugins backend</strong></td>
+<td>7m42s</td>
+<td>5m54s</td>
+<td>23%</td>
+</tr>
+<tr>
+<td><strong>plugins frontend</strong></td>
+<td>5m28s</td>
+<td>4m3s</td>
+<td>26%</td>
+</tr>
+<tr>
+<td><strong>themes frontend</strong></td>
+<td>4m20s</td>
+<td>2m46s</td>
+<td>36%</td>
+</tr>
+<tr>
+<td><strong>chat system</strong></td>
+<td>9m37s</td>
+<td>6m33s</td>
+<td>32%</td>
+</tr>
+<tr>
+<td><strong>core system</strong></td>
+<td>7m12s</td>
+<td>5m24s</td>
+<td>25%</td>
+</tr>
+<tr>
+<td><strong>plugin system</strong></td>
+<td>5m32s</td>
+<td>3m56s</td>
+<td>29%</td>
+</tr>
+<tr>
+<td><strong>themes system</strong></td>
+<td>4m32s</td>
+<td>2m41</td>
+<td>41%</td>
+</tr>
+</tbody>
+</table>
+<p>The first thing we notice is that all jobs completed faster on the Actuated runner. On average we see an improvement of around 1m40s seconds for each individual job.</p>
 <h2>Conclusion</h2>
-<p>After switching to a local S3 cache we saw a very significant improvement in the cache latency. Depending on how the cache is used in your workflow and the size of your cache artifacts switching to a local S3 cache might even have a bigger impact.</p>
+<p>While switching to faster self-hosted runners is the most obvious way to speed up your builds, the cache hosted on GitHub's network can become a new bottleneck if you use caching in your actions. After switching to a local S3 cache we saw a very significant improvement in the cache latency. Depending on how heavily the cache is used in your workflow and the size of your cache artifacts, switching to a local S3 cache might even have a bigger impact on build times.</p>
 <p>Both Seaweedfs and Minio were tested in our setup and they performed in a very similar way. Both have different open source licenses, so we'd recommend reading those before picking one or the other. Of course you could also use AWS S3, Google Cloud Storage, or another S3 compatible hosted service.</p>
 <p>In addition to the reduced latency, switching to a self hosted cache has a couple of other benefits.</p>
 <ul>
