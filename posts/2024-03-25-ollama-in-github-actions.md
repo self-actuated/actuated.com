@@ -180,9 +180,12 @@ That's how I came up with the commands for the Nvidia driver installation, and f
 
 Find out more about SSH for GitHub Actions [in the actuated docs](https://docs.actuated.dev/tasks/debug-ssh/).
 
+![Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM](/images/2024-04-ollama-in-ci/ssh.png)
+> Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM
+
 ## Wrapping up
 
-Within a very short period of time ollama helped us pull a popular AI model that can be used for chat and completions. We were then able to take what we learned and run it on a GPU at an accelerated speed and accuracy by using actuated's [new GPU support for GitHub Actions and GitLab CI](/blog/gpus-for-github-actions).
+Within a very short period of time ollama helped us pull a popular AI model that can be used for chat and completions. We were then able to take what we learned and run it on a GPU at an accelerated speed and accuracy by using actuated's [new GPU support for GitHub Actions and GitLab CI](/blog/gpus-for-github-actions). Most hosted CI systems provide a relatively small amount of disk space for jobs, with actuated you can customise this and that may be important if you're going to be downloading large AI models. You can also easily customise the amount of RAM and vCPU using the `runs-on` label to any combination you need.
 
 ollama isn't the only way to find, download and run AI models, just like Docker wasn't the only way to download and install Nginx or Postgresql, but it provides a useful and convenient interface for those of us who are still learning about AI, and are not as concerned with the internal workings of the models.
 
