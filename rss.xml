@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 25 Mar 2024 11:39:05 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 Mar 2024 13:11:29 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -88,6 +88,8 @@ response_json = response.json()
 <span class="hljs-comment"># Pretty print the JSON response</span>
 <span class="hljs-built_in">print</span>(json.dumps(response_json, indent=<span class="hljs-number">4</span>))
 </code></pre>
+<p>When you're constructing a request by API, make sure you include any tags in the <code>model</code> name, if you've used one. I.e. <code>"model": "llama2:13b"</code>.</p>
+<p>I hear from so many organisations who have gone to lengths to get SOC2 compliance, doing CVE scanning, or who are running Open Policy Agent or Kyverno to enforce strict Pod admission policies in Kubernetes, but then are happy to run their CI in Pods in privileged mode. So I asked the model why that may not be a smart idea. You can run the sample for yourself or <a href="https://gist.githubusercontent.com/alexellis/4c85e5927d251153c41379c4cac1a6c8/raw/257a02df0e01dff966c68509baf299bc32d3a11e/security.txt">see the response here</a>. We also go into detail in the <a href="https://docs.actuated.dev/faq/">actuated FAQ</a>, the security situation around self-hosted runners and containers is the main reason we built the solution.</p>
 <h3>Putting it together for a GitHub Action</h3>
 <p>The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the <a href="https://actuated.dev/pricing">Pricing page</a>.</p>
 <p>The <code>self-actuated/nvidia-run</code> installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be <a href="https://docs.actuated.dev/tasks/local-github-cache/">cached using a local S3 bucket</a>.</p>
@@ -119,6 +121,9 @@ response_json = response.json()
               # Run the background, there is no way to daemonise at the moment
               ollama serve &#x26;
 </span>
+              <span class="hljs-comment"># A short pause is required before the HTTP port is opened</span>
+              <span class="hljs-string">sleep</span> <span class="hljs-number">5</span>
+
               <span class="hljs-comment"># This endpoint blocks until ready</span>
               <span class="hljs-string">time</span> <span class="hljs-string">curl</span> <span class="hljs-string">-i</span> <span class="hljs-string">http://localhost:11434</span>
 
