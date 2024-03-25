@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 25 Mar 2024 11:34:47 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 Mar 2024 11:39:05 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -64,6 +64,7 @@ ollama pull llama2:13b
     "prompt":"What are the risks of running privileged Docker containers for CI workloads?"
 }'</span> | jq
 </code></pre>
+<p>We are just scratching the surface with what ollama can do, with a focus on testing and pulling pre-built models, but you can also create and share models using a <a href="https://github.com/ollama/ollama/blob/main/docs/modelfile.md">Modelfile</a>, which is another homage to the Docker experience by the ollama developers.</p>
 <h3>Access ollama from Python code</h3>
 <p>Here's how to access the API via Python, the <code>stream</code> parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client. For Golang (Go) users, ollama founder <a href="https://twitter.com/jmorgan">Jeffrey Morgan</a> maintains a <a href="https://pkg.go.dev/github.com/jmorganca/ollama/api">higher-level Go SDK</a>.</p>
 <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> requests
@@ -115,9 +116,12 @@ response_json = response.json()
             curl -fsSL https://ollama.com/install.sh | sudo -E sh
 </span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Start</span> <span class="hljs-string">serving</span>
           <span class="hljs-attr">run:</span> <span class="hljs-string">|
+              # Run the background, there is no way to daemonise at the moment
               ollama serve &#x26;
-              sleep 5
 </span>
+              <span class="hljs-comment"># This endpoint blocks until ready</span>
+              <span class="hljs-string">time</span> <span class="hljs-string">curl</span> <span class="hljs-string">-i</span> <span class="hljs-string">http://localhost:11434</span>
+
         <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Pull</span> <span class="hljs-string">llama2</span>
           <span class="hljs-attr">run:</span> <span class="hljs-string">|
               ollama pull llama2
@@ -134,7 +138,7 @@ response_json = response.json()
               "prompt":"What are the risks of running privileged Docker containers for CI workloads?"
             }' | jq
 </span></code></pre>
-<p>At time of writing, I couldn't find a way to detect when the HTTP serve was ready for ollama, so added a generous 5 second sleep in bash. Ideally, ollama will fix this issue for better use in scripting and automation. I created a GitHub issue that you can <a href="https://github.com/ollama/ollama/issues/3341">track here</a>.</p>
+<p>There is no built-in way to daemonise the ollama server, so for now we run it in the background using bash. The readiness endpoint can then be accessed which blocks until the server has completed its initialisation.</p>
 <h3>Interactive access with SSH</h3>
 <p>By modifying your CI job, you can drop into a remote SSH session and run interactive commands at any point in the workflow.</p>
 <p>That's how I came up with the commands for the Nvidia driver installation, and for the various ollama commands I shared.</p>
