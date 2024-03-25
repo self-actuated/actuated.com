@@ -92,7 +92,7 @@ curl -s http://localhost:11434/api/generate -d '{
 
 ### Access ollama from Python code
 
-Here's how to access the API via Python, the `stream` parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client.
+Here's how to access the API via Python, the `stream` parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client. For Golang (Go) users, ollama founder [Jeffrey Morgan](https://twitter.com/jmorgan) maintains a [higher-level Go SDK](https://pkg.go.dev/github.com/jmorganca/ollama/api).
 
 ```python
 import requests
@@ -119,9 +119,9 @@ print(json.dumps(response_json, indent=4))
 
 ### Putting it together for a GitHub Action
 
-The following GitHub Action will run on for customers who are enrolled for GPU support for actuated.
+The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the [Pricing page](https://actuated.dev/pricing).
 
-The initial set `self-actuated/nvidia-run` installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system and takes about 30 seconds. This can be cached, if you like.
+The `self-actuated/nvidia-run` installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be [cached using a local S3 bucket](https://docs.actuated.dev/tasks/local-github-cache/).
 
 Then, we simply run the equivalent bash commands from the previous section to:
 
