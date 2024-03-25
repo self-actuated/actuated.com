@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 25 Mar 2024 11:04:46 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 Mar 2024 11:18:04 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -39,7 +39,7 @@
 </code></pre>
 <p>By default, its REST API will listen on port <code>11434</code> on 127.0.0.1.</p>
 <p>You can find the reference for ollama's REST API here: <a href="https://github.com/ollama/ollama/blob/main/docs/api.md">API endpoints</a> - which includes things like: creating a chat completion, pulling a model, or generating embeddings.</p>
-<p>You can then browse <a href="https://ollama.com/library">available models on the official website</a>, which resembles the Docker Hub.</p>
+<p>You can then browse <a href="https://ollama.com/library">available models on the official website</a>, which resembles the Docker Hub. This set currently includes: gemma (built upon Google's DeepMind), mistral (an LLM), codellama (for generating Code), phi (from Microsoft research), vicuna (for chat, based upon llama2), llava (a vision encoder), and many more.</p>
 <p>Most models will download with a default parameter size that's small enough to run on most CPUs or GPUs, but if you need to access it, there are larger models for higher accuracy.</p>
 <p>For instance, the <a href="https://ollama.com/library/llama2">llama2</a> model by Meta will default to the 7b model which needs around 8GB of RAM.</p>
 <pre><code class="hljs language-bash"><span class="hljs-comment"># Pull the default model size:</span>
@@ -47,6 +47,7 @@
 ollama pull llama2
 
 <span class="hljs-comment"># Override the parameter size</span>
+
 ollama pull llama2:13b
 </code></pre>
 <p>Once you have a model, you can then either "run" it, where you'll be able to ask it questions and interact with it like you would with ChatGPT, or you can send it API requests from your own applications using REST and HTTP.</p>
@@ -64,7 +65,7 @@ ollama pull llama2:13b
 }'</span> | jq
 </code></pre>
 <h3>Access ollama from Python code</h3>
-<p>Here's how to access the API via Python, the <code>stream</code> parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client.</p>
+<p>Here's how to access the API via Python, the <code>stream</code> parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client. For Golang (Go) users, ollama founder <a href="https://twitter.com/jmorgan">Jeffrey Morgan</a> maintains a <a href="https://pkg.go.dev/github.com/jmorganca/ollama/api">higher-level Go SDK</a>.</p>
 <pre><code class="hljs language-python"><span class="hljs-keyword">import</span> requests
 <span class="hljs-keyword">import</span> json
 
@@ -87,8 +88,8 @@ response_json = response.json()
 <span class="hljs-built_in">print</span>(json.dumps(response_json, indent=<span class="hljs-number">4</span>))
 </code></pre>
 <h3>Putting it together for a GitHub Action</h3>
-<p>The following GitHub Action will run on for customers who are enrolled for GPU support for actuated.</p>
-<p>The initial set <code>self-actuated/nvidia-run</code> installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system and takes about 30 seconds. This can be cached, if you like.</p>
+<p>The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the <a href="https://actuated.dev/pricing">Pricing page</a>.</p>
+<p>The <code>self-actuated/nvidia-run</code> installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be <a href="https://docs.actuated.dev/tasks/local-github-cache/">cached using a local S3 bucket</a>.</p>
 <p>Then, we simply run the equivalent bash commands from the previous section to:</p>
 <ul>
 <li>Install ollama</li>
