@@ -169,6 +169,8 @@ jobs:
             }' | jq
 ```
 
+At time of writing, I couldn't find a way to detect when the HTTP serve was ready for ollama, so added a generous 5 second sleep in bash. Ideally, ollama will fix this issue for better use in scripting and automation. I created a GitHub issue that you can [track here](https://github.com/ollama/ollama/issues/3341).
+
 ### Interactive access with SSH
 
 By modifying your CI job, you can drop into a remote SSH session and run interactive commands at any point in the workflow.
