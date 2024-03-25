@@ -26,7 +26,9 @@ We'll first cover what ollama is, why it's so popular, how to get it, what kinds
 
 ## What's ollama?
 
-[ollama](https://ollama.com/) is an open source project that aims to do for AI models, what Docker did for Linux containers. Whilst Docker created a user experience to share and run containers using container images in the Open Container Initiative (OCI) format, ollama bundles well-known AI models and makes it easy to run them without having to think about Python versions or cuda libraries.
+[ollama](https://ollama.com/) is an open source project that aims to do for AI models, what Docker did for Linux containers. Whilst Docker created a user experience to share and run containers using container images in the Open Container Initiative (OCI) format, ollama bundles well-known AI models and makes it easy to run them without having to think about Python versions or Nvidia CUDA libraries.
+
+The project packages and runs various models, but seems to take its name from Meta's popular [llama2 model](https://llama.meta.com/), which whilst [not released under an open source license](https://llama.meta.com/faq), allows for a generous amount of free usage for most types of users.
 
 The ollama project can be run directly on a Linux, MacOS or Windows host, or within a container. There's a server component, and a CLI that acts as a client to pre-trained models. The main use-case today is that of inference - exercising the model with input data. A more recent feature means that you can create embeddings, if you pull a model that supports them.
 
