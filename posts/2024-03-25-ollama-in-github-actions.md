@@ -91,6 +91,8 @@ curl -s http://localhost:11434/api/generate -d '{
 }' | jq
 ```
 
+We are just scratching the surface with what ollama can do, with a focus on testing and pulling pre-built models, but you can also create and share models using a [Modelfile](https://github.com/ollama/ollama/blob/main/docs/modelfile.md), which is another homage to the Docker experience by the ollama developers.
+
 ### Access ollama from Python code
 
 Here's how to access the API via Python, the `stream` parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client. For Golang (Go) users, ollama founder [Jeffrey Morgan](https://twitter.com/jmorgan) maintains a [higher-level Go SDK](https://pkg.go.dev/github.com/jmorganca/ollama/api).
