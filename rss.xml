@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 20 Mar 2024 08:22:40 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 Mar 2024 10:59:44 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,138 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[Run AI models with ollama in CI with GitHub Actions]]></title>
+            <link>https://actuated.dev/blog/ollama-in-github-actions</link>
+            <guid>https://actuated.dev/blog/ollama-in-github-actions</guid>
+            <pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[With the new GPU support for actuated, we've been able to run models like llama2 from ollama in CI on consumer and datacenter grade Nvidia cards.]]></description>
+            <content:encoded><![CDATA[<p>That means you can run real end to end tests in CI with the same models you may use in dev and production. And if you use OpenAI or AWS SageMaker extensively, you could perhaps swap out what can be a very expensive API endpoint for your CI or testing environments to save money.</p>
+<p>If you'd like to learn more about how and why you'd want access to GPUs in CI, read my past update: <a href="/blog/gpus-for-github-actions">Accelerate GitHub Actions with dedicated GPUs</a>.</p>
+<p>We'll first cover what ollama is, why it's so popular, how to get it, what kinds of fun things you can do with it, then how to access it from actuated using a real GPU.</p>
+<p><img src="/images/2024-04-ollama-in-ci/logos.png" alt="ollama can run in CI with isolated GPU acceleration using actuated"></p>
+<blockquote>
+<p>ollama can now run in CI with isolated GPU acceleration using actuated</p>
+</blockquote>
+<h2>What's ollama?</h2>
+<p><a href="https://ollama.com/">ollama</a> is an open source project that aims to do for AI models, what Docker did for Linux containers. Whilst Docker created a user experience to share and run containers using container images in the Open Container Initiative (OCI) format, ollama bundles well-known AI models and makes it easy to run them without having to think about Python versions or cuda libraries.</p>
+<p>The ollama project can be run directly on a Linux, MacOS or Windows host, or within a container. There's a server component, and a CLI that acts as a client to pre-trained models. The main use-case today is that of inference - exercising the model with input data. A more recent feature means that you can create embeddings, if you pull a model that supports them.</p>
+<p>On Linux, ollama can be installed using a utility script:</p>
+<pre><code class="hljs language-bash">curl -fsSL https://ollama.com/install.sh | sh
+</code></pre>
+<p>This provides the <code>ollama</code> CLI command.</p>
+<h2>A quick tour of ollama</h2>
+<p>After the initial installation, you can start a server:</p>
+<pre><code class="hljs language-bash">ollama serve
+</code></pre>
+<p>By default, its REST API will listen on port <code>11434</code> on 127.0.0.1.</p>
+<p>You can find the reference for ollama's REST API here: <a href="https://github.com/ollama/ollama/blob/main/docs/api.md">API endpoints</a> - which includes things like: creating a chat completion, pulling a model, or generating embeddings.</p>
+<p>You can then browse <a href="https://ollama.com/library">available models on the official website</a>, which resembles the Docker Hub.</p>
+<p>Most models will download with a default parameter size that's small enough to run on most CPUs or GPUs, but if you need to access it, there are larger models for higher accuracy.</p>
+<p>For instance, the <a href="https://ollama.com/library/llama2">llama2</a> model by Meta will default to the 7b model which needs around 8GB of RAM.</p>
+<pre><code class="hljs language-bash"><span class="hljs-comment"># Pull the default model size:</span>
+
+ollama pull llama2
+
+<span class="hljs-comment"># Override the parameter size</span>
+ollama pull llama2:13b
+</code></pre>
+<p>Once you have a model, you can then either "run" it, where you'll be able to ask it questions and interact with it like you would with ChatGPT, or you can send it API requests from your own applications using REST and HTTP.</p>
+<p>For an interactive prompt, give no parameters:</p>
+<pre><code class="hljs language-bash">ollama run llama2
+</code></pre>
+<p>To get an immediate response for use in i.e. scripts:</p>
+<pre><code class="hljs language-bash">ollama run llama2 <span class="hljs-string">"What are the pros of MicroVMs for continous integrations, especially if Docker is the alternative?"</span>
+</code></pre>
+<p>And you can use the REST API via <code>curl</code>, or your own codebase:</p>
+<pre><code class="hljs language-bash">curl -s http://localhost:11434/api/generate -d <span class="hljs-string">'{
+    "model": "llama2",
+    "stream": false,
+    "prompt":"What are the risks of running privileged Docker containers for CI workloads?"
+}'</span> | jq
+</code></pre>
+<h3>Access ollama from Python code</h3>
+<p>Here's how to access the API via Python, the <code>stream</code> parameter will emit JSON progressively when set to True, block until done if set to False. With Node.js, Python, Java, C#, etc the code will be very similar, but using your own preferred HTTP client.</p>
+<pre><code class="hljs language-python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> json
+
+url = <span class="hljs-string">"http://localhost:11434/api/generate"</span>
+payload = {
+    <span class="hljs-string">"model"</span>: <span class="hljs-string">"llama2"</span>,
+    <span class="hljs-string">"stream"</span>: <span class="hljs-literal">False</span>,
+    <span class="hljs-string">"prompt"</span>: <span class="hljs-string">"What are the risks of running privileged Docker containers for CI workloads?"</span>
+}
+headers = {
+    <span class="hljs-string">"Content-Type"</span>: <span class="hljs-string">"application/json"</span>
+}
+
+response = requests.post(url, data=json.dumps(payload), headers=headers)
+
+<span class="hljs-comment"># Parse the JSON response</span>
+response_json = response.json()
+
+<span class="hljs-comment"># Pretty print the JSON response</span>
+<span class="hljs-built_in">print</span>(json.dumps(response_json, indent=<span class="hljs-number">4</span>))
+</code></pre>
+<h3>Putting it together for a GitHub Action</h3>
+<p>The following GitHub Action will run on for customers who are enrolled for GPU support for actuated.</p>
+<p>The initial set <code>self-actuated/nvidia-run</code> installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system and takes about 30 seconds. This can be cached, if you like.</p>
+<p>Then, we simply run the equivalent bash commands from the previous section to:</p>
+<ul>
+<li>Install ollama</li>
+<li>Start serving the REST API</li>
+<li>Pull the llama2 model from Meta</li>
+<li>Run an inference via CLI</li>
+<li>Run an inference via REST API using curl</li>
+</ul>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">ollama-e2e</span>
+
+<span class="hljs-attr">on:</span>
+    <span class="hljs-attr">workflow_dispatch:</span>
+
+<span class="hljs-attr">jobs:</span>
+    <span class="hljs-attr">ollama-e2e:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">ollama-e2e</span>
+        <span class="hljs-attr">runs-on:</span> [<span class="hljs-string">actuated-8cpu-16gb</span>, <span class="hljs-string">gpu</span>]
+        <span class="hljs-attr">steps:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/nvidia-run@master</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">Ollama</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            curl -fsSL https://ollama.com/install.sh | sudo -E sh
+</span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Start</span> <span class="hljs-string">serving</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+              ollama serve &#x26;
+              sleep 5
+</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Pull</span> <span class="hljs-string">llama2</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+              ollama pull llama2
+</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Invoke</span> <span class="hljs-string">via</span> <span class="hljs-string">the</span> <span class="hljs-string">CLI</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+              ollama run llama2 "What are the pros of MicroVMs for continous integrations, especially if Docker is the alternative?"
+</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Invoke</span> <span class="hljs-string">via</span> <span class="hljs-string">API</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            curl -s http://localhost:11434/api/generate -d '{
+              "model": "llama2",
+              "stream": false,
+              "prompt":"What are the risks of running privileged Docker containers for CI workloads?"
+            }' | jq
+</span></code></pre>
+<h3>Interactive access with SSH</h3>
+<p>By modifying your CI job, you can drop into a remote SSH session and run interactive commands at any point in the workflow.</p>
+<p>That's how I came up with the commands for the Nvidia driver installation, and for the various ollama commands I shared.</p>
+<p>Find out more about SSH for GitHub Actions <a href="https://docs.actuated.dev/tasks/debug-ssh/">in the actuated docs</a>.</p>
+<h2>Wrapping up</h2>
+<p>Within a very short period of time ollama helped us pull a popular AI model that can be used for chat and completions. We were then able to take what we learned and run it on a GPU at an accelerated speed and accuracy by using actuated's <a href="/blog/gpus-for-github-actions">new GPU support for GitHub Actions and GitLab CI</a>.</p>
+<p>ollama isn't the only way to find, download and run AI models, just like Docker wasn't the only way to download and install Nginx or Postgresql, but it provides a useful and convenient interface for those of us who are still learning about AI, and are not as concerned with the internal workings of the models.</p>
+<p>Over on the OpenFaaS blog, in the tutorial <a href="https://www.openfaas.com/blog/openai-streaming-responses/">Stream OpenAI responses from functions using Server Sent Events</a>, we covered how to stream a response from a model to a function, and then back to a user. There, we used the <a href="https://github.com/c0sogi/llama-api">llama-api</a> open source project, which is a single-purpose HTTP API for simulating llama2.</p>
+<p>One of the benefits of ollama is <a href="https://github.com/ollama/ollama/tree/main/examples">the detailed range of examples</a> in the docs, and the ability to run other models that may include computer vision such as with the <a href="https://llava-vl.github.io/">LLaVA: Large Language and Vision Assistant model</a> or generating code with <a href="https://codellama.dev/about">Code Llama</a>.</p>
+<p>Right now, many of us are running and tuning models in development, some of us are using OpenAI's API or self-hosted models in production, but there's very little talk about doing thorough end to end testing or exercising models in CI. That's where actuated can help.</p>
+<p>Feel free to <a href="/pricing/">reach out for early access, or to see if we can help your team with your CI needs</a>.</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Accelerate GitHub Actions with dedicated GPUs]]></title>
             <link>https://actuated.dev/blog/gpus-for-github-actions</link>
