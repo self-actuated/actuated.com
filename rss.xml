@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 25 Mar 2024 11:00:30 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 Mar 2024 11:03:10 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -26,7 +26,8 @@
 <p>ollama can now run in CI with isolated GPU acceleration using actuated</p>
 </blockquote>
 <h2>What's ollama?</h2>
-<p><a href="https://ollama.com/">ollama</a> is an open source project that aims to do for AI models, what Docker did for Linux containers. Whilst Docker created a user experience to share and run containers using container images in the Open Container Initiative (OCI) format, ollama bundles well-known AI models and makes it easy to run them without having to think about Python versions or cuda libraries.</p>
+<p><a href="https://ollama.com/">ollama</a> is an open source project that aims to do for AI models, what Docker did for Linux containers. Whilst Docker created a user experience to share and run containers using container images in the Open Container Initiative (OCI) format, ollama bundles well-known AI models and makes it easy to run them without having to think about Python versions or Nvidia CUDA libraries.</p>
+<p>The project packages and runs various models, but seems to take its name from Meta's popular <a href="https://llama.meta.com/">llama2 model</a>, which whilst <a href="https://llama.meta.com/faq">not released under an open source license</a>, allows for a generous amount of free usage for most types of users.</p>
 <p>The ollama project can be run directly on a Linux, MacOS or Windows host, or within a container. There's a server component, and a CLI that acts as a client to pre-trained models. The main use-case today is that of inference - exercising the model with input data. A more recent feature means that you can create embeddings, if you pull a model that supports them.</p>
 <p>On Linux, ollama can be installed using a utility script:</p>
 <pre><code class="hljs language-bash">curl -fsSL https://ollama.com/install.sh | sh
