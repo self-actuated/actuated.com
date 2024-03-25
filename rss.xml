@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Mon, 25 Mar 2024 11:18:04 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 25 Mar 2024 11:34:47 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -139,8 +139,12 @@ response_json = response.json()
 <p>By modifying your CI job, you can drop into a remote SSH session and run interactive commands at any point in the workflow.</p>
 <p>That's how I came up with the commands for the Nvidia driver installation, and for the various ollama commands I shared.</p>
 <p>Find out more about SSH for GitHub Actions <a href="https://docs.actuated.dev/tasks/debug-ssh/">in the actuated docs</a>.</p>
+<p><img src="/images/2024-04-ollama-in-ci/ssh.png" alt="Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM"></p>
+<blockquote>
+<p>Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM</p>
+</blockquote>
 <h2>Wrapping up</h2>
-<p>Within a very short period of time ollama helped us pull a popular AI model that can be used for chat and completions. We were then able to take what we learned and run it on a GPU at an accelerated speed and accuracy by using actuated's <a href="/blog/gpus-for-github-actions">new GPU support for GitHub Actions and GitLab CI</a>.</p>
+<p>Within a very short period of time ollama helped us pull a popular AI model that can be used for chat and completions. We were then able to take what we learned and run it on a GPU at an accelerated speed and accuracy by using actuated's <a href="/blog/gpus-for-github-actions">new GPU support for GitHub Actions and GitLab CI</a>. Most hosted CI systems provide a relatively small amount of disk space for jobs, with actuated you can customise this and that may be important if you're going to be downloading large AI models. You can also easily customise the amount of RAM and vCPU using the <code>runs-on</code> label to any combination you need.</p>
 <p>ollama isn't the only way to find, download and run AI models, just like Docker wasn't the only way to download and install Nginx or Postgresql, but it provides a useful and convenient interface for those of us who are still learning about AI, and are not as concerned with the internal workings of the models.</p>
 <p>Over on the OpenFaaS blog, in the tutorial <a href="https://www.openfaas.com/blog/openai-streaming-responses/">Stream OpenAI responses from functions using Server Sent Events</a>, we covered how to stream a response from a model to a function, and then back to a user. There, we used the <a href="https://github.com/c0sogi/llama-api">llama-api</a> open source project, which is a single-purpose HTTP API for simulating llama2.</p>
 <p>One of the benefits of ollama is <a href="https://github.com/ollama/ollama/tree/main/examples">the detailed range of examples</a> in the docs, and the ability to run other models that may include computer vision such as with the <a href="https://llava-vl.github.io/">LLaVA: Large Language and Vision Assistant model</a> or generating code with <a href="https://codellama.dev/about">Code Llama</a>.</p>
