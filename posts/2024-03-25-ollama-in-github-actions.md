@@ -152,8 +152,11 @@ jobs:
             curl -fsSL https://ollama.com/install.sh | sudo -E sh
         - name: Start serving
           run: |
+              # Run the background, there is no way to daemonise at the moment
               ollama serve &
-              sleep 5
+
+              # This endpoint blocks until ready
+              time curl -i http://localhost:11434
 
         - name: Pull llama2
           run: |
@@ -172,7 +175,7 @@ jobs:
             }' | jq
 ```
 
-At time of writing, I couldn't find a way to detect when the HTTP serve was ready for ollama, so added a generous 5 second sleep in bash. Ideally, ollama will fix this issue for better use in scripting and automation. I created a GitHub issue that you can [track here](https://github.com/ollama/ollama/issues/3341).
+There is no built-in way to daemonise the ollama server, so for now we run it in the background using bash. The readiness endpoint can then be accessed which blocks until the server has completed its initialisation.
 
 ### Interactive access with SSH
 
