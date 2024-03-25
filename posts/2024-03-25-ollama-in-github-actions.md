@@ -52,7 +52,7 @@ By default, its REST API will listen on port `11434` on 127.0.0.1.
 
 You can find the reference for ollama's REST API here: [API endpoints](https://github.com/ollama/ollama/blob/main/docs/api.md) - which includes things like: creating a chat completion, pulling a model, or generating embeddings.
 
-You can then browse [available models on the official website](https://ollama.com/library), which resembles the Docker Hub.
+You can then browse [available models on the official website](https://ollama.com/library), which resembles the Docker Hub. This set currently includes: gemma (built upon Google's DeepMind), mistral (an LLM), codellama (for generating Code), phi (from Microsoft research), vicuna (for chat, based upon llama2), llava (a vision encoder), and many more.
 
 Most models will download with a default parameter size that's small enough to run on most CPUs or GPUs, but if you need to access it, there are larger models for higher accuracy.
 
@@ -64,6 +64,7 @@ For instance, the [llama2](https://ollama.com/library/llama2) model by Meta will
 ollama pull llama2
 
 # Override the parameter size
+
 ollama pull llama2:13b
 ```
 
