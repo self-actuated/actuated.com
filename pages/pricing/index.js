@@ -4,24 +4,26 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 const includedFeatures = [
   'Unlimited build minutes',
   'Bring your own server',
-  'Free onboarding call with our engineers',
-  'Linux x86_64 and 64-bit Arm',
+  'Onboarding call with our engineers',
+  'Linux x86_64 & Arm supported',
   'Reporting and usage metrics',
   'Support via email',
+  'Shared Slack channel'
 ]
 
 const upgradedFeatures = [
+  'Unlimited advice for CI improvements',
+  'White glove onboarding',
   'Debug tricky builds with SSH',
-  'Enhanced SLA',
   'Private Prometheus metrics',
   'Private Slack channel',
-  'Recommendations to improve build speed',
+  'Enhanced SLA'
 ]
 
 const earlyAccess = [
-  'Self-hosted GitLab CI',
+  'GPU and PCIe support for builds',
   'GitHub Enterprise Server (GHES)',
-  'GPU pass-through'
+  'GitLab CI (self-hosted)'
 ]
 
 export default function Pricing({ posts }) {
@@ -56,14 +58,14 @@ export default function Pricing({ posts }) {
             <p className="mt-6 text-base leading-7 text-gray-600">
               The onboarding process is quick and easy: <a className='text-blue-500 underline' href="https://docs.actuated.dev/register">learn more</a>.
             </p>
-            <div className="mt-10 flex items-center gap-x-4">
-              <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">In all tiers</h4>
+            <div className="mt-6 flex items-center gap-x-4">
+              <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">In the base tier</h4>
               <div className="h-px flex-auto bg-gray-100" />
             </div>
         
             <ul
               role="list"
-              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+              className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
             >
               {includedFeatures.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
@@ -73,14 +75,14 @@ export default function Pricing({ posts }) {
               ))}
             </ul>
 
-            <div className="mt-10 flex items-center gap-x-4">
+            <div className="mt-6 flex items-center gap-x-4">
               <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">With higher concurrency</h4>
               <div className="h-px flex-auto bg-gray-100" />
             </div>
         
             <ul
               role="list"
-              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+              className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
             >
               {upgradedFeatures.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
@@ -91,14 +93,14 @@ export default function Pricing({ posts }) {
             </ul>
 
 
-            <div className="mt-10 flex items-center gap-x-4">
+            <div className="mt-6 flex items-center gap-x-4">
               <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">Early access</h4>
               <div className="h-px flex-auto bg-gray-100" />
             </div>
 
             <ul
               role="list"
-              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+              className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
             >
               {earlyAccess.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
@@ -125,7 +127,7 @@ export default function Pricing({ posts }) {
                   Talk to us
                 </a>
                 <p className="mt-6 text-xs leading-5 text-gray-600">
-                  You'll meet with our founder to discuss your current challenges and answer any questions you may have.
+                  You'll meet with our engineers to understand your needs and answer your questions.
                 </p>
               </div>
             </div>
