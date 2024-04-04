@@ -13,14 +13,16 @@ const includedFeatures = [
 
 const upgradedFeatures = [
   'Unlimited advice for CI improvements',
-  'White glove onboarding',
+  'Expert remote install and updates',
   'Debug tricky builds with SSH',
   'Private Prometheus metrics',
   'Private Slack channel',
-  'Enhanced SLA'
+  'Enhanced SLA',
+  'Run behind a firewall'
 ]
 
 const earlyAccess = [
+  'Surge your plan size on a daily basis',
   'GPU and PCIe support for builds',
   'GitHub Enterprise Server (GHES)',
   'GitLab CI (self-hosted)'
