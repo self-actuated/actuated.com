@@ -87,7 +87,7 @@ export default function Solutions() {
               Actuated is billed by the maximum amount of concurrent jobs you can run, so no matter how many build minutes your team requires, the charge will not increase with usage.
             </p>
             <p className='mt-4 mx-10 text-base leading-7 text-gray-600 text-justify'>
-              In a recent interview, a lead SRE at UK-based scale-up told us that their bill had increased 5x over the past 6 months. They are now paying 5000 GBP / month and we worked out that we could make their builds faster and at least half the costs.
+              In a recent interview, a lead SRE at UK-based scale-up told us that their bill had increased 5x over the past 6 months. They are now paying 5000 GBP / month and we worked out that we could make their builds faster and at least halve their costs.
             </p>
         </div>
 
@@ -115,8 +115,8 @@ export default function Solutions() {
                   Predictable billing.
                 </dt>
                 <dd className="mt-2 text-base leading-7 text-gray-600">
-                 <p className="mb-2">Most small teams we interviewed were spending at least 1000-1500 USD / mo for the standard, slower hosted runners.</p>
-                  <p className="mb-2">That cost would only increase with GitHub's faster runners, but with actuated the cost is flat-rate, no matter how many minutes you use.</p>
+                 <p className="mb-2">Most small teams we interviewed were spending at least 1000-1500 USD / mo for slower hosted runners.</p>
+                  <p className="mb-2">That cost would multiply if moved to GitHub's "bigger runners" and increas with usage. But with actuated the cost is flat-rate, no matter how many minutes you use.</p>
                 </dd>
               </div>
 
