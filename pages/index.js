@@ -69,7 +69,15 @@ export default function Home() {
             <div className="mt-6 justify-center grid grid-cols-12 gap-8 md:grid-cols-12 lg:grid-cols-12 content-evenly">
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
-                <img className="h-12" src="./images/Riskfuel-logo-blue.png" alt="Riskfuel" />
+                <img className="h-12" src="./images/balena-logo.png" alt="Balena.io" />
+              </div>
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/calyptia.png" alt="Calyptia - Observability, simplified" />
+              </div>
+
+              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
+                <img className="h-12" src="./images/cncf.png" alt="Cloud Native Computing Foundation (CNCF)" />
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
@@ -77,20 +85,13 @@ export default function Home() {
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
-                <img className="h-12" src="./images/calyptia.png" alt="Observability, simplified" />
-              </div>
-
-              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
-                <img className="h-12" src="./images/dasch.png" alt="Swiss National Data and Service Center" />
-              </div>
-
-              <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
                 <img className="h-12" src="./images/kubiya-actuated.png" alt="Kubiya.ai" />
               </div>
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
-                <img className="h-12" src="./images/cncf.png" alt="Cloud Native Computing Foundation (CNCF)" />
+                <img className="h-12" src="./images/thg-logo.png" alt="The Hut Group" />
               </div>
+
 
               <div className="col-span-12 flex justify-center md:col-span-3 lg:col-span-3">
                 <img className="h-12" src="./images/toolpath.png" alt="Toolpath" />

@@ -22,7 +22,7 @@ const upgradedFeatures = [
 ]
 
 const earlyAccess = [
-  'Surge your plan size on a daily basis',
+  'Burst billing for spikes in usage',
   'GPU and PCIe support for builds',
   'GitHub Enterprise Server (GHES)',
   'GitLab CI (self-hosted)'
@@ -55,7 +55,7 @@ export default function Pricing({ posts }) {
               Actuated plans are based upon the total number of concurrent builds needed for your team. All plans include unmetered minutes, with no additional charges.
             </p>
             <p className="mt-6 text-base leading-7 text-gray-600">
-              The higher the concurrency level for your plan, the more benefits you'll receive.
+              The higher the concurrency level for your plan, the more benefits you'll receive. With burst billing, you get extra concurrency when you need it, without commitment.
             </p>
             <p className="mt-6 text-base leading-7 text-gray-600">
               The onboarding process is quick and easy: <a className='text-blue-500 underline' href="https://docs.actuated.dev/register">learn more</a>.
