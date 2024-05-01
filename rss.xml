@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 01 May 2024 09:37:10 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 01 May 2024 09:37:25 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -221,7 +221,7 @@ response_json = response.json()
 <p>Over on the OpenFaaS blog, in the tutorial <a href="https://www.openfaas.com/blog/openai-streaming-responses/">Stream OpenAI responses from functions using Server Sent Events</a>, we covered how to stream a response from a model to a function, and then back to a user. There, we used the <a href="https://github.com/c0sogi/llama-api">llama-api</a> open source project, which is a single-purpose HTTP API for simulating llama2.</p>
 <p>One of the benefits of ollama is <a href="https://github.com/ollama/ollama/tree/main/examples">the detailed range of examples</a> in the docs, and the ability to run other models that may include computer vision such as with the <a href="https://llava-vl.github.io/">LLaVA: Large Language and Vision Assistant model</a> or generating code with <a href="https://codellama.dev/about">Code Llama</a>.</p>
 <p>Right now, many of us are running and tuning models in development, some of us are using OpenAI's API or self-hosted models in production, but there's very little talk about doing thorough end to end testing or exercising models in CI. That's where actuated can help.</p>
-<p>Feel free to <a href="/pricing/">reach out for early access, or to see if we can help your team with your CI needs</a>.</p>]]></content:encoded>
+<p>Feel free to <a href="/pricing">reach out for early access, or to see if we can help your team with your CI needs</a>.</p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Accelerate GitHub Actions with dedicated GPUs]]></title>
@@ -4070,7 +4070,7 @@ We want to build for Arm - Arm builds is what brought us to actuated</p>
 <p>What if you didn't have to pay per minute of build time?</p>
 <h3>What's wrong with self-hosted runners?</h3>
 <p><strong>It's challenging to get all the packages right as per a hosted runner</strong></p>
-<p>I spent several days running and re-running builds to get all the software required on a self-hosted runner for the private repos for <a href="https://www.openfaas.com/pricing/">OpenFaaS Pro</a>. Guess what?</p>
+<p>I spent several days running and re-running builds to get all the software required on a self-hosted runner for the private repos for <a href="https://www.openfaas.com/pricing">OpenFaaS Pro</a>. Guess what?</p>
 <p>I didn't want to touch that machine again afterwards, and even if I built up a list of apt packages, it'd be wrong in a few weeks. I then had a long period of tweaking the odd missing package and generating random container image names to prevent Docker and KinD from conflicting and causing side-effects.</p>
 <p>What if we could get an image that had everything we needed and was always up to date, and we didn't have to maintain that?</p>
 <p><strong>Self-hosted runners cause weird bugs due to caching</strong></p>
