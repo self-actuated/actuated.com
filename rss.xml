@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 01 May 2024 09:37:53 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 01 May 2024 11:13:39 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -23,7 +23,7 @@
 <p><strong>Why we charge on concurrency, not minutes</strong></p>
 <p>Having run over 320k VMs for customer CI jobs on GitHub Actions, we've seen a lot of different workloads and usage patterns. Some teams have a constant stream of hundreds of jobs per hour due to the use of matrix builds, some have a plan that's a little to big for them, and others have a plan that's a little to small, so they get the odd delay whilst they wait for jobs to finish.</p>
 <p>We decided to charge customers based not upon how many jobs they launched, how many minutes they consumed, but on the maximum amount of jobs they wanted to run at any one time (concurrency). Since customers already bring their own hardware, and pay per minute, hour or month for it, we didn't want them to have to pay again per minute and to be limited by how many jobs they could run per month.</p>
-<p>For high usage customers, this is a great deal. You get to run unlimited minutes, and in one case we had a customer who consumed 100k minutes within one week. With GitHub's current pricing that would have cost them 3200 USD per week, or 128000 USD per month. So you can see how <a href="/pricing">the actuated plans</a>, based upon concurrency alone are a great deal cheaper here.</p>
+<p>For high usage customers, this is a great deal. You get to run unlimited minutes, and in one case we had a customer who consumed 100k minutes within one week. With GitHub's current pricing that would have cost them 3,200 USD per week, or 12,800 USD per month. So you can see how <a href="/pricing">the actuated plans</a>, based upon concurrency alone are a great deal cheaper here.</p>
 <p><strong>What if your plan is too small?</strong></p>
 <p>So let's take a team that has the 5 concurrent build plan, but their server can accommodate 10 builds at once. What happens there?</p>
 <p>If 8 builds are queued, 5 will be scheduled, and the other 3 will remain in a queue. Once one of the first 5 completes, one of those 3 pending will get scheduled, and so forth, until all the work is done.</p>
