@@ -22,7 +22,7 @@ Having run over 320k VMs for customer CI jobs on GitHub Actions, we've seen a lo
 
 We decided to charge customers based not upon how many jobs they launched, how many minutes they consumed, but on the maximum amount of jobs they wanted to run at any one time (concurrency). Since customers already bring their own hardware, and pay per minute, hour or month for it, we didn't want them to have to pay again per minute and to be limited by how many jobs they could run per month.
 
-For high usage customers, this is a great deal. You get to run unlimited minutes, and in one case we had a customer who consumed 100k minutes within one week. With GitHub's current pricing that would have cost them 3200 USD per week, or 128000 USD per month. So you can see how [the actuated plans](/pricing/), based upon concurrency alone are a great deal cheaper here.
+For high usage customers, this is a great deal. You get to run unlimited minutes, and in one case we had a customer who consumed 100k minutes within one week. With GitHub's current pricing that would have cost them 3200 USD per week, or 128000 USD per month. So you can see how [the actuated plans](/pricing), based upon concurrency alone are a great deal cheaper here.
 
 **What if your plan is too small?**
 

@@ -207,4 +207,4 @@ One of the benefits of ollama is [the detailed range of examples](https://github
 
 Right now, many of us are running and tuning models in development, some of us are using OpenAI's API or self-hosted models in production, but there's very little talk about doing thorough end to end testing or exercising models in CI. That's where actuated can help.
 
-Feel free to [reach out for early access, or to see if we can help your team with your CI needs](/pricing/).
+Feel free to [reach out for early access, or to see if we can help your team with your CI needs](/pricing).

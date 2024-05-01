@@ -104,7 +104,7 @@ What if you didn't have to pay per minute of build time?
 
 **It's challenging to get all the packages right as per a hosted runner**
 
-I spent several days running and re-running builds to get all the software required on a self-hosted runner for the private repos for [OpenFaaS Pro](https://www.openfaas.com/pricing/). Guess what?
+I spent several days running and re-running builds to get all the software required on a self-hosted runner for the private repos for [OpenFaaS Pro](https://www.openfaas.com/pricing). Guess what?
 
 I didn't want to touch that machine again afterwards, and even if I built up a list of apt packages, it'd be wrong in a few weeks. I then had a long period of tweaking the odd missing package and generating random container image names to prevent Docker and KinD from conflicting and causing side-effects.
 
