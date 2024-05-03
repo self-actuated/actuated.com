@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 01 May 2024 11:13:39 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 03 May 2024 14:24:33 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -19,7 +19,7 @@
             <pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Actuated now offers burst billing and capacity for customers with spiky and unpredictable CI/CD workloads.]]></description>
             <content:encoded><![CDATA[<p><a href="/blog/blazing-fast-ci-with-microvms">Why did we make Actuated</a>? Actuated provides a securely isolated, managed, white-glove experience for customers who want to run CI/CD on GitHub Actions, with access to fast and private hardware. It's ideal for moving your organisation off Jenkins, customers who spend far too much on hosted runners, or those who cringe at the security implications of building with Docker using Kubernetes.</p>
-<p>Today, we're introducing two new features for actuated customers: burst billing and burst capacity. With burst billing, you can go over the concurrency limit of your plan for the day, and pay for the extra usage at a slightly higher rate. With burst capacity, you can opt into running more jobs than your current pool of servers allow for by using our hardware.</p>
+<p>Today, we're introducing two new features for actuated customers: burst billing and burst capacity (on shared servers). With burst billing, you can go over the concurrency limit of your plan for the day, and pay for the extra usage at a slightly higher rate. With burst capacity, you can opt into running more jobs than your current pool of servers allow for by using our hardware.</p>
 <p><strong>Why we charge on concurrency, not minutes</strong></p>
 <p>Having run over 320k VMs for customer CI jobs on GitHub Actions, we've seen a lot of different workloads and usage patterns. Some teams have a constant stream of hundreds of jobs per hour due to the use of matrix builds, some have a plan that's a little to big for them, and others have a plan that's a little to small, so they get the odd delay whilst they wait for jobs to finish.</p>
 <p>We decided to charge customers based not upon how many jobs they launched, how many minutes they consumed, but on the maximum amount of jobs they wanted to run at any one time (concurrency). Since customers already bring their own hardware, and pay per minute, hour or month for it, we didn't want them to have to pay again per minute and to be limited by how many jobs they could run per month.</p>
@@ -67,7 +67,7 @@
 <p><strong>How do we get burst capacity with actuated servers?</strong></p>
 <p>Tell us the burst limit you'd like to enable, then we can enable <em>x86_64</em> or <em>Arm64</em> server capacity on your account.</p>
 <p><strong>When is burst capacity used?</strong></p>
-<p>Burst capacity is used when a job cannot be scheduled onto your own server capacity, and there is available capacity on our servers.</p>
+<p>Burst capacity is used when a job cannot be scheduled onto your own server capacity, and there is available capacity on our servers. Another way to think about burst capacity is as using on shared servers. Each job runs in its own microVM, which provides hard isolation.</p>
 <p>You may also like:</p>
 <ul>
 <li><a href="/blog/right-sizing-vms-github-actions">Right-sizing VMs for GitHub Actions</a></li>
