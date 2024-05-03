@@ -14,7 +14,7 @@ date: "2024-04-25"
 
 [Why did we make Actuated](/blog/blazing-fast-ci-with-microvms)? Actuated provides a securely isolated, managed, white-glove experience for customers who want to run CI/CD on GitHub Actions, with access to fast and private hardware. It's ideal for moving your organisation off Jenkins, customers who spend far too much on hosted runners, or those who cringe at the security implications of building with Docker using Kubernetes.
 
-Today, we're introducing two new features for actuated customers: burst billing and burst capacity. With burst billing, you can go over the concurrency limit of your plan for the day, and pay for the extra usage at a slightly higher rate. With burst capacity, you can opt into running more jobs than your current pool of servers allow for by using our hardware.
+Today, we're introducing two new features for actuated customers: burst billing and burst capacity (on shared servers). With burst billing, you can go over the concurrency limit of your plan for the day, and pay for the extra usage at a slightly higher rate. With burst capacity, you can opt into running more jobs than your current pool of servers allow for by using our hardware.
 
 **Why we charge on concurrency, not minutes**
 
@@ -90,7 +90,7 @@ Tell us the burst limit you'd like to enable, then we can enable *x86_64* or *Ar
 
 **When is burst capacity used?**
 
-Burst capacity is used when a job cannot be scheduled onto your own server capacity, and there is available capacity on our servers.
+Burst capacity is used when a job cannot be scheduled onto your own server capacity, and there is available capacity on our servers. Another way to think about burst capacity is as using on shared servers. Each job runs in its own microVM, which provides hard isolation.
 
 You may also like:
 
