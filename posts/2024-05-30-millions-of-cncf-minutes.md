@@ -14,6 +14,14 @@ date: "2024-05-30"
 
 The immutability is key to both security and reliability. Each build is run in its own ephemeral and immutable microVM, meaning side effects cannot be left behind by prior builds. In addition, our team manages reliability for your servers and the integration with GitHub, for minimal disruption during GitHub outages.
 
+In this post I'll cover:
+
+* Who's the program to bring actuated to the CNCF
+* A new video interview with our team, the CNCF, Ampere and Equinix Metal
+* What options teams had for Arm both and then after the program
+* The high level numbers, and how that's split over the top 9 projects
+* What's next for the program
+
 ## Actuated for the CNCF
 
 We've been working with [Ampere](https://amperecomputing.com/) and [Equinix Metal](https://deploy.equinix.com/) to provide CI via GitHub Actions for Cloud Native Computing (CNCF) projects. Ampere manufacture Arm-based CPUs with a focus on efficiency and high core density. Equinix Metal provide access to the Ampere Altra in their datacenters around the world.
