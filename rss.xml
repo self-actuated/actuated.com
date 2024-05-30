@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 03 May 2024 14:24:33 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 30 May 2024 15:11:53 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,151 @@
             <url>https://actuated.dev/images/actuated.png</url>
             <link>https://actuated.dev</link>
         </image>
+        <item>
+            <title><![CDATA[On Running Millions of Arm CI Minutes for the CNCF]]></title>
+            <link>https://actuated.dev/blog/millions-of-cncf-minutes</link>
+            <guid>https://actuated.dev/blog/millions-of-cncf-minutes</guid>
+            <pubDate>Thu, 30 May 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[We've now run over 1.5 million minutes of CI time for various CNCF projects on Ampere hardware. Here's what we've learned.]]></description>
+            <content:encoded><![CDATA[<p>In this post I'll cover:</p>
+<ul>
+<li>Who's the program to bring actuated to the CNCF</li>
+<li>A new video interview with our team, the CNCF, Ampere and Equinix Metal</li>
+<li>What options teams had for Arm both and then after the program</li>
+<li>The high level numbers, and how that's split over the top 9 projects</li>
+<li>What's next for the program</li>
+</ul>
+<h3>What's Actuated?</h3>
+<blockquote>
+<p>Actuated is the only solution that gives a managed experience for self-hosted runners, on your own hardware through immutable microVMs.</p>
+</blockquote>
+<p>The immutability is key to both security and reliability. Each build is run in its own ephemeral and immutable microVM, meaning side effects cannot be left behind by prior builds. In addition, our team manages reliability for your servers and the integration with GitHub, for minimal disruption during GitHub outages.</p>
+<h2>Why did the CNCF want Actuated for its projects?</h2>
+<p>We've been working with <a href="https://amperecomputing.com/">Ampere</a> and <a href="https://deploy.equinix.com/">Equinix Metal</a> to provide CI via GitHub Actions for Cloud Native Computing (CNCF) projects. Ampere manufacture Arm-based CPUs with a focus on efficiency and high core density. Equinix Metal provide access to the Ampere Altra in their datacenters around the world.</p>
+<p>Last December, we met with <a href="https://www.linkedin.com/in/caniszczyk/">Chris Aniszczyck</a> - CTO Linux Foundation/CNCF, <a href="https://www.linkedin.com/in/edwardvielmetti/">Ed Vielmetti</a> - Open Source Manager Equinix, <a href="https://www.linkedin.com/in/dneary/">Dave Neary</a> - Director of Developer Relations at Ampere and myself to discuss the program and what impact it was having so far.</p>
+<p>Watch the recap on YouTube: <a href="https://www.youtube.com/watch?v=sv3jtSvW9gk">The Ampere Developer Impact: CNCF Pilot Discussion</a></p>
+<p>Past articles on the blog include:</p>
+<ul>
+<li>October 2023 launch - <a href="/blog/arm-ci-cncf-ampere">Announcing managed Arm CI for CNCF projects</a></li>
+<li>March 2024 update - <a href="/blog/cncf-arm-march-update">The state of Arm CI for the CNCF</a></li>
+</ul>
+<h2>Before and after the program</h2>
+<p>Before we started the program, CNCF projects could be divided into three buckets:</p>
+<ol>
+<li>They were running Arm-based CI jobs on static servers that they managed</li>
+</ol>
+<p>In this case, etcd for instance had a team of half a dozen maintainers who were responsible for setting up, maintaining, and upgrading statically provisioned CI servers for the project. This was a significant overhead for the project maintainers, and the servers were often underutilized. The risk of side-effects being left behind between builds also posed a serious supply chain risk since etcd is consumed in virtually every Kubernetes deployment.</p>
+<ol start="2">
+<li>They were running Arm-based CI using emulation (QEMU)</li>
+</ol>
+<p>QEMU can be combined with Docker's buildx for a quick and convenient way to build container images for x86 and Arm architectures. In the best case, it's a small change and may add a few minutes of extra overhead. In the worst case, we saw that jobs that ran in ~ 5 minutes, took over 6 hours to complete using QEMU and hosted runners. A prime example was fluentd, read their case-study here: <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Scaling ARM builds with Actuated</a></p>
+<ol start="3">
+<li>They had no Arm CI at all</li>
+</ol>
+<p>In the third case, we saw projects like OpenTelemetry which had no support for Arm at all, but demand from their community to bring it up to on par with x86 builds. The need to self-manage insecure CI servers meant that Arm was a blocker for them.</p>
+<h3>After the program</h3>
+<p>After the program was live, teams who had been maintaining their own servers got to remove lengthy documentation on server configuration and maintenance, and relied on our team to manage a pool of servers used for scheduling microVMs.</p>
+<p>As demand grew, we saw OpenTelemetry and etcd starve the shared pool of resources through very high usage patterns. This is a classic and known problem called "Tragedy of the Commons" - when a shared resource is overused by a subset of users, it can lead to a degradation of service for all users. To combat the problem, we added code to provision self-destructing servers for a period of 24-48 hours as need arose, and prevented the higher usage projects from running on at least on of the permanent servers through scheduling rules. One other issue we saw with OpenTelemetry in particular was that the various Go proxies that offer up Go modules appeared to be rejecting requests when too many jobs were running concurrently. As a workaround, we added a private Go proxy for them into the private network space where the CNCF servers run, this also massively reduced the bandwidth costs for the shared infrastructure.</p>
+<p><a href="https://calyptia.com/blog/scaling-builds-with-actuated">Teams like fluent</a> moved from flakey builds that couldn't finish in 6 hours, to builds that finished in 5-10 minutes. This meant they could expand on their suite of tests.</p>
+<p>Where teams such as Cilium, Falco, or OpenTelemetry had no Arm CI support, we saw them quickly ramp up to running thousands of builds per month.</p>
+<p>Maintainers have direct access to discuss issues and improvements with us via a private Slack community. One of the things we've done in addition to adding burst capacity to the pool, was <a href="/blog/right-sizing-vms-github-actions">to provide a tool to help teams right-size VMs for jobs</a> and to add support for <a href="/blog/custom-sizes-bpf-kvm">eBPF technologies like BTF</a> in the Kernel.</p>
+<h3>Numbers at a glance</h3>
+<p>In our last update, 3 months ago, we'd run just under 400k build minutes for the CNCF. That number has now increased to 1.52M minutes, which is a ~ 300x increase in demand in a short period of time.</p>
+<p>Here's a breakdown of the top 9 projects by total minutes run, bearing in mind that this only includes jobs that ran to completion, there are thousands of minutes which ran, but were cancelled mid-way or by automation.</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Organisation</th>
+<th>Total mins</th>
+<th>Total Jobs</th>
+<th>First job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>open-telemetry</td>
+<td>593726</td>
+<td>40093</td>
+<td>2024-02-15</td>
+</tr>
+<tr>
+<td>2</td>
+<td>etcd-io</td>
+<td>372080</td>
+<td>21347</td>
+<td>2023-10-24</td>
+</tr>
+<tr>
+<td>3</td>
+<td>cri-o</td>
+<td>163927</td>
+<td>11131</td>
+<td>2023-11-27</td>
+</tr>
+<tr>
+<td>4</td>
+<td>falcosecurity</td>
+<td>138469</td>
+<td>13274</td>
+<td>2023-12-06</td>
+</tr>
+<tr>
+<td>5</td>
+<td>fluent</td>
+<td>89856</td>
+<td>10658</td>
+<td>2023-06-07</td>
+</tr>
+<tr>
+<td>6</td>
+<td>containerd</td>
+<td>87007</td>
+<td>11192</td>
+<td>2023-12-02</td>
+</tr>
+<tr>
+<td>7</td>
+<td>cilium</td>
+<td>73406</td>
+<td>6252</td>
+<td>2023-10-31</td>
+</tr>
+<tr>
+<td>8</td>
+<td>opencontainers</td>
+<td>3716</td>
+<td>458</td>
+<td>2023-12-15</td>
+</tr>
+<tr>
+<td>9</td>
+<td>argoproj</td>
+<td>187</td>
+<td>12</td>
+<td>2024-01-30</td>
+</tr>
+<tr>
+<td>(all)</td>
+<td>(Total)</td>
+<td>1520464</td>
+<td>116217</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Most organisations build for several projects or repositories. In the case of etcd, the numbers also include the boltdb project, and for cilium, tetragon, and the Go bindings for ebpf are also included. Open Telemetry is mainly focused around the <a href="https://github.com/open-telemetry/opentelemetry-collector-contrib">collectors and SDKs</a>.</p>
+<p>runc which is within the opencontainers organisation is technically an Open Container Initiative (OCI) project under the LinuxFoundation, rather than a CNCF project, but we gave them access since it is a key dependency for containerd and cri-o.</p>
+<h2>What's next?</h2>
+<p>With the exception of Argo, all of the projects are now relatively heavy users of the platform, with demand growing month on month, as you can see from the uptick from 389k minutes in March to a record high of 1.52 million minutes by the end of May of the same year. In the case of Argo, if you're a contributor or have done previous open source enablement, perhaps you could help them expand their Arm support via a series of <a href="https://github.com/argoproj/argo-cd/issues/9012">Pull Requests to enable unit/e2e tests to run on Arm64</a>?</p>
+<p>We're continuing to improve the platform to support users during peak demand, outages on GitHub, and to provide a reliable way for CNCF projects to run their CI on real Arm hardware, at full speed.</p>
+<p>For instance, last month we just released a new 6.1 Kernel for the Ampere Altra, which means projects like Cilium and Falco can make use of new eBPF features introduced in recent Kernel versions, and will bring support for newer Kernels as the Firecracker team make them available. The runc and container teams also benefit from the newer Kernel and have been able to enable further tests for (Checkpoint/Restore In Userspace) CRIU and User namespaces for containerd.</p>
+<p>You can watch the interview I mentioned earlier with Chris, Ed, Dave and myself on YouTube:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sv3jtSvW9gk?si=2PVUFCx_QUt65v5-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<h3>We could help you too</h3>
+<p>Actuated can manage x86 and Arm64 servers for GitHub Actions and <a href="/blog/secure-microvm-ci-gitlab">self-managed GitLab CI</a>. If you'd like to speak to us about how we can speed up your jobs, reduce your maintenance efforts and lower your CI costs, <a href="https://actuated.dev/pricing/">reach out via this page</a>.</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Introducing burst billing and capacity for GitHub Actions]]></title>
             <link>https://actuated.dev/blog/burst-billing-capacity</link>
@@ -357,7 +502,7 @@ response_json = response.json()
             <link>https://actuated.dev/blog/cncf-arm-march-update</link>
             <guid>https://actuated.dev/blog/cncf-arm-march-update</guid>
             <pubDate>Mon, 04 Mar 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[After running over 70k build minutes for top-tier CNCF projects, we give an update on the sponsored Arm CI program.]]></description>
+            <description><![CDATA[After running almost 400k build minutes for top-tier CNCF projects, we give an update on the sponsored Arm CI program.]]></description>
             <content:encoded><![CDATA[<p>It's now been 4 months since we <a href="https://actuated.dev/blog/arm-ci-cncf-ampere">kicked off the sponsored program with the Cloud Native Computing Foundation (CNCF) and Ampere to manage CI for the foundation's open source projects</a>. But even before that, <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Calyptia, the maintainer of Fluent approached us to run Arm CI for the open source fluent repos</a>, so we've been running CI for CNCF projects since June 2023.</p>
 <p>Over that time, we've got to work directly with some really bright, friendly, and helpful maintainers, who wanted to have a safe, fast and secure way to create release artifacts, test PRs, and to run end to end tests. Their alternative until this point was either to go against GitHub's own advice, and to <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">run an unsafe, self-hosted runner on an open source repo</a>, or <a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">to use QEMU</a> that in the case of Fluent meant their 5 minute build took over 6 hours before failing.</p>
 <p>You can find out more about why we put this program together in the original announcement: <a href="https://actuated.dev/blog/arm-ci-cncf-ampere">Announcing managed Arm CI for CNCF projects</a></p>
@@ -365,7 +510,7 @@ response_json = response.json()
 <p>When we started out, Chris Aniszczyk, the CNCF's CTO wanted to create a small pilot to see if there'd be enough demand for our service. The CNCF partnered with Ampere to co-fund the program, Ampere sell a number of Arm based CPUs - which they brand as "Cloud Native" because they're so dense in cores and highly power efficient. Equinix Metal provide the credits and the hosting via the <a href="https://www.cncf.io/blog/2021/10/13/announcing-the-cloud-native-credits-program/">Cloud Native Credits program</a>.</p>
 <p>In a few weeks, not only did we fill up all available slots, but we personally hand-held and onboarded each of the project maintainers one by one, over Zoom, via GitHub, and Slack.</p>
 <p>Why would maintainers of top-tier projects need our help? Our team and community has extensive experience porting code to Arm, and building for multiple CPUs. We were able to advise on best practices for splitting up builds, how to right-size VMs, were there to turn on esoteric Kernel modules and configurations, and to generally give them a running start.</p>
-<p>Today, our records show that the CNCF projects enrolled have run a total of 70.3k minutes. That's almost the equivalent of a computer running tasks 24/7 for a total of 2 months solid, without a break.</p>
+<p>Today, our records show that the CNCF projects enrolled have run almost 400k minutes. That's almost the equivalent of a computer running tasks 24/7 for a total of 2 months solid, without a break.</p>
 <p>Here's a list of the organisations we've onboarded so far, ordered by the total amount of build minutes. We added the date of their first actuated build to help add some context. As I mentioned in the introduction, fluent have been a paying customer since June 2023.</p>
 <table>
 <thead>
@@ -475,7 +620,7 @@ response_json = response.json()
 <p>The CRI-O project was able to seamlessly integrate Arm based CI with the support of Actuated. We basically had to convert our existing tests to a GitHub Actions matrix utilizing their powerful Arm runners. Integration and unit testing on Arm is another big step for CRI-O to provide a generally broader platform support. We also had to improve the test suite itself for better compatibility with other architectures than x86_64/arm64. This makes contributing to CRI-O on those platforms even simpler. I personally don’t see any better option than Actuated right now, because managing our own hardware is something we’d like to avoid to mainly focus on open source software development. The simplicity of the integration using Actuated helped us a lot, and our future goal is to extend the CRI-O test scenarios for that.</p>
 </blockquote>
 <h3>Summing up the program so far</h3>
-<p>Through the sponsored program, actuated has now run over 70k build minutes for around 10 CNCF projects, and we've heard from a growing number of projects who would like access.</p>
+<p>Through the sponsored program, actuated has now almost 400k build minutes for around 10 CNCF projects, and we've heard from a growing number of projects who would like access.</p>
 <p>We've secured the supply chain by removing unsafe runners that GitHub says should definitely not be used for open source repositories, and we've lessened the burden of server management on already busy maintainers.</p>
 <p>Whilst the original pilot program is now full, we have the capacity to onboard many other projects and would love to work with you. We are happy to offer a discounted subscription if your employer that sponsors your time on the said CNCF project will pay for it. Otherwise, contact us anyway, and we'll put you into email contact with <a href="https://www.linkedin.com/in/caniszczyk/">Chris Aniszczyk</a> so you can let him know how this would help you.</p>]]></content:encoded>
         </item>
