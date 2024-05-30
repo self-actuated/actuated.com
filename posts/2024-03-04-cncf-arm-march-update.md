@@ -1,6 +1,6 @@
 ---
 title: The state of Arm CI for the CNCF
-description: After running over 70k build minutes for top-tier CNCF projects, we give an update on the sponsored Arm CI program.
+description: After running almost 400k build minutes for top-tier CNCF projects, we give an update on the sponsored Arm CI program.
 tags:
 - efficiency
 - githubactions
@@ -24,21 +24,21 @@ In a few weeks, not only did we fill up all available slots, but we personally h
 
 Why would maintainers of top-tier projects need our help? Our team and community has extensive experience porting code to Arm, and building for multiple CPUs. We were able to advise on best practices for splitting up builds, how to right-size VMs, were there to turn on esoteric Kernel modules and configurations, and to generally give them a running start.
 
-Today, our records show that the CNCF projects enrolled have run a total of 70.3k minutes. That's almost the equivalent of a computer running tasks 24/7 for a total of 2 months solid, without a break.
+Today, our records show that the CNCF projects enrolled have run almost 400k minutes. That's almost the equivalent of a computer running tasks 24/7 for a total of 2 months solid, without a break.
 
 Here's a list of the organisations we've onboarded so far, ordered by the total amount of build minutes. We added the date of their first actuated build to help add some context. As I mentioned in the introduction, fluent have been a paying customer since June 2023.
 
 Rank  | Organisation    | Date of first actuated build 
 ------|-----------------|------------------ 
-1 | etcd-io (etcd, boltdb)        | 2023-10-24  |
-2 | fluent         | 2023-06-07  |
-3 | falcosecurity  | 2023-12-06  |
-4 | containerd     | 2023-12-02  |
-5 | cilium (tetragon, cilium, ebpf-go)         | 2023-10-31  |
-6 | cri-o          | 2023-11-27  |
-7 | open-telemetry | 2024-02-14  |
-8 | opencontainers (runc) | 2023-12-15  |
-9 | argoproj       | 2024-01-30  |
+1 | etcd-io (etcd, boltdb)             | 2023-10-24  |
+2 | fluent                             | 2023-06-07  |
+3 | falcosecurity                      | 2023-12-06  |
+4 | containerd     | 2023-12-02        |
+5 | cilium (tetragon, cilium, ebpf-go) | 2023-10-31  |
+6 | cri-o          | 2023-11-27        |
+7 | open-telemetry | 2024-02-14        |
+8 | opencontainers (runc) | 2023-12-15 |
+9 | argoproj       | 2024-01-30        |
 
 *Ranked by build minutes consumed*
 
@@ -121,7 +121,7 @@ This feature was originally requested by Toolpath, a commercial user of actuated
 
 ### Summing up the program so far
 
-Through the sponsored program, actuated has now run over 70k build minutes for around 10 CNCF projects, and we've heard from a growing number of projects who would like access.
+Through the sponsored program, actuated has now almost 400k build minutes for around 10 CNCF projects, and we've heard from a growing number of projects who would like access.
 
 We've secured the supply chain by removing unsafe runners that GitHub says should definitely not be used for open source repositories, and we've lessened the burden of server management on already busy maintainers.
 
