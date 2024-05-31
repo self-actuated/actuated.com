@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 30 May 2024 15:11:53 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 31 May 2024 08:25:47 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -59,6 +59,13 @@
 <p>As demand grew, we saw OpenTelemetry and etcd starve the shared pool of resources through very high usage patterns. This is a classic and known problem called "Tragedy of the Commons" - when a shared resource is overused by a subset of users, it can lead to a degradation of service for all users. To combat the problem, we added code to provision self-destructing servers for a period of 24-48 hours as need arose, and prevented the higher usage projects from running on at least on of the permanent servers through scheduling rules. One other issue we saw with OpenTelemetry in particular was that the various Go proxies that offer up Go modules appeared to be rejecting requests when too many jobs were running concurrently. As a workaround, we added a private Go proxy for them into the private network space where the CNCF servers run, this also massively reduced the bandwidth costs for the shared infrastructure.</p>
 <p><a href="https://calyptia.com/blog/scaling-builds-with-actuated">Teams like fluent</a> moved from flakey builds that couldn't finish in 6 hours, to builds that finished in 5-10 minutes. This meant they could expand on their suite of tests.</p>
 <p>Where teams such as Cilium, Falco, or OpenTelemetry had no Arm CI support, we saw them quickly ramp up to running thousands of builds per month.</p>
+<p>Here's a quote from <a href="https://www.linkedin.com/in/fededp/">Federico Di Pierro</a>, Senior Open Source Engineer @ Sysdig and maintainer of Falco:</p>
+<blockquote>
+<p>Falco really needed arm64 GitHub runners to elevate its support for the architecture and enlarge its userbase.
+Actuated was the perfect solution for us because it was easy to leverage and relieved any burden for the maintainers. This way, we as maintainers, can focus on what really matters for the project, instead of fighting with maintaining and deploying self-hosted infrastructure.
+Now we are building, testing and releasing artifacts for arm64 leveraging Actuated for many of our projects, and it works flawlessly.
+Support from Alex's team is always on point, and new kernel features are coming through super quickly!</p>
+</blockquote>
 <p>Maintainers have direct access to discuss issues and improvements with us via a private Slack community. One of the things we've done in addition to adding burst capacity to the pool, was <a href="/blog/right-sizing-vms-github-actions">to provide a tool to help teams right-size VMs for jobs</a> and to add support for <a href="/blog/custom-sizes-bpf-kvm">eBPF technologies like BTF</a> in the Kernel.</p>
 <h3>Numbers at a glance</h3>
 <p>In our last update, 3 months ago, we'd run just under 400k build minutes for the CNCF. That number has now increased to 1.52M minutes, which is a ~ 300x increase in demand in a short period of time.</p>
