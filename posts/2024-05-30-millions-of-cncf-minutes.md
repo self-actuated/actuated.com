@@ -63,6 +63,13 @@ As demand grew, we saw OpenTelemetry and etcd starve the shared pool of resource
 
 Where teams such as Cilium, Falco, or OpenTelemetry had no Arm CI support, we saw them quickly ramp up to running thousands of builds per month.
 
+Here's a quote from [Federico Di Pierro](https://www.linkedin.com/in/fededp/), Senior Open Source Engineer @ Sysdig and maintainer of Falco:
+
+> Falco really needed arm64 GitHub runners to elevate its support for the architecture and enlarge its userbase.
+Actuated was the perfect solution for us because it was easy to leverage and relieved any burden for the maintainers. This way, we as maintainers, can focus on what really matters for the project, instead of fighting with maintaining and deploying self-hosted infrastructure.
+> Now we are building, testing and releasing artifacts for arm64 leveraging Actuated for many of our projects, and it works flawlessly.
+> Support from Alex's team is always on point, and new kernel features are coming through super quickly!
+
 Maintainers have direct access to discuss issues and improvements with us via a private Slack community. One of the things we've done in addition to adding burst capacity to the pool, was [to provide a tool to help teams right-size VMs for jobs](/blog/right-sizing-vms-github-actions) and to add support for [eBPF technologies like BTF](/blog/custom-sizes-bpf-kvm) in the Kernel.
 
 ### Numbers at a glance
