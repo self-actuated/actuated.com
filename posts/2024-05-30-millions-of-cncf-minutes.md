@@ -70,6 +70,20 @@ Actuated was the perfect solution for us because it was easy to leverage and rel
 > Now we are building, testing and releasing artifacts for arm64 leveraging Actuated for many of our projects, and it works flawlessly.
 > Support from Alex's team is always on point, and new kernel features are coming through super quickly!
 
+[Akihiro Suda](https://github.com/akihirosuda), Software Engineer at NTT Corp, and maintainer of several open source projects including: runc, containerd and lima had this to say:
+
+> Huge thanks to Actuated for enabling us to run ARM64 tests without any mess.
+> It is very important for the runc project to run the tests on ARM64, as runc depends on several architecture-dependent components such as seccomp and criu.
+> It is also so nice that the Arm instance specification can be adjusted in a single line in the GitHub Actions workflow file.
+
+[Wei Fu](https://github.com/fuweid), a maintainer for containerd said:
+
+> The containerd project was able to test each pull request for the Linux arm64 platform with the support of Actuated. 
+> It's a significant step for containerd to mark the Linux arm64 platform as a top-tier supported platform, similar to amd64, since containerd has been widely used in the Arm world.
+> 
+> Thanks to Actuated, we, the containerd community, were able to test container features (like mount-idmapping) on the new kernel without significant maintenance overhead for the test infrastructure. 
+> With Actuated, we can focus on open-source deployment to cover more use case scenarios.
+
 Maintainers have direct access to discuss issues and improvements with us via a private Slack community. One of the things we've done in addition to adding burst capacity to the pool, was [to provide a tool to help teams right-size VMs for jobs](/blog/right-sizing-vms-github-actions) and to add support for [eBPF technologies like BTF](/blog/custom-sizes-bpf-kvm) in the Kernel.
 
 ### Numbers at a glance
