@@ -64,8 +64,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
           <p className="text-center text-base text-gray-400">
-            &copy; 2022 <a href="https://openfaas.com">OpenFaaS Ltd</a>, Inc.
-            All rights reserved.
+            &copy; 2024 <a href="https://openfaas.com">OpenFaaS Ltd</a>. All rights reserved. <a className='hover:underline' href='/terms'>Terms & Conditions.</a>
           </p>
         </div>
       </div>
