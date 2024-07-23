@@ -38,13 +38,13 @@ export default function Pricing({ posts }) {
                 Plans & Pricing
             </h1>
             <p className="max-w-l mt-5 mx-auto text-xl leading-7 text-gray-500">
-              You can get started with us the same day as your call.{' '}
+              Pick your plan and get started with us the same day.{' '}
             </p>
           </div>
         </div>
       </div>
 
-    <ul className="container max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8 min-height-500">
+    <ul className="container max-w-7xl mx-auto m-4 px-4 sm:px-6 lg:px-8 min-height-500">
         <div className="bg-white">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
@@ -122,13 +122,13 @@ export default function Pricing({ posts }) {
                       <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600"> / concurrent build</span>
                     </p>
                     <a
-                      href="https://forms.gle/8XmpTTWXbZwWkfqT6"
+                      href="https://orders.actuated.dev/products/actuated"
                       className="mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Talk to us
+                      Get Actuated
                     </a>
                     <p className="mt-6 text-xs leading-5 text-gray-600">
-                      You'll meet with our engineers to understand your needs and answer your questions.
+                      <a className="text-blue-500 underline" href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Book a call</a> with our engineers to understand your needs and answer your questions.
                     </p>
                   </div>
                 </div>
