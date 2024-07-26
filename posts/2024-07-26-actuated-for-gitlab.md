@@ -14,6 +14,7 @@ Last year we introduced a [tech preview for Actuated for GitLab CI](/blog/secure
 Since the initial preview a lot of features have been added. In this article we will give you an overview of some of the available features and how they can benefit your GitLab CI.
 
 - [Introduction](#introduction)
+- [Requirements for Actuated servers](#requirements-for-actuated-servers)
 - [Run jobs in microVMs with Actuated](#run-jobs-in-microvms-with-actuated)
 - [Mixed docker and shell executors](#mixed-docker-and-shell-executors)
 - [Private peering](#private-peering)
@@ -34,11 +35,22 @@ There are no horrible Kernel tricks or workarounds required to be able to use us
 ![GitLab UI showing Actuated project runners](/images/2024-07-gitlab/project-runners.png)
 > Runners get automatically added to a project and are removed again when they finish running a job.
 
-## Run jobs in microVMs with Actuated
+## Requirements for Actuated servers
+
+Actuated runs jobs on your own servers. These can be bare-metal instances or VMs, in the cloud or on premise. You'll need to provision a server which is capable of virtualisation with Linux KVM. All that is required is a server with a bare-OS and the Actuated agent installed (the installation can also be done by our team to reduce setup and management effort). 
+
+Once a server is registered with Actuated the Actuated control plane can start to schedule VMs to run Jobs on your servers. The scheduler ensures the available resources are used as efficiently as possible. We also support overprovisioning to be able to fit more VMs on a single server. 
+
+![Logs of the Actuated agent](/images/2024-07-gitlab/agent-logs.png)
+> Logs of the Actuated agent showing a VM getting created and removed after a job completed.
 
 When a pipeline is triggered through a commit, merge request or in the UI the Actuated control plane gets notified through a webhook. For every job we schedule and run a new microVM and register it as a runner to the project. After the job is completed, the VM will be destroyed and removed from the GitLab instance. Scheduling and launching VMs is very fast. On average a new VM is booting up and running the job within 1 second.
 
 ![actuated for GitLab CI](/images/2023-06-gitlab-preview/conceptual.png)
+
+The agent use [Firecracker](https://github.com/firecracker-microvm/firecracker) or [Cloud Hypervisor](https://www.cloudhypervisor.org/), depending on wether GPU support is required, to run VMs. This makes the VMs very light weight and allows these quick boot times. 
+
+## Run jobs in microVMs with Actuated
 
 To run jobs on Actuated the `actuated` tag has to be added to a job. One feature our customers like is the ability to configure the VM size for a job through the tag. Using the tag `actuated-4cpu-8gb` will schedule a VM with 4 vCPUs and 8 gigabytes of RAM.
 
@@ -209,10 +221,18 @@ Agent peering simplifies agent setup and improves security:
 We highlighted some of the features and benefits of running GitLab CI jobs on Actuated runners:
 
 - Secure isolated builds in ephemeral microVMs.
-- Fixed cost & Less management.
+- Fixed cost & less management.
 - Easy on demand mixed use of Docker and Shell executors.
 - Optimised usage of available runners.
 - Easy setup in complex network environments.
+
+Compared to GitLab CI's built-in solution, there is no Kubernetes cluster required. VMs are packed into a fleet of servers efficiently or kept in a queue until capacity becomes available.
+
+Docker can be used natively without any of the risks with the built-in Kubernetes runners which use privileged Pods.
+
+There is no need to add side-cars for BuildKit, Kaniko or to have to fight with the issues surrounding user-namespaces.
+
+Everything is tested by our team, so you don't have to fine-tune or configure a Kernel, we ship the OS image and Kernel together and update them remotely.
 
 Actuated for GitLab is for self-hosted GitLab instances hosted on-premise or on the public cloud.
 
