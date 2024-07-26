@@ -16,6 +16,7 @@ We've made a lot of progress since the original version and are looking for addi
 - [Introduction](#introduction)
 - [Run jobs in microVMs with Actuated](#run-jobs-in-microvms-with-actuated)
 - [Mixed docker and shell executors](#mixed-docker-and-shell-executors)
+- [What does an actuated server look like?](#what-does-an-actuated-server-look-like)
 - [Private peering](#private-peering)
 
 ## Why are microVMs the future of CI?
@@ -39,6 +40,8 @@ There are no horrible Kernel tricks or workarounds required to be able to use us
 When a pipeline is triggered through a commit, merge request or in the UI the Actuated control plane gets notified through a webhook. For every job we schedule and run a new microVM and register it as a runner to the project. After the job is completed, the VM will be destroyed and removed from the GitLab instance. Scheduling and launching VMs is very fast. On average a new VM is booting up and running the job within 1 second.
 
 ![actuated for GitLab CI](/images/2023-06-gitlab-preview/conceptual.png)
+
+The agent will use either [Firecracker](https://github.com/firecracker-microvm/firecracker) or [Cloud Hypervisor](https://www.cloudhypervisor.org/) to launch microVMS depending on whether GPU support is required. microVMs boot almost instantly and in most cases will be faster than Kubernetes since the image is optimized and already available on each server.
 
 To run jobs on Actuated the `actuated` tag has to be added to a job. One feature our customers like is the ability to configure the VM size for a job through the tag. Using the tag `actuated-4cpu-8gb` will schedule a VM with 4 vCPUs and 8 gigabytes of RAM.
 
