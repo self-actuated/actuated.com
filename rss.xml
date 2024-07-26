@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.dev</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 26 Jul 2024 14:36:13 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 26 Jul 2024 14:41:50 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -24,6 +24,7 @@
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#run-jobs-in-microvms-with-actuated">Run jobs in microVMs with Actuated</a></li>
 <li><a href="#mixed-docker-and-shell-executors">Mixed docker and shell executors</a></li>
+<li><a href="#what-does-an-actuated-server-look-like">What does an actuated server look like?</a></li>
 <li><a href="#private-peering">Private peering</a></li>
 </ul>
 <h2 id="why-are-microvms-the-future-of-ci">Why are microVMs the future of CI?</h2>
@@ -42,6 +43,7 @@
 <h2 id="run-jobs-in-microvms-with-actuated">Run jobs in microVMs with Actuated</h2>
 <p>When a pipeline is triggered through a commit, merge request or in the UI the Actuated control plane gets notified through a webhook. For every job we schedule and run a new microVM and register it as a runner to the project. After the job is completed, the VM will be destroyed and removed from the GitLab instance. Scheduling and launching VMs is very fast. On average a new VM is booting up and running the job within 1 second.</p>
 <p><img src="/images/2023-06-gitlab-preview/conceptual.png" alt="actuated for GitLab CI"></p>
+<p>The agent will use either <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a> or <a href="https://www.cloudhypervisor.org/">Cloud Hypervisor</a> to launch microVMS depending on whether GPU support is required. microVMs boot almost instantly and in most cases will be faster than Kubernetes since the image is optimized and already available on each server.</p>
 <p>To run jobs on Actuated the <code>actuated</code> tag has to be added to a job. One feature our customers like is the ability to configure the VM size for a job through the tag. Using the tag <code>actuated-4cpu-8gb</code> will schedule a VM with 4 vCPUs and 8 gigabytes of RAM.</p>
 <p>You can pick any combination for vCPU and RAM. There's no need to pick a predefined runner size. This means that runners can be sized accordingly for the job they need to run so that the available CPU and memory resources can be used more efficiently.</p>
 <p>Example <code>.gitlab-ci.yaml</code> that runs a job on Actuated runners using the docker executor:</p>
