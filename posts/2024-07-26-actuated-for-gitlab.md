@@ -6,6 +6,7 @@ tags:
 - security
 - docker
 author_img: welteki
+image: /images/2024-07-gitlab/background.png
 date: "2024-07-26"
 ---
 
