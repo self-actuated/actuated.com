@@ -44,7 +44,7 @@ const navigation = [
   { name: 'Blog', href: '/blog' },
   { name: 'Announcement', href: '/blog/blazing-fast-ci-with-microvms' },
   { name: 'Pricing', href: '/pricing' },
-  { name: 'Docs', href: 'https://docs.actuated.dev/' },
+  { name: 'Docs', href: 'https://docs.actuated.com/' },
 ]
 
 function classNames(...classes) {
@@ -138,7 +138,7 @@ export default function NavBar({ children }) {
             </Popover.Group>
 
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <a href="https://dashboard.actuated.dev" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+            <a href="https://dashboard.actuated.com" className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
               Sign in
             </a>
             <a
@@ -220,7 +220,7 @@ export default function NavBar({ children }) {
                   </div>
                   <div className="mt-6">
                     <Link
-                      href="https://dashboard.actuated.dev"
+                      href="https://dashboard.actuated.com"
                       className="flex w-full items-center justify-center rounded-md border border-solid	 bg-white px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-900 shadow-sm"
                     >
                       Sign in

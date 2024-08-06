@@ -69,7 +69,7 @@ Quote from Alex:
 
 > "Actuated aims to give teams the closest possible experience to managed runners, but with native arm support flat rate billing, and secure VM-level isolation. Since Calyptia adopted actuated, we’ve also shipped an SSH debug experience (like you’d find with CircleCI) and detailed reports and insights on usage across repos, users and organisations."
 
-To use Actuated, you have to provision a machine with the Actuated agent, which is trivial and well documented: https://docs.actuated.dev/install-agent/. 
+To use Actuated, you have to provision a machine with the Actuated agent, which is trivial and well documented: https://docs.actuated.com/install-agent/. 
 
 We deployed an Ampere Altra Q80 server with 256GB of RAM and 80 cores ARM64 machine via Equinix (Equinix donates resources to the CNCF which we use for Fluent Bit so this satisfies the cost side of things) and installed the Actuated agent on it per the Actuated docs. 
 
@@ -184,7 +184,7 @@ As with all good failures, the tooling let me make a broken manifest at build ti
 
 All Github hosted runners provide default credentials to authenticate with docker.io for pulling public images. When running on a self-hosted runner you need to authenticate for this otherwise you will hit rate limits and builds may fail as they cannot download required base images.
 
-Actuated provide a registry mirror and Github Action to simplify this so make sure you set it up: [https://docs.actuated.dev/tasks/registry-mirror/](https://docs.actuated.dev/tasks/registry-mirror/) 
+Actuated provide a registry mirror and Github Action to simplify this so make sure you set it up: [https://docs.actuated.com/tasks/registry-mirror/](https://docs.actuated.com/tasks/registry-mirror/) 
 
 As part of this, ensure it is set up for anything that uses images (e.g. we run integration tests on KIND that failed as the cluster could not download its images) and that it is done after any buildx config as it creates a dedicated buildx builder for the mirror usage.
 

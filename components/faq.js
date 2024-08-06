@@ -29,7 +29,7 @@ const faqs = [
     question: "What kinds of servers do I need?",
     answer:
       "You can use your own physical servers, nested virtualisation with cloud VMs or rent instances paid by the hour.",
-    link: "https://docs.actuated.dev/provision-server/",
+    link: "https://docs.actuated.com/provision-server/",
     action: "Explore server options"
   },
   {
@@ -54,7 +54,7 @@ const faqs = [
     question: "How do I launch jobs in parallel?",
     answer:
       "Have a look at the examples in our docs for matrix builds. Each job within the workflow will be launched in a separate, parallel VM.",
-    link: 'https://docs.actuated.dev/'
+    link: 'https://docs.actuated.com/'
   },
   {
     question: "How mature is actuated?",
@@ -71,7 +71,7 @@ const faqs = [
   {
     question: "Where can I find detailed information about actuated?",
     answer: "We cover most common questions in much more detail over in the FAQ in the docs.",
-    link: 'https://docs.actuated.dev/faq',
+    link: 'https://docs.actuated.com/faq',
     action: "FAQ"
   },
 ]

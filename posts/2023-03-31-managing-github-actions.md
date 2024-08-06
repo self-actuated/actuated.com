@@ -26,7 +26,7 @@ Just like managed runners - every time actuated starts up a runner, it's within 
 
 Can't you just use a self-hosted runner on a VM? Yes, of course you can. But it's actually more nuanced than that. The self-hosted runner [isn't safe](/blog/is-the-self-hosted-runner-safe-github-actions) for OSS or public repos. And whether you run it directly on the host, or in Kubernetes - it's subject to side-effects, poor isolation, malware and in some cases uses very high privileges that could result in taking over a host completely.
 
-You can learn more in the [actuated announcement](/blog/blazing-fast-ci-with-microvms) and [FAQ](https://docs.actuated.dev/faq).
+You can learn more in the [actuated announcement](/blog/blazing-fast-ci-with-microvms) and [FAQ](https://docs.actuated.com/faq).
 
 ## how does it work?
 
@@ -38,7 +38,7 @@ As you can see in the diagram above, when a webhook is received, and we determin
 
 We have no access to your code or build secrets. We just obtain a registration token and send the runner a bit of metadata. Then we get out the way and let the self-hosted runner do its thing - in an isolated Kernel, with an immutable filesystem and its own Docker daemon.
 
-Onboarding doesn't take very long - you can use your own servers or get them from a cloud provider. We've got a [detailed guide](https://docs.actuated.dev/provision-server/), but can also recommend an option on a discovery call.
+Onboarding doesn't take very long - you can use your own servers or get them from a cloud provider. We've got a [detailed guide](https://docs.actuated.com/provision-server/), but can also recommend an option on a discovery call.
 
 Want to learn more about how Firecracker compares to VMs and containers? [Watch my webinar on YouTube](https://www.youtube.com/watch?v=CYCsa5e2vqg)
 
@@ -150,7 +150,7 @@ Want to [watch a demo](https://www.youtube.com/watch?v=2o28iUC-J1w)?
 
 ## Lesson 6 - Sometimes we need to debug a runner
 
-When I announced actuated, I heard a lot of people asking for CircleCI's debug experience, [so I built something similar](https://docs.actuated.dev/tasks/debug-ssh/) and it's proved to be really useful for us in building actuated.
+When I announced actuated, I heard a lot of people asking for CircleCI's debug experience, [so I built something similar](https://docs.actuated.com/tasks/debug-ssh/) and it's proved to be really useful for us in building actuated.
 
 Only yesterday, Ivan Subotic from Dasch Swiss messaged me and said:
 
@@ -210,7 +210,7 @@ GitHub has a deal to pay Docker Inc so that you don't run into rate limits. At t
 
 Actuated customers would need to login at the top of every one of their builds that used Docker, and create an organisation-level secret with a pull token from the Docker Hub.
 
-We found a way to automate this, and speed up subsequent jobs by [caching images directly on the customer's server](https://docs.actuated.dev/tasks/registry-mirror/).
+We found a way to automate this, and speed up subsequent jobs by [caching images directly on the customer's server](https://docs.actuated.com/tasks/registry-mirror/).
 
 All they need to add to their builds is:
 

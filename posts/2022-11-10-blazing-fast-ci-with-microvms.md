@@ -15,7 +15,7 @@ canonical: https://blog.alexellis.io/blazing-fast-ci-with-microvms/
 date: "2022-11-10"
 ---
 
-Around 6-8 months ago I started exploring MicroVMs out of curiosity. Around the same time, I saw an opportunity to **fix** self-hosted runners for GitHub Actions. [Actuated](https://docs.actuated.dev/) is now in pilot and aims to solve [most if not all of the friction](https://twitter.com/alexellisuk/status/1573599285362532353?s=20&t=dFcd54c4KIynk6vIGTb7QA).
+Around 6-8 months ago I started exploring MicroVMs out of curiosity. Around the same time, I saw an opportunity to **fix** self-hosted runners for GitHub Actions. [Actuated](https://docs.actuated.com/) is now in pilot and aims to solve [most if not all of the friction](https://twitter.com/alexellisuk/status/1573599285362532353?s=20&t=dFcd54c4KIynk6vIGTb7QA).
 
 There's three parts to this post:
 
@@ -148,9 +148,9 @@ What if you don't need to use Docker build/run, Kaniko or Kubernetes in CI at al
 
 ## 3) Can we fix it? Yes we can.
 
-[Actuated](https://docs.actuated.dev/) ("cause (a machine or device) to operate.") is a semi-managed solution that we're building at OpenFaaS Ltd.
+[Actuated](https://docs.actuated.com/) ("cause (a machine or device) to operate.") is a semi-managed solution that we're building at OpenFaaS Ltd.
 
-![A semi-managed solution, where you provide hosts and we do the rest.](https://docs.actuated.dev/images/conceptual-high-level.png)
+![A semi-managed solution, where you provide hosts and we do the rest.](https://docs.actuated.com/images/conceptual-high-level.png)
 
 > A semi-managed solution, where you provide hosts and we do the rest.
 
@@ -158,7 +158,7 @@ You provide your own hosts to run jobs, we schedule to them and maintain a VM im
 
 You install our GitHub App, then change `runs-on: ubuntu-latest` to `runs-on: actuated` or `runs-on: actuated-aarch64` for ARM.
 
-Then, provision one or more VMs with nested virtualisation enabled on GCP, DigitalOcean or Azure, or a bare-metal host, and [install our agent](https://docs.actuated.dev/add-agent/). That's it.
+Then, provision one or more VMs with nested virtualisation enabled on GCP, DigitalOcean or Azure, or a bare-metal host, and [install our agent](https://docs.actuated.com/add-agent/). That's it.
 
 If you need ARM support for your project, the [a1.metal from AWS](https://aws.amazon.com/ec2/instance-types/a1/) is ideal with 16 cores and 32GB RAM, or an [Ampere Altra](https://amperecomputing.com/processors/ampere-altra/) machine like the c3.large.arm64 from [Equinix Metal](https://metal.equinix.com/product/servers/c3-large-arm64/) with 80 Cores and 256GB RAM if you really need to push things. The 2020 M1 Mac Mini also works well with [Asahi Linux](https://asahilinux.org/), and can be maxed out at 16GB RAM / 8 Cores. [I even tried Frederic's Parca job on my Raspberry Pi](https://twitter.com/alexellisuk/status/1585228202087415808?s=20&t=kW-cfn44pQTzUsRiMw32kQ) and it was 26m30s quicker than a hosted runner!
 
@@ -172,13 +172,13 @@ You get:
 - Docker preinstalled and running at boot-up
 - Efficient scheduling and packing of builds to your fleet of hosts
 
-It's capable of running Docker and Kubernetes (KinD, kubeadm, K3s) with full isolation. You'll find some [examples in the docs](https://docs.actuated.dev/), but anything that works on a hosted runner we expect to work with actuated also.
+It's capable of running Docker and Kubernetes (KinD, kubeadm, K3s) with full isolation. You'll find some [examples in the docs](https://docs.actuated.com/), but anything that works on a hosted runner we expect to work with actuated also.
 
 Here's what it looks like:
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2o28iUC-J1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-Want the deeply technical information and comparisons? [Check out the FAQ](https://docs.actuated.dev/faq/)
+Want the deeply technical information and comparisons? [Check out the FAQ](https://docs.actuated.com/faq/)
 
 You may also be interested in a debug experience that we're building for GitHub Actions. It can be used to launch a shell session over SSH with hosted and self-hosted runners: [Debug GitHub Actions with SSH and launch a cloud shell](https://www.youtube.com/watch?v=l9VuQZ4a5pc)
 
@@ -200,7 +200,7 @@ Actuated is live in pilot and we've already run thousands of VMs for our custome
 
 Other links:
 
-- [Read the FAQ](https://docs.actuated.dev/faq/)
+- [Read the FAQ](https://docs.actuated.com/faq/)
 - [Watch a short video demo](https://www.youtube.com/watch?v=2o28iUC-J1w)
 - [Follow actuated on Twitter](https://twitter.com/selfactuated)
 

@@ -186,7 +186,7 @@ So if that sounds like where you are, reach out to us and we'll get you set up.
 
 Additional links:
 
-* [Actuated docs](https://docs.actuated.dev/)
-* [FAQ & comparison to other solutions](https://docs.actuated.dev/faq)
+* [Actuated docs](https://docs.actuated.com/)
+* [FAQ & comparison to other solutions](https://docs.actuated.com/faq)
 * [Follow actuated on Twitter](https://twitter.com/selfactuated)
 

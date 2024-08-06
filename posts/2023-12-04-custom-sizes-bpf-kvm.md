@@ -99,7 +99,7 @@ jobs:
 * [How to run KVM guests in your GitHub Actions](/blog/kvm-in-github-actions)
 * [Automate Packer Images with QEMU and Actuated](/blog/automate-packer-qemu-image-builds)
 * [Faster Nix builds with GitHub Actions and actuated](/blog/faster-nix-builds)
-* [Docs: Run a KVM guest](https://docs.actuated.dev/examples/kvm-guest)
+* [Docs: Run a KVM guest](https://docs.actuated.com/examples/kvm-guest)
 
 ## Wrapping up
 
@@ -112,4 +112,4 @@ If you'd like to try out actuated, you can get started same day.
 You may also like:
 
 * [Announcing managed Arm CI for CNCF projects](/blog/arm-ci-cncf-ampere)
-* [Actuated docs & FAQ](https://docs.actuated.dev/)
+* [Actuated docs & FAQ](https://docs.actuated.com/)

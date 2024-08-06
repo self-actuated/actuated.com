@@ -22,7 +22,7 @@ So why is GitHub's cache so fast for hosted runners, and (sometimes) so slow sel
 
 Simply put - GitHub runs VMs and the accompanying cache on the same network, so they can talk over a high speed backbone connection. But when you run a self-hosted runner, then any download or upload operations are taking place over the public Internet.
 
-Something else that can slow builds down is having to download large base images from the Docker Hub. We've already [covered how to solve that for actuated in the docs](https://docs.actuated.dev/tasks/registry-mirror/).
+Something else that can slow builds down is having to download large base images from the Docker Hub. We've already [covered how to solve that for actuated in the docs](https://docs.actuated.com/tasks/registry-mirror/).
 
 ## Speeding up in the real world
 
@@ -223,18 +223,18 @@ Picking a good key and restore key can help optimize when the cache is read from
 
 If you'd like a good starting-point for GitHub Actions Caching, Han Verstraete from our team wrote up a good primer for the actuated docs:
 
-[Example: GitHub Actions cache](https://docs.actuated.dev/examples/github-actions-cache/)
+[Example: GitHub Actions cache](https://docs.actuated.com/examples/github-actions-cache/)
 
 ## Conclusion
 
 We were able to dramatically speed up caching for GitHub Actions by using a self-hosted S3 service. We used Seaweedfs directly on the server running Firecracker with a fallback to GitHub's cache if the S3 service was unavailable.
 
 [![Brr](https://pbs.twimg.com/media/Fw4PQEfWwAIl-6u?format=jpg&name=medium)](https://twitter.com/alexellisuk/status/1661282581617229827/)
-> An [Ampere](https://amperecomputing.com/en/) Altra Arm server running parallel VMs using Firecracker. The CPU is going brr. [Find a server with our guide](https://docs.actuated.dev/provision-server/)
+> An [Ampere](https://amperecomputing.com/en/) Altra Arm server running parallel VMs using Firecracker. The CPU is going brr. [Find a server with our guide](https://docs.actuated.com/provision-server/)
 
 We also tend to recommend that all customers enable a mirror of the Docker Hub to counter restrictive rate-limits. The other reason is to avoid any penalties that you'd see from downloading large base images - or from downloading small to medium sized images when running in high concurrency.
 
-You can find out how to configure a container mirror for the Docker Hub using actuated here: [Set up a registry mirror](https://docs.actuated.dev/tasks/registry-mirror/). When testing builds for the [Discourse](https://github.com/discourse/discourse) team, there was a 2.5GB container image used for UI testing with various browsers preinstalled within it. We found that we could shave off a few minutes off the build time by using the local mirror. Imagine 10x of those builds running at once, needlessly downloading 250GB of data.
+You can find out how to configure a container mirror for the Docker Hub using actuated here: [Set up a registry mirror](https://docs.actuated.com/tasks/registry-mirror/). When testing builds for the [Discourse](https://github.com/discourse/discourse) team, there was a 2.5GB container image used for UI testing with various browsers preinstalled within it. We found that we could shave off a few minutes off the build time by using the local mirror. Imagine 10x of those builds running at once, needlessly downloading 250GB of data.
 
 What if you're not an actuated customer? Can you still benefit from a faster cache? You could try out a hosted service like AWS S3 or Google Cloud Storage, provisioned in a region closer to your runners. The speed probably won't quite be as good, but it should still be a lot faster than reaching over the Internet to GitHub's cache.
 

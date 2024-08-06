@@ -75,12 +75,12 @@ Here's what we bring to the table:
 * 🚀 Fixed-costs & less management
 * 🚀 Insights into CI usage across your organisation
 
-Runners are registered and running a job in a dedicated VM within less than one second. Our scheduler can pack in jobs across a fleet of servers, [they just need to have KVM available](https://docs.actuated.dev/provision-server/).
+Runners are registered and running a job in a dedicated VM within less than one second. Our scheduler can pack in jobs across a fleet of servers, [they just need to have KVM available](https://docs.actuated.com/provision-server/).
 
 If you think your automation for runners could be improved, or work with customers who need faster builds, better isolation or Arm support, get in touch with us.
 
 * [Sign-up for the Actuated pilot](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform)
-* [Browse the docs and FAQ for actuated for GitHub Actions](https://docs.actuated.dev/)
+* [Browse the docs and FAQ for actuated for GitHub Actions](https://docs.actuated.com/)
 * [Read customer testimonials](https://actuated.com/)
 
 You can follow [@selfactuated](https://twitter.com/selfactuated) on Twitter, or find [me there too](https://twitter.com/alexellisuk) to keep an eye on what we're building.

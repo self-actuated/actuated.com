@@ -170,7 +170,7 @@ Instead, we get:
 
 ### SSH commands and doing the right thing
 
-Actuated has a [built-in SSH gateway](https://docs.actuated.dev/tasks/debug-ssh/), this means that any job can be debugged - whether running on a hosted or self-hosted runner, just by editing the workflow YAML.
+Actuated has a [built-in SSH gateway](https://docs.actuated.com/tasks/debug-ssh/), this means that any job can be debugged - whether running on a hosted or self-hosted runner, just by editing the workflow YAML.
 
 Add the following to the `- steps:` section, and the `id_token: write` permission, and your workflow will pause, and then you can connect over SSH using the CLI or the UI.
 

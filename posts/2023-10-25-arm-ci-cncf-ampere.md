@@ -115,7 +115,7 @@ So why would you want dedicated AMD64 support from actuated? Firstly, our recomm
 
 **What are all the combinations of CPU and RAM?**
 
-We get this question very often, but have tried to be as clear as possible in this blog post and [in the docs](https://docs.actuated.dev/examples/custom-vm-size/). There are no set combinations. You can come up with what you need.
+We get this question very often, but have tried to be as clear as possible in this blog post and [in the docs](https://docs.actuated.com/examples/custom-vm-size/). There are no set combinations. You can come up with what you need.
 
 That helps us make best use of the hardware, you can even have just a couple of cores, and max out to 256GB of RAM, if that's what your build needs.
 
@@ -130,7 +130,7 @@ We're initially offering access to managed Arm CI for CNCF projects, but if you'
 Ampere who are co-sponsoring our service with the CNCF have their own announcement here: [Ampere Computing and CNCF Supporting Arm Native CI for CNCF Projects](https://amperecomputing.com/blogs/ampere-computing-and-cncf-supporting-arm-native-ci-for-ncf-projects).
 
 * Read one of our [recent blog posts](https://actuated.com/blog)
-* Learn more about [actuated in the docs](https://docs.actuated.dev)
+* Learn more about [actuated in the docs](https://docs.actuated.com)
 * [Read what our customers are saying about our service](https://actuated.com)
 
 > Did you know? [Actuated for GitLab CI is now in technical preview, watch a demo here](/blog/secure-microvm-ci-gitlab).

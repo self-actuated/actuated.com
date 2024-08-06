@@ -25,7 +25,7 @@ Their request for GPU support in actuated predated the hype around OpenAI, and w
 
 They told us how many issues they had keeping drivers in sync when trying to use self-hosted runners, and the security issues they ran into with mounting Docker sockets or running privileged containers in Kubernetes.
 
-With a microVM and actuated, you'll be able to test out different versions of drivers as you see fit, and know there will never be side-effects between builds. You can read more in [our FAQ](https://docs.actuated.dev/faq/) on how actuated differs from other solutions which rely on the poor isolation afforded by containers. Actuated is the closest you can get to a hosted runner, whilst having full access to your own hardware.
+With a microVM and actuated, you'll be able to test out different versions of drivers as you see fit, and know there will never be side-effects between builds. You can read more in [our FAQ](https://docs.actuated.com/faq/) on how actuated differs from other solutions which rely on the poor isolation afforded by containers. Actuated is the closest you can get to a hosted runner, whilst having full access to your own hardware.
 
 I'll tell you a bit more about it, how to build your own workstation with commodity hardware, or where to rent a powerful bare-metal host with a capable GPU for less than 200 USD / mo that you can use with actuated.
 
@@ -138,7 +138,7 @@ With the medium model:
 
 The GPU increased the speed by 9x, imagine how much quicker it'd be if you used an Nvidia 3090, 4090, or even an RTX 4000.
 
-If you want to just explore the system, and run commands interactively, you can use [actuated's SSH feature](https://docs.actuated.dev/tasks/debug-ssh/) to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.
+If you want to just explore the system, and run commands interactively, you can use [actuated's SSH feature](https://docs.actuated.com/tasks/debug-ssh/) to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.
 
 We took the SSH debug session for a test-drive. We installed [the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), then ran the ollama tool to test out some Large Language Models (LLMs).
 

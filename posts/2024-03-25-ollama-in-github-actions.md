@@ -122,13 +122,13 @@ print(json.dumps(response_json, indent=4))
 
 When you're constructing a request by API, make sure you include any tags in the `model` name, if you've used one. I.e. `"model": "llama2:13b"`.
 
-I hear from so many organisations who have gone to lengths to get SOC2 compliance, doing CVE scanning, or who are running Open Policy Agent or Kyverno to enforce strict Pod admission policies in Kubernetes, but then are happy to run their CI in Pods in privileged mode. So I asked the model why that may not be a smart idea. You can run the sample for yourself or [see the response here](https://gist.githubusercontent.com/alexellis/4c85e5927d251153c41379c4cac1a6c8/raw/257a02df0e01dff966c68509baf299bc32d3a11e/security.txt). We also go into detail in the [actuated FAQ](https://docs.actuated.dev/faq/), the security situation around self-hosted runners and containers is the main reason we built the solution.
+I hear from so many organisations who have gone to lengths to get SOC2 compliance, doing CVE scanning, or who are running Open Policy Agent or Kyverno to enforce strict Pod admission policies in Kubernetes, but then are happy to run their CI in Pods in privileged mode. So I asked the model why that may not be a smart idea. You can run the sample for yourself or [see the response here](https://gist.githubusercontent.com/alexellis/4c85e5927d251153c41379c4cac1a6c8/raw/257a02df0e01dff966c68509baf299bc32d3a11e/security.txt). We also go into detail in the [actuated FAQ](https://docs.actuated.com/faq/), the security situation around self-hosted runners and containers is the main reason we built the solution.
 
 ### Putting it together for a GitHub Action
 
 The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the [Pricing page](https://actuated.com/pricing).
 
-The `self-actuated/nvidia-run` installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be [cached using a local S3 bucket](https://docs.actuated.dev/tasks/local-github-cache/).
+The `self-actuated/nvidia-run` installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be [cached using a local S3 bucket](https://docs.actuated.com/tasks/local-github-cache/).
 
 Then, we simply run the equivalent bash commands from the previous section to:
 
@@ -190,7 +190,7 @@ By modifying your CI job, you can drop into a remote SSH session and run interac
 
 That's how I came up with the commands for the Nvidia driver installation, and for the various ollama commands I shared.
 
-Find out more about SSH for GitHub Actions [in the actuated docs](https://docs.actuated.dev/tasks/debug-ssh/).
+Find out more about SSH for GitHub Actions [in the actuated docs](https://docs.actuated.com/tasks/debug-ssh/).
 
 ![Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM](/images/2024-04-ollama-in-ci/ssh.png)
 > Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM

@@ -57,7 +57,7 @@ And who is behind actuated? We are a nimble team, but have a pedigree with Cloud
 
 Actuated uses a Bring Your Own (BYO) server model, but there's very little for you to do once you've installed the actuated agent.
 
-Here's how to set up the agent software: [Actuated Docs: Install the Agent](https://docs.actuated.dev/install-agent/).
+Here's how to set up the agent software: [Actuated Docs: Install the Agent](https://docs.actuated.com/install-agent/).
 
 You then get detailed stats about each runner, the build queue and insights across your whole GitHub organisation, in one place:
 
@@ -103,7 +103,7 @@ Equinix Metal and Hetzner both have the Ampere Altra bare-metal server available
 
 > To prove the point, that BYO means cloud servers, just as much as physically owned machines, [I also ran the same build on an Ampere Altra from Equinix Metal](https://github.com/actuated-samples/govpp/actions/runs/4391240138) with 20 GB of RAM, and 32 vCPUs, it completed in 9 minutes 39 seconds.
 
-See our hosting recommendations: [Actuated Docs: Provision a Server](https://docs.actuated.dev/provision-server/)
+See our hosting recommendations: [Actuated Docs: Provision a Server](https://docs.actuated.com/provision-server/)
 
 In October last year, I benchmarked a Raspberry Pi 4 as an actuated server and pitted it directly against QEMU and GitHub's Hosted runners.
 
@@ -146,7 +146,7 @@ Set up a 30 min call with me to ask any questions you may have and find out next
 
 * [Register for the actuated pilot](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform)
 
-Learn more about how it compares to other solutions in the FAQ: [Actuated FAQ](https://docs.actuated.dev/faq)
+Learn more about how it compares to other solutions in the FAQ: [Actuated FAQ](https://docs.actuated.com/faq)
 
 See also:
 

@@ -22,7 +22,7 @@ export default function Terms({ posts }) {
               <div className="p-8 sm:p-10 lg:flex-auto">
                 <h3 className="text-2xl font-bold tracking-tight text-gray-900">1. Privacy Policy</h3>
                 <p className="mt-6 text-base leading-7 text-gray-600">
-                    Read the <a className='underline' href='https://docs.actuated.dev/faq/#privacy-policy-data-security'>Privacy & Data Security Policy</a>
+                    Read the <a className='underline' href='https://docs.actuated.com/faq/#privacy-policy-data-security'>Privacy & Data Security Policy</a>
                 </p>
                 <h3 className="text-2xl mt-10 font-bold tracking-tight text-gray-900">2. End User License Agreement (EULA)</h3>
                 <p className="mt-6 text-base leading-7 text-gray-600">

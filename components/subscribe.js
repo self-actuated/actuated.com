@@ -35,7 +35,7 @@ export default function Subscribe() {
             </div>
             <p className="mt-4 text-sm leading-6 text-gray-900">
               We care about your data. Read our{' '}
-              <a href="https://docs.actuated.dev/faq/#privacy-policy-data-security" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              <a href="https://docs.actuated.com/faq/#privacy-policy-data-security" className="font-semibold text-indigo-600 hover:text-indigo-500">
                 privacy&nbsp;policy
               </a>
               .

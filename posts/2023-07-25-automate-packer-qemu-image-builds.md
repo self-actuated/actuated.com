@@ -219,7 +219,7 @@ Support for KVM is not enabled by default on Actuated and there are some prerequ
 - `arm64` runners are not supported at the moment
 - A bare-metal host that supports nested virtualization is required for the Agent.
 
-To configure your Actuated Agent for KVM support follow the [instructions in the docs](https://docs.actuated.dev/examples/kvm-guest/).
+To configure your Actuated Agent for KVM support follow the [instructions in the docs](https://docs.actuated.com/examples/kvm-guest/).
 
 ### The GitHub actions workflow
 

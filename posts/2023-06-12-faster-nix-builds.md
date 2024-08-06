@@ -33,7 +33,7 @@ Because Nix is declarative and offers reproducible builds, it is easy to setup a
 
 Another advantage of the reproducible builds is that if it works on your local machine it most likely also works in CI. No need to debug and find any discrepancies between your local and CI environment.
 
-> Of course, if you ever do get frustrated and want to debug a build, you can use the built-in [SSH feature in Actuated](https://docs.actuated.dev/tasks/debug-ssh/). Alex Ellis, Founder of Actuated.
+> Of course, if you ever do get frustrated and want to debug a build, you can use the built-in [SSH feature in Actuated](https://docs.actuated.com/tasks/debug-ssh/). Alex Ellis, Founder of Actuated.
 
 This is what the workflow looks like for building faasd and its related packages:
 

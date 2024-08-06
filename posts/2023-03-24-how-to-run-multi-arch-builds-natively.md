@@ -14,7 +14,7 @@ date: "2023-03-24"
 
 In two previous articles, we covered huge improvements in performance for the Parca project and VPP (Network Service Mesh) simply by switching to actuated with Arm64 runners instead of using QEMU and hosted runners.
 
-In the [first case](http://actuated.dev/blog/native-arm64-for-github-actions), using QEMU took over 33 minutes, and bare-metal Arm showed a 22x improvement at only 1 minute 26 seconds. For Network Service Mesh, [VPP](http://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions) couldn't even complete a build in 6 hours using QEMU - and I got it down to 9 minutes flat using a bare-metal [Ampere Altra server](https://amperecomputing.com/processors/ampere-altra).
+In the [first case](/blog/native-arm64-for-github-actions), using QEMU took over 33 minutes, and bare-metal Arm showed a 22x improvement at only 1 minute 26 seconds. For Network Service Mesh, [VPP](/blog/case-study-bring-your-own-bare-metal-to-actions) couldn't even complete a build in 6 hours using QEMU - and I got it down to 9 minutes flat using a bare-metal [Ampere Altra server](https://amperecomputing.com/processors/ampere-altra).
 
 ## What are we going to see and why is it better?
 
@@ -299,7 +299,7 @@ The Kubernetes controller that's available has the same issues, because it re-us
 
 Hosted runners solve this by creating a fresh VM per job, and destroying it immediately. That's the same approach that we took with actuated, but you get to bring your own metal along, so that you keep costs from growing out of control. Actuated also supports Arm, out of the box.
 
-Want to know more about the security of self-hosted runners? [Read more in our FAQ](https://docs.actuated.dev/faq/).
+Want to know more about the security of self-hosted runners? [Read more in our FAQ](https://docs.actuated.com/faq/).
 
 Want to talk to us about your CI/CD needs? We're happy to help.
 

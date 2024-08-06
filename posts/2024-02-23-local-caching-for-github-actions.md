@@ -21,7 +21,7 @@ We heard from the [Discourse](https://github.com/discourse/discourse) project la
 
 Hosted runners are placed close to the cache which means the latency is very low. Self-hosted runners can also make good use of this cache but the added latency can negate the advantage of switching to these faster runners. Running a local S3 cache with [Minio](https://github.com/minio/minio) or [Seaweedfs](https://github.com/seaweedfs/seaweedfs) on the self hosted runner or in the same region/network can solve this problem.
 
-For this test we ran the cache on the runner host. [Instructions](https://docs.actuated.dev/tasks/local-github-cache/) to set up a local S3 cache with Seaweedfs can be found in our docs.
+For this test we ran the cache on the runner host. [Instructions](https://docs.actuated.com/tasks/local-github-cache/) to set up a local S3 cache with Seaweedfs can be found in our docs.
 
 The Discourse repo is already using the `actions/cache`in their tests workflow which makes it easy to switch out the official [actions/cache](https://github.com/actions/cache) with [tespkg/actions-cache](https://github.com/tespkg/actions-cache).
 

@@ -71,7 +71,7 @@ export default function Solutions() {
                   Debug live over SSH
                 </dt>
                 <dd className="mt-2 text-base leading-7 text-gray-600">
-                <p className="mb-2">We heard from many teams that they missed CircleCI's "debug this job" button, <a href="https://docs.actuated.dev/tasks/debug-ssh/" className='text-blue-500 underline'>so we built it for you.</a></p>
+                <p className="mb-2">We heard from many teams that they missed CircleCI's "debug this job" button, <a href="https://docs.actuated.com/tasks/debug-ssh/" className='text-blue-500 underline'>so we built it for you.</a></p>
                   <p>We realise you won't debug your jobs on a regular basis, but when you are stuck, and have to wait 15-20 minutes to get to the line you've changed in a job, debugging with a terminal can save you hours.</p>
                   <p className="mt-2"><i>"How cool!!! you don't know how many hours I have lost on GitHub Actions without this." - Ivan Subotic, Swiss National Data and Service Center (DaSCH)</i></p>
                 </dd>
@@ -136,11 +136,11 @@ export default function Solutions() {
 
             <img
               className="rounded-lg shadow-lg object-cover object-center mt-4 mx-10 "
-              src="https://docs.actuated.dev/images/dashboard/org-usage.png"
+              src="https://docs.actuated.com/images/dashboard/org-usage.png"
               alt="Organisational level insights"
             />
 
-          <p className="text-base text-gray-500 mt-10 mt-4 mx-10"><a href="https://docs.actuated.dev/dashboard/" className='text-blue-500 underline' >Learn about the actuated dashboard</a></p>
+          <p className="text-base text-gray-500 mt-10 mt-4 mx-10"><a href="https://docs.actuated.com/dashboard/" className='text-blue-500 underline' >Learn about the actuated dashboard</a></p>
           
         </div>
 

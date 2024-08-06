@@ -136,7 +136,7 @@ One customer told us that they were running into rate limits when querying for 2
 
 The team at Todoist got in touch with us to see if actuated could reduce their bill on GitHub Actions. When he tried to run the tool the rate-limit was exhausted even when he changed the flag to `-days 1`. Why? They were using 550,000 minutes!
 
-So we can see one of the limitations already of this approach. Fortunately, actuated customers have their job stats recorded in a database and can generate reports [from the dashboard very quickly](https://docs.actuated.dev/dashboard/). 
+So we can see one of the limitations already of this approach. Fortunately, actuated customers have their job stats recorded in a database and can generate reports [from the dashboard very quickly](https://docs.actuated.com/dashboard/). 
 
 ## Finding out about your personal account
 

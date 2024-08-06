@@ -181,9 +181,9 @@ See microVMs launching in ~ 1s during a matrix build for testing a Custom Resour
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2o28iUC-J1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-Want to know how actuated works? [Read the FAQ for more technical details](https://docs.actuated.dev/faq/).
+Want to know how actuated works? [Read the FAQ for more technical details](https://docs.actuated.com/faq/).
 
 * [Find a server for your builds](/pricing)
-* [Register for actuated](https://docs.actuated.dev/provision-server/)
+* [Register for actuated](https://docs.actuated.com/provision-server/)
 
 Follow us on Twitter - [selfactuated](https://twitter.com/selfactuated)

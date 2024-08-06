@@ -57,7 +57,7 @@ export default function Pricing({ posts }) {
                   The higher the concurrency level for your plan, the more benefits you'll receive. With burst billing, you can pay for spikes in concurrency only when you need it.
                 </p>
                 <p className="mt-6 text-base leading-7 text-gray-600">
-                  The onboarding process is quick and easy: <a className='text-blue-500 underline' href="https://docs.actuated.dev/register">learn more</a>.
+                  The onboarding process is quick and easy: <a className='text-blue-500 underline' href="https://docs.actuated.com/register">learn more</a>.
                 </p>
                 <div className="mt-6 flex items-center gap-x-4">
                   <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">In the base tier</h4>
