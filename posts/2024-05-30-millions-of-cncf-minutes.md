@@ -123,4 +123,4 @@ You can watch the interview I mentioned earlier with Chris, Ed, Dave and myself 
 
 ### We could help you too
 
-Actuated can manage x86 and Arm64 servers for GitHub Actions and [self-managed GitLab CI](/blog/secure-microvm-ci-gitlab). If you'd like to speak to us about how we can speed up your jobs, reduce your maintenance efforts and lower your CI costs, [reach out via this page](https://actuated.dev/pricing/).
+Actuated can manage x86 and Arm64 servers for GitHub Actions and [self-managed GitLab CI](/blog/secure-microvm-ci-gitlab). If you'd like to speak to us about how we can speed up your jobs, reduce your maintenance efforts and lower your CI costs, [reach out via this page](https://actuated.com/pricing/).

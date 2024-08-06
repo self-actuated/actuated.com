@@ -81,6 +81,6 @@ If you think your automation for runners could be improved, or work with custome
 
 * [Sign-up for the Actuated pilot](https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform)
 * [Browse the docs and FAQ for actuated for GitHub Actions](https://docs.actuated.dev/)
-* [Read customer testimonials](https://actuated.dev/)
+* [Read customer testimonials](https://actuated.com/)
 
 You can follow [@selfactuated](https://twitter.com/selfactuated) on Twitter, or find [me there too](https://twitter.com/alexellisuk) to keep an eye on what we're building.

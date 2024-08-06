@@ -287,6 +287,6 @@ See also: [OpenFaaS templates](https://github.com/openfaas/templates)
 
 QEMU can be incredibly slow at times when using a hosted runner, where a build takes takes 1-2 minutes can extend to over half an hour. If you do run into that, one option is to check out actuated or another solution, which can build directly on an Arm server with a securely isolated Virtual Machine.
 
-In [How to make GitHub Actions 22x faster with bare-metal Arm](https://actuated.dev/blog/native-arm64-for-github-actions), we showed how we decreased the build time of an open-source Go project from 30.5 mins to 1.5 mins. If this is the direction you go in, you can use a [matrix-build](https://docs.actuated.dev/examples/matrix/) instead of a QEMU-based multi-arch build.
+In [How to make GitHub Actions 22x faster with bare-metal Arm](/blog/native-arm64-for-github-actions), we showed how we decreased the build time of an open-source Go project from 30.5 mins to 1.5 mins. If this is the direction you go in, you can use a [matrix-build](https://docs.actuated.dev/examples/matrix/) instead of a QEMU-based multi-arch build.
 
 See also: [Recommended bare-metal Arm servers](https://docs.actuated.dev/provision-server/#arm64-aka-aarch64)

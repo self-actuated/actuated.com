@@ -96,9 +96,9 @@ jobs:
             nix-build '<nixpkgs/nixos/tests/doas.nix>'
 ```
 
-* [How to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions)
-* [Automate Packer Images with QEMU and Actuated](https://actuated.dev/blog/automate-packer-qemu-image-builds)
-* [Faster Nix builds with GitHub Actions and actuated](https://actuated.dev/blog/faster-nix-builds)
+* [How to run KVM guests in your GitHub Actions](/blog/kvm-in-github-actions)
+* [Automate Packer Images with QEMU and Actuated](/blog/automate-packer-qemu-image-builds)
+* [Faster Nix builds with GitHub Actions and actuated](/blog/faster-nix-builds)
 * [Docs: Run a KVM guest](https://docs.actuated.dev/examples/kvm-guest)
 
 ## Wrapping up

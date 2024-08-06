@@ -194,7 +194,7 @@ jobs:
         print-summary: false
     - name: Generate actions-usage report
       run: |
-       echo "### Actions Usage report by [actuated.dev](https://actuated.dev)" >> SUMMARY
+       echo "### Actions Usage report by [actuated.dev](https://actuated.com)" >> SUMMARY
        echo "\`\`\`" >> SUMMARY
        actions-usage \
         -org $GITHUB_REPOSITORY_OWNER \

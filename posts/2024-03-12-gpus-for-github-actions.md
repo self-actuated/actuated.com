@@ -176,4 +176,4 @@ Would it make sense to run Stable Diffusion in the background, with different ve
 
 Do you run inference from OpenFaaS functions? We have a tutorial on [OpenAI Whisper within a function with GPU acceleration here](https://www.openfaas.com/blog/transcribe-audio-with-openai-whisper/) and a separate one on how to [serve Server Sent Events (SSE) from OpenAI or self-hosted models](https://www.openfaas.com/blog/openai-streaming-responses/), which is popular for chat-style interfaces to AI models.
 
-If you're interested in GPU support for GitHub Actions, then reach out to talk to us with [this form](https://actuated.dev/pricing).
+If you're interested in GPU support for GitHub Actions, then reach out to talk to us with [this form](https://actuated.com/pricing).

@@ -118,12 +118,12 @@ In addition to the reduced latency, switching to a self hosted cache has a coupl
 
 GitHub's caching action does not yet support using a custom S3 server, so we had to make some minor adjustments to the Discourse's workflow files. For this reason, if you use something like setup-go or setup-node, you won't be able to just set `cache: true`. Instead you'll need an independent caching step with the `testpkg/actions-cache` action.
 
-If you'd like to reach out to us and see if we can advise you on how to optmise your builds, you can [set up a call with us here.](https://actuated.dev/pricing).
+If you'd like to reach out to us and see if we can advise you on how to optmise your builds, you can [set up a call with us here.](https://actuated.com/pricing).
 
 If you want to learn more about caching for GitHub Actions checkout some of our other blog posts:
 
 You may also like:
 
-- [Make your builds run faster with Caching for GitHub Actions](https://actuated.dev/blog/caching-in-github-actions)
-- [Fixing the cache latency for self-hosted GitHub Actions](https://actuated.dev/blog/faster-self-hosted-cache)
-- [Is GitHub's self-hosted runner safe for open source?](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions)
+- [Make your builds run faster with Caching for GitHub Actions](/blog/caching-in-github-actions)
+- [Fixing the cache latency for self-hosted GitHub Actions](/blog/faster-self-hosted-cache)
+- [Is GitHub's self-hosted runner safe for open source?](/blog/is-the-self-hosted-runner-safe-github-actions)
