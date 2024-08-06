@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 06 Aug 2024 16:14:07 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 06 Aug 2024 16:14:52 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -86,7 +86,7 @@
 <h2 id="whats-next">What's next?</h2>
 <p>If you can relate to anything we've covered here on costs, performance, security, or something else, <a href="https://actuated.com/pricing">please feel free to reach out to talk to us</a>. We can tell you in a short period of time whether actuated would be a good fit for your team, and what results other teams like yours may have seen already. Plans run month to month, so it's relatively low risk to try actuated out on a couple of repositories to see how you like it.</p>
 <p>Are you a GitLab CI user?</p>
-<p>We have just published new updates for GitLab CI for GitLab Enterprise and are <a href="https://actuated.com/blog/actuated-for-gitlab">looking for pilot customers</a>. Many of the same security and management issues exist whether you're using GitHub Actions or GitLab CI, so we're excited to bring the same level of security and performance to GitLab CI.</p>
+<p>We have just published new updates for actuated for self-hosted GitLab and are <a href="https://actuated.com/blog/actuated-for-gitlab">looking for pilot customers</a>. Many of the same security and management issues exist whether you're using GitHub Actions or GitLab CI, so we're excited to bring the same level of security and performance to GitLab CI.</p>
 <p>Additional resources:</p>
 <ul>
 <li><a href="https://docs.actuated.com/faq/">Actuated FAQ</a></li>
