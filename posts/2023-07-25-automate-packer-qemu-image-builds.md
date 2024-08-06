@@ -19,7 +19,7 @@ We will see how the Packer build can be completely automated by integrating Pack
 
 Actuated supports nested virtualsation where a VM can make use of KVM to launch additional VMs within a GitHub Action. This makes it possible to run the Packer QEMU builder in GitHub Action workflows. Something that is not possible with GitHub's default hosted runners.
 
-> See also: [How to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions)
+> See also: [How to run KVM guests in your GitHub Actions](/blog/kvm-in-github-actions)
 
 ## Create the Packer template
 
@@ -300,4 +300,4 @@ Additional tools like the [qemu disk image utility](https://www.qemu.org/docs/ma
 
 AWS also supports importing VM images and converting them to an AMI so they can be used to launch EC2 instances. See: [Create an AMI from a VM image](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html)
 
-If you'd like to know more about nested virtualisation support, check out: [How to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions)
+If you'd like to know more about nested virtualisation support, check out: [How to run KVM guests in your GitHub Actions](/blog/kvm-in-github-actions)

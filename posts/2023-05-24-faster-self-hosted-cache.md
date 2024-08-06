@@ -44,8 +44,8 @@ This post is about speed improvements for caching, but if you're finding that QE
 
 See also:
 
-* [How to split up multi-arch Docker builds to run natively](https://actuated.dev/blog/how-to-run-multi-arch-builds-natively)
-* [How to make GitHub Actions 22x faster with bare-metal Arm](https://actuated.dev/blog/native-arm64-for-github-actions)
+* [How to split up multi-arch Docker builds to run natively](/blog/how-to-run-multi-arch-builds-natively)
+* [How to make GitHub Actions 22x faster with bare-metal Arm](/blog/native-arm64-for-github-actions)
 
 ## Set up a self-hosted cache for GitHub Actions
 

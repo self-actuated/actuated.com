@@ -137,11 +137,11 @@ Building your projects with Nix allows your GitHub actions pipelines to be conci
 
 Even when you are not using Nix to build your project it can still help you to create concise and easy to maintain GitHub Action workflows. With Nix shell environments you can use Nix to declare which dependencies you want to make available inside an isolated shell environment for your project: [Streamline your GitHub Actions dependencies using Nix](https://determinate.systems/posts/nix-github-actions)
 
-Building Nix packages or entire NixOS systems on GitHub Actions can be slow especially if you need to build for Arm. Bringing your own metal to GitHub actions can speed up your builds. If you need Arm runners, Actuated is one of the only options for securely isolated CI that is safe for Open Source and public repositories. Alex explains why in: [Is the GitHub Actions self-hosted runner safe for Open Source?](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions)
+Building Nix packages or entire NixOS systems on GitHub Actions can be slow especially if you need to build for Arm. Bringing your own metal to GitHub actions can speed up your builds. If you need Arm runners, Actuated is one of the only options for securely isolated CI that is safe for Open Source and public repositories. Alex explains why in: [Is the GitHub Actions self-hosted runner safe for Open Source?](/blog/is-the-self-hosted-runner-safe-github-actions)
 
-Another powerful feature of the Nix ecosystem is the ability to run integration tests using virtual machines (NixOS test). This feature requires hardware acceleration to be available in the CI runner. Actuated makes it possible to run these tests in GitHub Actions CI pipelines: [how to run KVM guests in your GitHub Actions](https://actuated.dev/blog/kvm-in-github-actions).
+Another powerful feature of the Nix ecosystem is the ability to run integration tests using virtual machines (NixOS test). This feature requires hardware acceleration to be available in the CI runner. Actuated makes it possible to run these tests in GitHub Actions CI pipelines: [how to run KVM guests in your GitHub Actions](/blog/kvm-in-github-actions).
 
 See also:
 
-- [Bring Your Own Metal - Case Study with GitHub Actions](https://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions)
-- [How to make GitHub Actions 22x faster with bare-metal Arm](https://actuated.dev/blog/native-arm64-for-github-actions)
+- [Bring Your Own Metal - Case Study with GitHub Actions](/blog/case-study-bring-your-own-bare-metal-to-actions)
+- [How to make GitHub Actions 22x faster with bare-metal Arm](/blog/native-arm64-for-github-actions)

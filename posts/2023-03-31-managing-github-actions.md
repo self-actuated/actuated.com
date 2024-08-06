@@ -24,9 +24,9 @@ Just like managed runners - every time actuated starts up a runner, it's within 
 [![The Asahi Linux lab](https://pbs.twimg.com/media/FsesfBIWAAEYjGY?format=jpg&name=large)](https://twitter.com/alexellisuk/status/1641471236738875399/photo/1)
 > Asahi Linux running on my lab of two M1 Mac Minis - used for building the Arm64 base images and Kernels.
 
-Can't you just use a self-hosted runner on a VM? Yes, of course you can. But it's actually more nuanced than that. The self-hosted runner [isn't safe](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions) for OSS or public repos. And whether you run it directly on the host, or in Kubernetes - it's subject to side-effects, poor isolation, malware and in some cases uses very high privileges that could result in taking over a host completely.
+Can't you just use a self-hosted runner on a VM? Yes, of course you can. But it's actually more nuanced than that. The self-hosted runner [isn't safe](/blog/is-the-self-hosted-runner-safe-github-actions) for OSS or public repos. And whether you run it directly on the host, or in Kubernetes - it's subject to side-effects, poor isolation, malware and in some cases uses very high privileges that could result in taking over a host completely.
 
-You can learn more in the [actuated announcement](https://actuated.dev/blog/blazing-fast-ci-with-microvms) and [FAQ](https://docs.actuated.dev/faq).
+You can learn more in the [actuated announcement](/blog/blazing-fast-ci-with-microvms) and [FAQ](https://docs.actuated.dev/faq).
 
 ## how does it work?
 
@@ -224,7 +224,7 @@ I hope that you've enjoyed hearing a bit about our journey so far. With every ne
 
 Whilst there was a significant amount of very technical work at the beginning of actuated, most of our time now is spent on customer support, education, and improving the onboarding experience.
 
-If you'd like to know how actuated compares to hosted runners or managing the self-hosted runner on your own, we'd encourage [checking out the blog](https://actuated.dev/blog) and [FAQ](https://actuated.dev/faq).
+If you'd like to know how actuated compares to hosted runners or managing the self-hosted runner on your own, we'd encourage [checking out the blog](https://actuated.com/blog) and [FAQ](https://actuated.com/faq).
 
 Are your builds slowing the team down? Do you need better organisation-level insights and reporting? Or do you need Arm support? Are you frustrated with managing self-hosted runners?
 

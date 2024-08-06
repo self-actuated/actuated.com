@@ -1,7 +1,7 @@
 {
-  "name": "actuated.dev",
+  "name": "actuated.com",
   "version": "0.1.0",
-  "homepage": "https://actuated.dev",
+  "homepage": "https://actuated.com",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.5",

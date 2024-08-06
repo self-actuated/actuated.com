@@ -20,7 +20,7 @@ In the [first case](http://actuated.dev/blog/native-arm64-for-github-actions), u
 
 In this article, I'll show you how to run multi-arch builds natively on bare-metal hardware using GitHub Actions and actuated.
 
-[Actuated](https://actuated.dev/) is a SaaS service that we built so that you can Bring Your Own compute to GitHub Actions, and have every build run in an immutable, single-use VM.
+[Actuated](https://actuated.com/) is a SaaS service that we built so that you can Bring Your Own compute to GitHub Actions, and have every build run in an immutable, single-use VM.
 
 [![Comparison of the two builds](https://pbs.twimg.com/media/Fr_CcVJWIAEY1gL?format=png&name=medium)](https://twitter.com/alexellisuk/status/1639232258887372801?s=20)
 > Comparison of splitting out to run in parallel on native hardware and QEMU.
@@ -45,7 +45,7 @@ Well it's free - as in beer, there's no cost at all to use it. And many builds c
 
 That's why we wrote up how we build 80+ multi-arch images for various products like OpenFaaS and Inlets:
 
-[The efficient way to publish multi-arch containers from GitHub Actions](https://actuated.dev/blog/multi-arch-docker-github-actions)
+[The efficient way to publish multi-arch containers from GitHub Actions](/blog/multi-arch-docker-github-actions)
 
 Here's what the build looks like with QEMU:
 

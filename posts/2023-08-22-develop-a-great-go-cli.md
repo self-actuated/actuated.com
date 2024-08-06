@@ -61,7 +61,7 @@ actions-usage -days 7 \
     -user alexellis
 ```
 
-We then got a bit clever and started adding some extra reports and details, you can see what it looks in the article [Understand your usage of GitHub Actions](https://actuated.dev/blog/github-actions-usage-cli)
+We then got a bit clever and started adding some extra reports and details, you can see what it looks in the article [Understand your usage of GitHub Actions](/blog/github-actions-usage-cli)
 
 ## What's new for actuated-cli
 

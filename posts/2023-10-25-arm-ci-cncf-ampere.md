@@ -42,7 +42,7 @@ Together, Ampere and the CNCF are now sponsoring an initial 1-year pilot of mana
 
 In case you are hearing about actuated for the first time, I wanted to give you a quick one year recap.
 
-Just over 12 months ago, we [announced the work we'd been doing with actuated](https://actuated.dev/blog/blazing-fast-ci-with-microvms) to improve self-hosted runner security and management. We were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.
+Just over 12 months ago, we [announced the work we'd been doing with actuated](/blog/blazing-fast-ci-with-microvms) to improve self-hosted runner security and management. We were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.
 
 Fast forward to today, and we have run over 140,000 individual Firecracker VMs for customers on their own hardware. Rather than the fully managed service that GitHub offers, we believe that you should be able to bring your own hardware, and pay a flat-rate fee for the service, rather than being charged per-minute.
 
@@ -53,7 +53,7 @@ The main benefits are having access to bigger, faster and more specialist hardwa
 * For `x86_64` builds, we see about a 3x speed-up vs. using GitHub's hosted runners, in addition to being able to add more RAM and disk space to builds.
 * For Arm64, we see builds which take several hours or which fail to complete within a 6 hour window using QEMU, go down to 3-5 minutes.
 
-Vendors and consumers are becoming increasingly aware of the importance of the supply chain, GitHub's self-hosted runner is [not recommended for open source repos](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions). Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.
+Vendors and consumers are becoming increasingly aware of the importance of the supply chain, GitHub's self-hosted runner is [not recommended for open source repos](/blog/is-the-self-hosted-runner-safe-github-actions). Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.
 
 If you're wanting to know more about why we think microVMs are the only tool that makes sense for secure CI, then I'd recommend my talk from Cloud Native Rejekts earlier in the year: [Face off: VMs vs. Containers vs Firecracker](https://www.youtube.com/watch?v=pTQ_jVYhAoc).
 
@@ -103,7 +103,7 @@ The label for `runs-on:` allows for dynamic configuration of vCPU and GBs of RAM
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I had to split the docker build so that the ARM half would build on ARM, and x86 on x86, and then a step to combine the two - overall this works out to be a very significant improvement<a href="https://t.co/69cIxjYRcW">https://t.co/69cIxjYRcW</a></p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715266936592904446?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-We have full instructions for 2, in the following tutorial: [How to split up multi-arch Docker builds to run natively](https://actuated.dev/blog/how-to-run-multi-arch-builds-natively).
+We have full instructions for 2, in the following tutorial: [How to split up multi-arch Docker builds to run natively](/blog/how-to-run-multi-arch-builds-natively).
 
 **Is there access for AMD64?**
 
@@ -129,8 +129,8 @@ We're initially offering access to managed Arm CI for CNCF projects, but if you'
 
 Ampere who are co-sponsoring our service with the CNCF have their own announcement here: [Ampere Computing and CNCF Supporting Arm Native CI for CNCF Projects](https://amperecomputing.com/blogs/ampere-computing-and-cncf-supporting-arm-native-ci-for-ncf-projects).
 
-* Read one of our [recent blog posts](https://actuated.dev/blog)
+* Read one of our [recent blog posts](https://actuated.com/blog)
 * Learn more about [actuated in the docs](https://docs.actuated.dev)
-* [Read what our customers are saying about our service](https://actuated.dev)
+* [Read what our customers are saying about our service](https://actuated.com)
 
-> Did you know? [Actuated for GitLab CI is now in technical preview, watch a demo here](https://actuated.dev/blog/secure-microvm-ci-gitlab).
+> Did you know? [Actuated for GitLab CI is now in technical preview, watch a demo here](/blog/secure-microvm-ci-gitlab).

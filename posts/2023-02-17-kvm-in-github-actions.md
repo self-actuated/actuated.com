@@ -235,7 +235,7 @@ At time of writing there is no support for aarch64 runners. Only Intel and AMD C
 
 While it is possible to deploy your own self-hosted runners to run jobs that need KVM support, this is not recommended:
 
-- [Is the GitHub Actions self-hosted runner safe for Open Source?](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions)
+- [Is the GitHub Actions self-hosted runner safe for Open Source?](/blog/is-the-self-hosted-runner-safe-github-actions)
 
 Want to see a demo or talk to our team? [Contact us here](https://forms.gle/8XmpTTWXbZwWkfqT6)
 

@@ -41,7 +41,7 @@ const faqs = [
     question: "What are the differences vs. Actions Runtime Controller?",
     answer:
       "actions-runtime-controller compromises the security of a Kubernetes cluster by using privileged containers or by mounting the Docker socket - both mean that code in a CI job can take over the host - or potentially the cluster.",
-      link: "https://actuated.dev/blog/blazing-fast-ci-with-microvms"
+      link: "/blog/blazing-fast-ci-with-microvms"
   },
   {
     question: "How much faster is an Arm build than using hosted runners?",
@@ -65,7 +65,7 @@ const faqs = [
     question: "Is GitLab supported?",
     answer:
       "We have a tech preview for self-hosted GitLab.",
-      link: "https://actuated.dev/blog/secure-microvm-ci-gitlab",
+      link: "/blog/secure-microvm-ci-gitlab",
       action: "Read the announcement"
   },
   {

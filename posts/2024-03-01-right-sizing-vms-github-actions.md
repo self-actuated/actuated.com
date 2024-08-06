@@ -10,7 +10,7 @@ image: /images/2024-03-right-sizing/background.png
 date: "2024-03-01"
 ---
 
-When we [onboarded the etcd project from the CNCF](https://actuated.dev/blog/arm-ci-cncf-ampere), they'd previously been using a self-hosted runner for their repositories on a bare-metal host. There are several drawbacks to this approach, [including potential security issues, especially when using Docker](/blog/is-the-self-hosted-runner-safe-github-actions).
+When we [onboarded the etcd project from the CNCF](/blog/arm-ci-cncf-ampere), they'd previously been using a self-hosted runner for their repositories on a bare-metal host. There are several drawbacks to this approach, [including potential security issues, especially when using Docker](/blog/is-the-self-hosted-runner-safe-github-actions).
 
 actuated VM sizes can be configured by a label, and you can pick any combination of vCPU and RAM, there's no need to pick a pre-defined size.
 

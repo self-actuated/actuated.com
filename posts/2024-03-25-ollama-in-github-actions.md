@@ -126,7 +126,7 @@ I hear from so many organisations who have gone to lengths to get SOC2 complianc
 
 ### Putting it together for a GitHub Action
 
-The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the [Pricing page](https://actuated.dev/pricing).
+The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the [Pricing page](https://actuated.com/pricing).
 
 The `self-actuated/nvidia-run` installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be [cached using a local S3 bucket](https://docs.actuated.dev/tasks/local-github-cache/).
 

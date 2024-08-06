@@ -10,11 +10,11 @@ image: /images/2024-03-cncf-update/background.png
 date: "2024-03-04"
 ---
 
-It's now been 4 months since we [kicked off the sponsored program with the Cloud Native Computing Foundation (CNCF) and Ampere to manage CI for the foundation's open source projects](https://actuated.dev/blog/arm-ci-cncf-ampere). But even before that, [Calyptia, the maintainer of Fluent approached us to run Arm CI for the open source fluent repos](https://calyptia.com/blog/scaling-builds-with-actuated), so we've been running CI for CNCF projects since June 2023.
+It's now been 4 months since we [kicked off the sponsored program with the Cloud Native Computing Foundation (CNCF) and Ampere to manage CI for the foundation's open source projects](/blog/arm-ci-cncf-ampere). But even before that, [Calyptia, the maintainer of Fluent approached us to run Arm CI for the open source fluent repos](https://calyptia.com/blog/scaling-builds-with-actuated), so we've been running CI for CNCF projects since June 2023.
 
-Over that time, we've got to work directly with some really bright, friendly, and helpful maintainers, who wanted to have a safe, fast and secure way to create release artifacts, test PRs, and to run end to end tests. Their alternative until this point was either to go against GitHub's own advice, and to [run an unsafe, self-hosted runner on an open source repo](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions), or [to use QEMU](https://actuated.dev/blog/how-to-run-multi-arch-builds-natively) that in the case of Fluent meant their 5 minute build took over 6 hours before failing.
+Over that time, we've got to work directly with some really bright, friendly, and helpful maintainers, who wanted to have a safe, fast and secure way to create release artifacts, test PRs, and to run end to end tests. Their alternative until this point was either to go against GitHub's own advice, and to [run an unsafe, self-hosted runner on an open source repo](/blog/is-the-self-hosted-runner-safe-github-actions), or [to use QEMU](/blog/how-to-run-multi-arch-builds-natively) that in the case of Fluent meant their 5 minute build took over 6 hours before failing.
 
-You can find out more about why we put this program together in the original announcement: [Announcing managed Arm CI for CNCF projects](https://actuated.dev/blog/arm-ci-cncf-ampere)
+You can find out more about why we put this program together in the original announcement: [Announcing managed Arm CI for CNCF projects](/blog/arm-ci-cncf-ampere)
 
 ## Measuring the impact
 
@@ -60,7 +60,7 @@ After fluent, etcd was the second project to migrate off self-managed runners. T
 
 You can learn how to try out vmmeter to right-size your jobs on actuated, or on GitHub's hosted runners.
 
-[Right sizing VMs for GitHub Actions](https://actuated.dev/blog/right-sizing-vms-github-actions)
+[Right sizing VMs for GitHub Actions](/blog/right-sizing-vms-github-actions)
 
 The projects have had a fairly stable, steady-state of CI jobs throughout the day and night as contributors from around the globe send PRs and end to end tests run.
 

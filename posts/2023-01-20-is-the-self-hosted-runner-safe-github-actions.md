@@ -151,7 +151,7 @@ Need to test against a dozen different Kubernetes versions?
 
 Not a problem:
 
-![Testing multiple Kubernetes versions](https://actuated.dev/images/k3sup.png)
+![Testing multiple Kubernetes versions](https://actuated.com/images/k3sup.png)
 
 What about running the same on Arm servers?
 

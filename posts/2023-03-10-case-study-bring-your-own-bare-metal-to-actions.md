@@ -37,7 +37,7 @@ There were two issues:
 
 We explain how to use QEMU in Docker Actions in the following blog post:
 
-[The efficient way to publish multi-arch containers from GitHub Actions](https://actuated.dev/blog/multi-arch-docker-github-actions)
+[The efficient way to publish multi-arch containers from GitHub Actions](/blog/multi-arch-docker-github-actions)
 
 ## Rubbing some bare-metal on it
 
@@ -117,7 +117,7 @@ So, wrapping up - if you only build x86_64, and have very few build minutes, and
 
 If you don't want to worry about how many minutes you're going to use, or surprise bills because your team got more productive, or grew in size, or is finally running those 2 hour E2E tests every night, then actuated may be faster and better value overall for you.
 
-But if you need Arm runners, and [want to use them with public repos](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions), then there are not many options for you which are going to be secure and easy to manage.
+But if you need Arm runners, and [want to use them with public repos](/blog/is-the-self-hosted-runner-safe-github-actions), then there are not many options for you which are going to be secure and easy to manage.
 
 ### A recap on the results
 
@@ -150,6 +150,6 @@ Learn more about how it compares to other solutions in the FAQ: [Actuated FAQ](h
 
 See also:
 
-* [The efficient way to publish multi-arch containers from GitHub Actions](https://actuated.dev/blog/multi-arch-docker-github-actions)
-* [Is the GitHub Actions self-hosted runner safe for Open Source?](https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions)
-* [How to make GitHub Actions 22x faster with bare-metal Arm](https://actuated.dev/blog/native-arm64-for-github-actions)
+* [The efficient way to publish multi-arch containers from GitHub Actions](/blog/multi-arch-docker-github-actions)
+* [Is the GitHub Actions self-hosted runner safe for Open Source?](/blog/is-the-self-hosted-runner-safe-github-actions)
+* [How to make GitHub Actions 22x faster with bare-metal Arm](/blog/native-arm64-for-github-actions)

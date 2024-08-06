@@ -43,8 +43,8 @@ As part of our white-glove service, we monitor the usage of customers to see whe
 
 Then, there are two additional free tools we offer for self-service:
 
-* Our open-source [actions-usage](https://actuated.dev/blog/github-actions-usage-cli) tool can give you a good idea of what your patterns look like for a given period of time.
-* We built [vmmeter](https://actuated.dev/blog/right-sizing-vms-github-actions) to help customers right-size VMs to CI jobs. So often customers pick VM sizes that are an order of magnitude too big for their jobs, meaning fewer jobs can run in parallel on the same set of servers
+* Our open-source [actions-usage](/blog/github-actions-usage-cli) tool can give you a good idea of what your patterns look like for a given period of time.
+* We built [vmmeter](/blog/right-sizing-vms-github-actions) to help customers right-size VMs to CI jobs. So often customers pick VM sizes that are an order of magnitude too big for their jobs, meaning fewer jobs can run in parallel on the same set of servers
 
 **Extra billing on your own servers**
 
