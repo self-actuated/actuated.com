@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 06 Aug 2024 16:21:07 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 07 Aug 2024 08:19:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -57,6 +57,10 @@
 <h2 id="server-pricing--white-glove-service">Server pricing &#x26; white-glove service</h2>
 <p>Today, most of our customers use pay per minute bare-metal hosted by a cloud provider. But our first pilot customer was a mid-sized start-up who loved to run their own servers, maintain their own infrastructure. They bought Dell servers from eBay, packaged them with new hardware, then had a team of 5 engineers on standby to refurbish and manage them.</p>
 <p>Over time, we started to meet teams who wanted to outsource the server installation, maintenance, and monitoring to someone else. This makes actuated feel even more like managed runners, whilst keeping the benefits of self-hosted infrastructure. We're able to offer this as part of your subscription, because <a href="https://docs.actuated.com/install-agent/">once we've run the installation of the agent</a>, there is rarely a reason to log into the host again. In the rare event of a catastrophic failure, we can have the server OS image flashed and the agent reinstalled within a few minutes.</p>
+<blockquote>
+<p>For our compute intensive application, with testing taking 30-45 minutes, every second counts. Actuated has helped us keep our development speed up by making sure we ran on fast bare-metal servers and by helping us find bottle necks in the testing process. We were able to drop our testing time by 50% whilst saving 3-6x per month versus similar hosted GitHub Actions minutes.</p>
+<p>Justin Gray, CTO at Toolpath</p>
+</blockquote>
 <p>One of the downsides to using a technology like <a href="https://firecracker-microvm.github.io/">Firecracker</a> is that it requires <a href="https://linux-kvm.org/page/Main_Page">KVM</a> or nested virtualisation to be available on the server. If you're using AWS already, you'll be disappointed to learn that their bare-metal hardware is not only overpriced, but it isn't suited to CI workload which require a fast processor and storage.</p>
 <p><a href="https://docs.actuated.com/provision-server/">We put together a list of servers that we recommend</a> and the rough costing for them, but to make it simple, you cannot beat Hetzner. Most of our customers rent bare-metal from them and we've been very pleased with the value for money and sheer performance.</p>
 <ul>
@@ -77,12 +81,16 @@
 <li><a href="https://actuated.com/blog/gpus-for-github-actions">Accelerate GitHub Actions with dedicated GPUs</a></li>
 <li><a href="https://actuated.com/blog/ollama-in-github-actions">Run AI models with ollama in CI with GitHub Actions</a></li>
 </ul>
-<h2 id="sponsored-ci-minutes-for-the-cncf">Sponsored CI minutes for the CNCF</h2>
+<h2 id="sponsored-ci-minutes-for-the-cloud-native-computing-foundation-cncf">Sponsored CI minutes for the Cloud Native Computing Foundation (CNCF)</h2>
 <p>The <a href="https://actuated.com/blog/cncf-arm-march-update">CNCF and Ampere Computing</a> joined together to sponsor CI minutes for top-tier open source projects such as containerd, runc, Open Telemetry, CRI-O, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.</p>
 <ul>
 <li><a href="https://actuated.com/blog/millions-of-cncf-minutes">On Running Millions of Arm CI Minutes for the CNCF</a></li>
 <li><a href="https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
 </ul>
+<blockquote>
+<p>Ampere is delighted to partner with Actuated and the CNCF on their ambitions of improving the state of Aarch64 software. The combination of Actuated's tools and methods for managed CI and Ampere's cloud native processors for fast and secure builds makes for a tremendous advantage to accelerate the availability of cloud native software for the Aarch64 ecosystem.</p>
+<p>Pete Baker, VP Customer &#x26; Developer Engineering</p>
+</blockquote>
 <h2 id="whats-next">What's next?</h2>
 <p>If you can relate to anything we've covered here on costs, performance, security, or something else, <a href="https://actuated.com/pricing">please feel free to reach out to talk to us</a>. We can tell you in a short period of time whether actuated would be a good fit for your team, and what results other teams like yours may have seen already. Plans run month to month, so it's relatively low risk to try actuated out on a couple of repositories to see how you like it.</p>
 <p>Are you a GitLab CI user?</p>
