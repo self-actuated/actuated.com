@@ -68,6 +68,10 @@ Today, most of our customers use pay per minute bare-metal hosted by a cloud pro
 
 Over time, we started to meet teams who wanted to outsource the server installation, maintenance, and monitoring to someone else. This makes actuated feel even more like managed runners, whilst keeping the benefits of self-hosted infrastructure. We're able to offer this as part of your subscription, because [once we've run the installation of the agent](https://docs.actuated.com/install-agent/), there is rarely a reason to log into the host again. In the rare event of a catastrophic failure, we can have the server OS image flashed and the agent reinstalled within a few minutes.
 
+> For our compute intensive application, with testing taking 30-45 minutes, every second counts. Actuated has helped us keep our development speed up by making sure we ran on fast bare-metal servers and by helping us find bottle necks in the testing process. We were able to drop our testing time by 50% whilst saving 3-6x per month versus similar hosted GitHub Actions minutes.
+> 
+> Justin Gray, CTO at Toolpath
+
 One of the downsides to using a technology like [Firecracker](https://firecracker-microvm.github.io/) is that it requires [KVM](https://linux-kvm.org/page/Main_Page) or nested virtualisation to be available on the server. If you're using AWS already, you'll be disappointed to learn that their bare-metal hardware is not only overpriced, but it isn't suited to CI workload which require a fast processor and storage.
 
 [We put together a list of servers that we recommend](https://docs.actuated.com/provision-server/) and the rough costing for them, but to make it simple, you cannot beat Hetzner. Most of our customers rent bare-metal from them and we've been very pleased with the value for money and sheer performance.
@@ -92,12 +96,16 @@ We started to see customer interest in AI and ML workloads for GitHub Actions an
 * [Accelerate GitHub Actions with dedicated GPUs](https://actuated.com/blog/gpus-for-github-actions)
 * [Run AI models with ollama in CI with GitHub Actions](https://actuated.com/blog/ollama-in-github-actions)
 
-## Sponsored CI minutes for the CNCF
+## Sponsored CI minutes for the Cloud Native Computing Foundation (CNCF)
 
 The [CNCF and Ampere Computing](https://actuated.com/blog/cncf-arm-march-update) joined together to sponsor CI minutes for top-tier open source projects such as containerd, runc, Open Telemetry, CRI-O, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.
 
 * [On Running Millions of Arm CI Minutes for the CNCF](https://actuated.com/blog/millions-of-cncf-minutes)
 * [Is the GitHub Actions self-hosted runner safe for Open Source?](https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions)
+
+> Ampere is delighted to partner with Actuated and the CNCF on their ambitions of improving the state of Aarch64 software. The combination of Actuated's tools and methods for managed CI and Ampere's cloud native processors for fast and secure builds makes for a tremendous advantage to accelerate the availability of cloud native software for the Aarch64 ecosystem.
+> 
+> Pete Baker, VP Customer & Developer Engineering
 
 ## What's next?
 
