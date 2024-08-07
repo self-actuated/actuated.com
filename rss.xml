@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 07 Aug 2024 08:19:56 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 07 Aug 2024 15:36:38 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -45,7 +45,7 @@
 <li>Automated - Over The Air (OTA) updates</li>
 </ul>
 <p>Our own CI system builds both the actuated agent, and the root filesystem used for CI builds for GitHub Actions and GitLab CI on an automated basis. These are pushed out over the network to agents, so you never have to worry about updating the self-hosted runner, or the software within the VM image.</p>
-<p>See also: <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Scaling ARM builds with Actuated</a></p>
+<p>For a case study from Calyptia (since acquired by Chronosphere.io), see: <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Scaling ARM builds with Actuated</a></p>
 <h2 id="predictable-flat-rate-pricing-with-new-burst-pricing">Predictable flat-rate pricing, with new burst pricing</h2>
 <p>The <a href="/pricing">pricing for actuated</a> was designed to be predictable and reasonable. If you run 100 builds or 1 million builds, you'll get charged the same amount, with concurrency being limited to whatever you decided fits your needs.</p>
 <p>For teams with a large amount of minutes, or larger runners than the "standard" tier of GitHub Actions, this can result in a 2-6x cost reduction.</p>
@@ -82,7 +82,7 @@
 <li><a href="https://actuated.com/blog/ollama-in-github-actions">Run AI models with ollama in CI with GitHub Actions</a></li>
 </ul>
 <h2 id="sponsored-ci-minutes-for-the-cloud-native-computing-foundation-cncf">Sponsored CI minutes for the Cloud Native Computing Foundation (CNCF)</h2>
-<p>The <a href="https://actuated.com/blog/cncf-arm-march-update">CNCF and Ampere Computing</a> joined together to sponsor CI minutes for top-tier open source projects such as containerd, runc, Open Telemetry, CRI-O, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.</p>
+<p>The <a href="https://actuated.com/blog/cncf-arm-march-update">CNCF and Ampere Computing</a> joined together to sponsor CI minutes for top-tier open source projects such as containerd, fluentd, Open Telemetry, cri-o, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.</p>
 <ul>
 <li><a href="https://actuated.com/blog/millions-of-cncf-minutes">On Running Millions of Arm CI Minutes for the CNCF</a></li>
 <li><a href="https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
@@ -90,6 +90,11 @@
 <blockquote>
 <p>Ampere is delighted to partner with Actuated and the CNCF on their ambitions of improving the state of Aarch64 software. The combination of Actuated's tools and methods for managed CI and Ampere's cloud native processors for fast and secure builds makes for a tremendous advantage to accelerate the availability of cloud native software for the Aarch64 ecosystem.</p>
 <p>Pete Baker, VP Customer &#x26; Developer Engineering</p>
+</blockquote>
+<p>We've also sponsored the <a href="https://atuin.sh/">Atuin</a>, runc and <a href="https://github.com/checkpoint-restore/criu">criu</a> open-source projects. Ellie, the maintainer of the popular Atuin tool for syncing bash history said:</p>
+<blockquote>
+<p>"Actuated has been a lifesaver - we were really struggling with slow, emulated, hour plus ARM docker builds. With Actuated, our builds are now incredibly fast and finish in a few minutes"</p>
+<p>Ellie Huxtable, Atuin maintainer</p>
 </blockquote>
 <h2 id="whats-next">What's next?</h2>
 <p>If you can relate to anything we've covered here on costs, performance, security, or something else, <a href="https://actuated.com/pricing">please feel free to reach out to talk to us</a>. We can tell you in a short period of time whether actuated would be a good fit for your team, and what results other teams like yours may have seen already. Plans run month to month, so it's relatively low risk to try actuated out on a couple of repositories to see how you like it.</p>
