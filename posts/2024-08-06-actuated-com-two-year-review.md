@@ -44,7 +44,7 @@ So what do you have to manage? You'll need to rent or provision a server with KV
 
 Our own CI system builds both the actuated agent, and the root filesystem used for CI builds for GitHub Actions and GitLab CI on an automated basis. These are pushed out over the network to agents, so you never have to worry about updating the self-hosted runner, or the software within the VM image.
 
-See also: [Scaling ARM builds with Actuated](https://calyptia.com/blog/scaling-builds-with-actuated)
+For a case study from Calyptia (since acquired by Chronosphere.io), see: [Scaling ARM builds with Actuated](https://calyptia.com/blog/scaling-builds-with-actuated)
 
 ## Predictable flat-rate pricing, with new burst pricing
 
@@ -98,7 +98,7 @@ We started to see customer interest in AI and ML workloads for GitHub Actions an
 
 ## Sponsored CI minutes for the Cloud Native Computing Foundation (CNCF)
 
-The [CNCF and Ampere Computing](https://actuated.com/blog/cncf-arm-march-update) joined together to sponsor CI minutes for top-tier open source projects such as containerd, runc, Open Telemetry, CRI-O, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.
+The [CNCF and Ampere Computing](https://actuated.com/blog/cncf-arm-march-update) joined together to sponsor CI minutes for top-tier open source projects such as containerd, fluentd, Open Telemetry, cri-o, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.
 
 * [On Running Millions of Arm CI Minutes for the CNCF](https://actuated.com/blog/millions-of-cncf-minutes)
 * [Is the GitHub Actions self-hosted runner safe for Open Source?](https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions)
@@ -106,6 +106,12 @@ The [CNCF and Ampere Computing](https://actuated.com/blog/cncf-arm-march-update)
 > Ampere is delighted to partner with Actuated and the CNCF on their ambitions of improving the state of Aarch64 software. The combination of Actuated's tools and methods for managed CI and Ampere's cloud native processors for fast and secure builds makes for a tremendous advantage to accelerate the availability of cloud native software for the Aarch64 ecosystem.
 > 
 > Pete Baker, VP Customer & Developer Engineering
+
+We've also sponsored the [Atuin](https://atuin.sh/), runc and [criu](https://github.com/checkpoint-restore/criu) open-source projects. Ellie, the maintainer of the popular Atuin tool for syncing bash history said:
+
+> "Actuated has been a lifesaver - we were really struggling with slow, emulated, hour plus ARM docker builds. With Actuated, our builds are now incredibly fast and finish in a few minutes"
+> 
+> Ellie Huxtable, Atuin maintainer
 
 ## What's next?
 
