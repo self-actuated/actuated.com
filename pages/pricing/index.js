@@ -128,7 +128,7 @@ export default function Pricing({ posts }) {
                       Talk to us
                     </a>
                     <a
-                      href="https://orders.actuated.dev/products/actuated"
+                      href="https://subscribe.openfaas.com/buy/6869822f-d5bd-40be-9b93-c45c25dcf2f1"
                       className="mt-10 block w-full rounded-md  px-3 py-2 text-center text-sm font-semibold bg-white px-4 py-3 text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8"
                     >
                       See the plans
