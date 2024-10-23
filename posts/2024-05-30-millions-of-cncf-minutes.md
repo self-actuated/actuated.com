@@ -5,6 +5,7 @@ tags:
 - cncf
 - enablement
 - arm
+rollup: true
 author_img: alex
 image: /images/2024-05-cncf-millions/background.png
 date: "2024-05-30"
