@@ -1,23 +1,23 @@
 const posts = [
+  {
+    title: 'Run AI models with ollama in CI with GitHub Actions.',
+    href: '/blog/ollama-in-github-actions',
+    description: 'With the new GPU support for actuated, we\'ve been able to run models like llama2 from ollama in CI on consumer and datacenter grade Nvidia cards.',
+    date: 'April 25, 2024',
+  },
     {
-      title: 'How to make GitHub Actions 22x faster with bare-metal Arm',
-      href: '/blog/native-arm64-for-github-actions',
-      description: 'GitHub doesn\'t provide hosted Arm runners, so how can you use native Arm runners safely & securely?',
-      date: 'January 17, 2023',
+      title: 'On Running Millions of Arm CI Minutes for the CNCF',
+      href: '/blog/millions-of-cncf-minutes',
+      description: 'We\'ve now run over 1.5 million minutes of CI time for various CNCF projects on Ampere hardware. Here\'s what we\'ve learned.',
+      date: 'May 30, 2024',
     },
     {
-      title: 'How to add a Software Bill of Materials (SBOM) to your containers',
-      href: '/blog/sbom-in-github-actions',
+      title: 'How Calyptia fixed its Arm builds whilst saving money',
+      href: '/blog/calyptia-case-study-arm',
       description:
-        'Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.',
-      date: 'January 25, 2023',
-    },
-    {
-      title: 'Make your builds run faster with Caching for GitHub Actions.',
-      href: '/blog/caching-in-github-actions',
-      description: 'Learn how we made a Golang project build 4x faster using GitHub\'s built-in caching mechanism.',
-      date: 'February 10, 2023',
-    },
+        'Learn how Calyptia fixed its failing Arm builds for open-source Fluent Bit and accelerated our commercial development by adopting Actuated and bare-metal runners.',
+      date: 'August 11, 2023',
+    }
   ]
   
   function classNames(...classes) {
