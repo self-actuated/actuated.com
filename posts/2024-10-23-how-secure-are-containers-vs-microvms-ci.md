@@ -94,22 +94,22 @@ There are two ways Actions Runtime Controller and GitLab's Kubernetes Controller
 
 1. Mounting a Docker Socket.
 
-Docker has to be running on the host for the container or Pod. You expose the socket via a bind-mount into the container.
+    Docker has to be running on the host for the container or Pod. You expose the socket via a bind-mount into the container.
 
-Any CI job that runs can take over the host, and worse, can probably make privileged calls into the Kubernetes cluster, and exfiltrate any secrets such as cloud access keys.
+    Any CI job that runs can take over the host, and worse, can probably make privileged calls into the Kubernetes cluster, and exfiltrate any secrets such as cloud access keys.
 
 2. Running as a Privileged container
 
-When you run a Pod as a Privileged container, a separate Docker Daemon starts up. It does not share the daemon with the host, however it gives a false sense of security.
+    When you run a Pod as a Privileged container, a separate Docker Daemon starts up. It does not share the daemon with the host, however it gives a false sense of security.
 
-Whilst you now have two docker daemons running, the one running within in your container has to use Virtual Filesystem (VFS) - a slow, and expensive emulated filesystem that is required to support Docker inside Docker.
+    Whilst you now have two docker daemons running, the one running within in your container has to use Virtual Filesystem (VFS) - a slow, and expensive emulated filesystem that is required to support Docker inside Docker.
 
-The Pod itself has a privileged runtime profile, which means: it has unrestricted access to the host's resources, including the ability to manipulate kernel modules, access devices, and interact with sensitive system-level functions. Running with these elevated privileges opens up significant security risks:
+    The Pod itself has a privileged runtime profile, which means: it has unrestricted access to the host's resources, including the ability to manipulate kernel modules, access devices, and interact with sensitive system-level functions. Running with these elevated privileges opens up significant security risks:
 
-* Host Compromise: Since the container has broad access to the underlying host, it could potentially manipulate the host’s configuration, modify system files, or install malicious software.
-* Kernel Exploits: If there are any vulnerabilities in the host kernel, a privileged container could exploit them to gain root access to the host.
-* Device Access: Privileged containers can interact with devices on the host, such as block devices, USB devices, or network interfaces. This can lead to unauthorized access or data leakage.
-* Increased Attack Surface: Privileged containers can perform actions that are generally prohibited in standard containers, such as changing sysctl parameters or configuring iptables rules, which expands the attack surface.
+    * Host Compromise: Since the container has broad access to the underlying host, it could potentially manipulate the host’s configuration, modify system files, or install malicious software.
+    * Kernel Exploits: If there are any vulnerabilities in the host kernel, a privileged container could exploit them to gain root access to the host.
+    * Device Access: Privileged containers can interact with devices on the host, such as block devices, USB devices, or network interfaces. This can lead to unauthorized access or data leakage.
+    * Increased Attack Surface: Privileged containers can perform actions that are generally prohibited in standard containers, such as changing sysctl parameters or configuring iptables rules, which expands the attack surface.
 
 In short, Kubernetes and Docker are not secure for running CI workloads that require anything beyond basic user-space tasks. They lack the isolation and security needed for complex, multi-tenant CI environments.
 
@@ -123,7 +123,11 @@ GitHub emphasizes that their hosted runners run in ephemeral, isolated virtual m
 
 Some people will start to look for how to run Docker without a Privileged Pod, without a Docker Socket Mount, without root, but all these solutions tend to be half-baked, and still involve using root somewhere along the line. User namespaces have come up a number of times, but are not compatible with every kind of Kernel, and user workload.
 
-There's no simple workaround here. Solutions like Kaniko, Buildah, and BuildKit exist, but they’re complex and often rely on root access or privileged operations at some point, just not where you expected it. None of them provide the clean separation needed to run truly secure CI jobs, they each make the developer experience harder for your team who want to get the job done with the tools they use locally, Docker.
+There’s no simple workaround here. Tools like Kaniko, Buildah, and BuildKit do exist, but they introduce complexity and, at some point, often require root access or privileged operations—just not where you might expect it. Linux User namespaces were meant to address these issues, but they come with their own set of challenges, like compatibility with certain workloads and kernels, and they aren’t a universal solution.
+
+Each of these tools focuses primarily on building containers, not running them in a secure way. When you need to run Kubernetes, K3s, or even Docker within a CI job, you're effectively back at square one. These tools try to patch up container isolation issues with band-aid fixes, but none of them offer the clean separation and security needed for running truly secure CI jobs.
+
+On top of that, they frustrate the developer experience. Teams want to get things done with familiar tools — most notably, Docker - which they use in local development. By introducing these alternative tools, you add friction, slow down the workflow, and ultimately, you’re still left with a suboptimal security model.
 
 Over two years ago, even as a staunch supporter of Kubernetes, [I finally realised](https://x.com/alexellisuk/status/1573599285362532353) that putting a square peg into a round hole was simply not working, and that there was a better way.
 
@@ -144,9 +148,9 @@ The two best known solutions are:
 * [Firecracker](https://github.com/firecracker-microvm/firecracker) by the AWS team - focused on short-lived workloads
 * [cloud-hypervisor](https://github.com/cloud-hypervisor/cloud-hypervisor) (a fork of Firecracker) with additional support for PCI devices, and long-lived workloads
 
-<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">Enter actuated 🤘<br><br>1) You set up a number of hosts with a bare OS and our agent binary<br>2) We run the control plane and start one-shot microVMs for every job<br>3) We managed the base VM image with all its tools<br>4) We schedule efficiently not to waste money or to exceed resources <a href="https://t.co/Xn2dz77vad">pic.twitter.com/Xn2dz77vad</a></p>&mdash; Alex Ellis (@alexellisuk) <a href="https://twitter.com/alexellisuk/status/1573599294329954304?ref_src=twsrc%5Etfw">September 24, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 In Summer 2022, I built a prototype to run self-hosted runners with GitHub Actions, and reiterated some of the issues we discussed today. By October, we'd launched a Pilot and ran tens of thousands of securely isolated jobs for our first customer in just a few days.
+
+<blockquote class="twitter-tweet" data-conversation="none" data-theme="dark"><p lang="en" dir="ltr">Enter actuated 🤘<br><br>1) You set up a number of hosts with a bare OS and our agent binary<br>2) We run the control plane and start one-shot microVMs for every job<br>3) We managed the base VM image with all its tools<br>4) We schedule efficiently not to waste money or to exceed resources <a href="https://t.co/Xn2dz77vad">pic.twitter.com/Xn2dz77vad</a></p>&mdash; Alex Ellis (@alexellisuk) <a href="https://twitter.com/alexellisuk/status/1573599294329954304?ref_src=twsrc%5Etfw">September 24, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 I spoke at [Cloud Native Rejekts](https://cloud-native.rejekts.io/) just before KubeCon, to staunch Kubernetes users, and got a resounding round of applause. I think something clicked, people realised Kubernetes is a wonderful platform, but we need something different for CI.
 
