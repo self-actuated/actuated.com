@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>Actuated - blog</title>
-        <link>https://actuated.dev</link>
+        <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 23 Oct 2024 11:25:46 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 23 Oct 2024 11:27:53 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
             <title>Actuated - blog</title>
-            <url>https://actuated.dev/images/actuated.png</url>
-            <link>https://actuated.dev</link>
+            <url>https://actuated.com/images/actuated.png</url>
+            <link>https://actuated.com</link>
         </image>
         <item>
             <title><![CDATA[How secure are containers & Kubernetes vs. microVMs for self-hosted CI?]]></title>
-            <link>https://actuated.dev/blog/how-secure-are-containers-vs-microvms-ci</link>
-            <guid>https://actuated.dev/blog/how-secure-are-containers-vs-microvms-ci</guid>
+            <link>https://actuated.com/blog/how-secure-are-containers-vs-microvms-ci</link>
+            <guid>https://actuated.com/blog/how-secure-are-containers-vs-microvms-ci</guid>
             <pubDate>Wed, 23 Oct 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[How secure are your self-hosted CI runners? We compare running CI jobs on VMs, containers, and Kubernetes against using dedicated, ephemeral microVMs.]]></description>
             <content:encoded><![CDATA[<blockquote>
@@ -154,9 +154,104 @@ The GitLab Runner chart (gitlab/gitlab-runner) is deployed without the <code>pri
 </ul>]]></content:encoded>
         </item>
         <item>
+            <title><![CDATA[We're now actuated.com]]></title>
+            <link>https://actuated.com/blog/actuated-com-two-year-review</link>
+            <guid>https://actuated.com/blog/actuated-com-two-year-review</guid>
+            <pubDate>Tue, 06 Aug 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[We take a look back to our launch in November 2022, what we've learned since and what's next for actuated.com.]]></description>
+            <content:encoded><![CDATA[<p>Over two years ago we registered the actuated.dev domain with the intention to fix various issues with self-hosted CI runners for GitHub Actions using microVMs.</p>
+<p>It's been a long journey and microVMs are not for the feint of heart, and we've spent a significant amount of time building a scheduler, agent, Kernel, root-filesystem, dashboard and reporting to make it work well for CI workloads. microVMs remain a poorly documented and hard to use technology, so whilst basic things can be made <a href="/blog/actuated-for-gitlab">to work in a short period of time</a>, the most important workings have to be understood only through trial &#x26; error and experience.</p>
+<p>I'll set out what we wanted to address in November 2022, the direction customer feedback has taken us, and what we're planning next.</p>
+<h2 id="what-we-set-out-to-address">What we set out to address</h2>
+<p>Looking back, we've addressed <a href="/blog/blazing-fast-ci-with-microvms">all the original concerns</a>, and covered new areas too:</p>
+<ul>
+<li>Every build job runs in an isolated microVM</li>
+</ul>
+<p>Why is this important? Unlike the standard self-hosted runner available from GitHub, an isolated microVM means that there can never be side effects left over between builds. One of the first problems we ran into with self-hosted runners prior to creating actuated, was side effects build up in surprising ways and causing flaky builds, and frustrating errors.</p>
+<ul>
+<li>Docker without the security concerns</li>
+</ul>
+<p>When a self-hosted runner executes inside a container, then makes use of Docker, it usually involves mounting a socket from the host, running as a privileged container, or running as root. In each case, it's trivial to escape the container and gain full administrative access to the host. So if you're running Actions Runtime Controller (ARC) or GitLab CI's Kubernetes operator and make use of Docker in any way, beware. Not only can a supply chain attack steal credentials, exfiltrate data &#x26; code, run cryptominers, but it can also escape the container and gain full control of the host and possibly the Kubernetes cluster and wider network.</p>
+<p>Some teams believe that having a "separate Kubernetes cluster for CI" solves these problems. It does not, it makes it harder to recognise when the CI system has been compromised, and since these will often run in the same cloud account, may make it possible to escalate privileges to the wider network.</p>
+<ul>
+<li>VMs without the boot-up time</li>
+</ul>
+<p>Actuated microVMs are finely tuned, so that even with a fully isolated Docker daemon running, the system is ready within 1s and connecting to GitHub's control-plane. If you've ever used an autoscaling group on AWS ECS, you're probably more used to a 3-5 minute boot-up for a new VM.</p>
+<ul>
+<li>Feels like managed, but is still self-hosted</li>
+</ul>
+<p>With actuated, we operate a managed control-plane, which means you don't have to think about GitHub Apps, bot accounts, rate-limits, what to do when GitHub has an outage. The control-plane receives notifications from your GitHub repositories, but has no access to the code or secrets. Only the GitHub runner software itself can checkout code and run jobs using GitHub's fine-grained security mechanisms, the same ones used for managed runners.</p>
+<p>So what do you have to manage? You'll need to rent or provision a server with KVM (nested, or hardware) and then follow our guide to install the actuated agent, or install our SSH key and we'll use an automated process to do it for you. After that, you can manage your runners and build-queue via the <a href="https://docs.actuated.com/dashboard/">dashboard</a> and we'll monitor your servers via our central Grafana dashboard.</p>
+<ul>
+<li>Automated - Over The Air (OTA) updates</li>
+</ul>
+<p>Our own CI system builds both the actuated agent, and the root filesystem used for CI builds for GitHub Actions and GitLab CI on an automated basis. These are pushed out over the network to agents, so you never have to worry about updating the self-hosted runner, or the software within the VM image.</p>
+<p>For a case study from Calyptia (since acquired by Chronosphere.io), see: <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Scaling ARM builds with Actuated</a></p>
+<h2 id="predictable-flat-rate-pricing-with-new-burst-pricing">Predictable flat-rate pricing, with new burst pricing</h2>
+<p>The <a href="/pricing">pricing for actuated</a> was designed to be predictable and reasonable. If you run 100 builds or 1 million builds, you'll get charged the same amount, with concurrency being limited to whatever you decided fits your needs.</p>
+<p>For teams with a large amount of minutes, or larger runners than the "standard" tier of GitHub Actions, this can result in a 2-6x cost reduction.</p>
+<p>Even with flat-rate pricing, and a stable concurrency level of say 5 or 10 concurrent builds, there will be times where you need to cut a release, and want many jobs to run at once.</p>
+<p>For those times, we listened to your feedback and introduced burst pricing. You can opt-in to add extra concurrent builds to your account, which are only used if there are queued jobs for a set period of time.</p>
+<p>Pay only when needed: Let's say you hit your limit often, but are happy with some queueing. You can add an extra burst of 20 builds, but a queue time of 10 minutes. Then your extra concurrency will not get used until there have been jobs waiting for 10 minutes.</p>
+<p>Clear the queue as quickly as possible: You could have a base limit of 20 builds, but a burst of up to 100 builds. You'll only get charged for what you go over on a particular day, and only if you go over your base limit. If you stay within 20 concurrent builds, you'll pay nothing extra.</p>
+<p>See also: <a href="/blog/burst-billing-capacity">Burst billing and capacity for GitHub Actions</a></p>
+<h2 id="server-pricing--white-glove-service">Server pricing &#x26; white-glove service</h2>
+<p>Today, most of our customers use pay per minute bare-metal hosted by a cloud provider. But our first pilot customer was a mid-sized start-up who loved to run their own servers, maintain their own infrastructure. They bought Dell servers from eBay, packaged them with new hardware, then had a team of 5 engineers on standby to refurbish and manage them.</p>
+<p>Over time, we started to meet teams who wanted to outsource the server installation, maintenance, and monitoring to someone else. This makes actuated feel even more like managed runners, whilst keeping the benefits of self-hosted infrastructure. We're able to offer this as part of your subscription, because <a href="https://docs.actuated.com/install-agent/">once we've run the installation of the agent</a>, there is rarely a reason to log into the host again. In the rare event of a catastrophic failure, we can have the server OS image flashed and the agent reinstalled within a few minutes.</p>
+<blockquote>
+<p>For our compute intensive application, with testing taking 30-45 minutes, every second counts. Actuated has helped us keep our development speed up by making sure we ran on fast bare-metal servers and by helping us find bottle necks in the testing process. We were able to drop our testing time by 50% whilst saving 3-6x per month versus similar hosted GitHub Actions minutes.</p>
+<p>Justin Gray, CTO at Toolpath</p>
+</blockquote>
+<p>One of the downsides to using a technology like <a href="https://firecracker-microvm.github.io/">Firecracker</a> is that it requires <a href="https://linux-kvm.org/page/Main_Page">KVM</a> or nested virtualisation to be available on the server. If you're using AWS already, you'll be disappointed to learn that their bare-metal hardware is not only overpriced, but it isn't suited to CI workload which require a fast processor and storage.</p>
+<p><a href="https://docs.actuated.com/provision-server/">We put together a list of servers that we recommend</a> and the rough costing for them, but to make it simple, you cannot beat Hetzner. Most of our customers rent bare-metal from them and we've been very pleased with the value for money and sheer performance.</p>
+<ul>
+<li>Docs: <a href="https://docs.actuated.com/provision-server/">Provision a server</a></li>
+</ul>
+<h2 id="content--education">Content &#x26; education</h2>
+<p>There are several unresolved problems with using self-hosted runners, not to mention the security issues. We've been working on a series of blog posts to help educate teams on how to get the most out of their self-hosted runners.</p>
+<ul>
+<li>Running a local cache to reduce latency <a href="/blog/local-caching-for-github-actions">Testing the impact of a local cache for building Discourse</a></li>
+<li>Keeping costs down, and servers utilised with our metering tool <a href="/blog/right-sizing-vms-github-actions">Right sizing VMs for GitHub Actions</a></li>
+<li>Safely launch VMs and different OSes - <a href="/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></li>
+<li>GitHub pays Docker.com for unlimited Docker Hub pull keys, here's how to solve the problem for self-hosted runners: <a href="https://docs.actuated.com/tasks/registry-mirror/">Set up a registry mirror</a></li>
+</ul>
+<p>Along with the <a href="/blog/right-sizing-vms-github-actions">VM usage metering tool</a>, I mentioned earlier, which you can use on both managed and self-hosted runners, we created a free open source tool called <a href="https://github.com/self-actuated/actions-usage">self-actuated/actions-usage</a>. You can use it to generate a report of your personal account's usage, or your organisation's usage over a period of time, you can even run it on a schedule as a GitHub Action. Customers have reports backed by a database, which can run queried on varying time periods and filter by repository, user, or organisation: <a href="https://docs.actuated.com/dashboard/">actuated dashboard</a></p>
+<h2 id="artificial-intelligence-ai-machine-learning-ml-and-gpus">Artificial Intelligence (AI), Machine Learning (ML) and GPUs</h2>
+<p>We started to see customer interest in AI and ML workloads for GitHub Actions and GitLab CI, but found that Firecracker could not support PCI devices such as GPUs. After spending time on R&#x26;D, we added support for <a href="https://github.com/cloud-hypervisor/cloud-hypervisor">cloud-hypervisor</a> which has slightly different goals than Firecracker. Rather than focusing purely on serverless workloads, it adds support for PCI devices and is even able to run other Operating Systems than Linux.</p>
+<ul>
+<li><a href="https://actuated.com/blog/gpus-for-github-actions">Accelerate GitHub Actions with dedicated GPUs</a></li>
+<li><a href="https://actuated.com/blog/ollama-in-github-actions">Run AI models with ollama in CI with GitHub Actions</a></li>
+</ul>
+<h2 id="sponsored-ci-minutes-for-the-cloud-native-computing-foundation-cncf">Sponsored CI minutes for the Cloud Native Computing Foundation (CNCF)</h2>
+<p>The <a href="https://actuated.com/blog/cncf-arm-march-update">CNCF and Ampere Computing</a> joined together to sponsor CI minutes for top-tier open source projects such as containerd, fluentd, Open Telemetry, cri-o, ArgoCD, Falco, eBPF and various others. In May this year we'd already run over 1.5 million CI minutes for these projects, and we're proud to be able to support the open source community in this way.</p>
+<ul>
+<li><a href="https://actuated.com/blog/millions-of-cncf-minutes">On Running Millions of Arm CI Minutes for the CNCF</a></li>
+<li><a href="https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
+</ul>
+<blockquote>
+<p>Ampere is delighted to partner with Actuated and the CNCF on their ambitions of improving the state of Aarch64 software. The combination of Actuated's tools and methods for managed CI and Ampere's cloud native processors for fast and secure builds makes for a tremendous advantage to accelerate the availability of cloud native software for the Aarch64 ecosystem.</p>
+<p>Pete Baker, VP Customer &#x26; Developer Engineering</p>
+</blockquote>
+<p>We've also sponsored the <a href="https://atuin.sh/">Atuin</a>, runc and <a href="https://github.com/checkpoint-restore/criu">criu</a> open-source projects. Ellie, the maintainer of the popular Atuin tool for syncing bash history said:</p>
+<blockquote>
+<p>"Actuated has been a lifesaver - we were really struggling with slow, emulated, hour plus ARM docker builds. With Actuated, our builds are now incredibly fast and finish in a few minutes"</p>
+<p>Ellie Huxtable, Atuin maintainer</p>
+</blockquote>
+<h2 id="whats-next">What's next?</h2>
+<p>If you can relate to anything we've covered here on costs, performance, security, or something else, <a href="https://actuated.com/pricing">please feel free to reach out to talk to us</a>. We can tell you in a short period of time whether actuated would be a good fit for your team, and what results other teams like yours may have seen already. Plans run month to month, so it's relatively low risk to try actuated out on a couple of repositories to see how you like it.</p>
+<p>Are you a GitLab CI user?</p>
+<p>We have just published new updates for actuated for self-hosted GitLab and are <a href="https://actuated.com/blog/actuated-for-gitlab">looking for pilot customers</a>. Many of the same security and management issues exist whether you're using GitHub Actions or GitLab CI, so we're excited to bring the same level of security and performance to GitLab CI.</p>
+<p>Additional resources:</p>
+<ul>
+<li><a href="https://docs.actuated.com/faq/">Actuated FAQ</a></li>
+<li><a href="https://docs.actuated.com/roadmap/">Actuated roadmap</a></li>
+<li><a href="/blog/managing-github-actions">Lessons learned managing GitHub Actions and Firecracker</a></li>
+</ul>]]></content:encoded>
+        </item>
+        <item>
             <title><![CDATA[Secure your GitLab jobs with microVMs and Actuated]]></title>
-            <link>https://actuated.dev/blog/actuated-for-gitlab</link>
-            <guid>https://actuated.dev/blog/actuated-for-gitlab</guid>
+            <link>https://actuated.com/blog/actuated-for-gitlab</link>
+            <guid>https://actuated.com/blog/actuated-for-gitlab</guid>
             <pubDate>Fri, 26 Jul 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how microVMs provide more flexibility and security for CI workloads, by removing the need for privileged containers or Docker In Docker.]]></description>
             <content:encoded><![CDATA[<p>Last year we introduced the <a href="/blog/secure-microvm-ci-gitlab">tech preview for Actuated for GitLab CI</a>, since then we've had customer interest from enterprise companies who wanted to improve their security posture and to lower overheads. Actuated reduces management overheads of self-hosted runners and provides a secure, ephemeral microVM for every job.</p>
@@ -346,8 +441,8 @@ The GitLab Runner chart (gitlab/gitlab-runner) is deployed without the <code>pri
         </item>
         <item>
             <title><![CDATA[On Running Millions of Arm CI Minutes for the CNCF]]></title>
-            <link>https://actuated.dev/blog/millions-of-cncf-minutes</link>
-            <guid>https://actuated.dev/blog/millions-of-cncf-minutes</guid>
+            <link>https://actuated.com/blog/millions-of-cncf-minutes</link>
+            <guid>https://actuated.com/blog/millions-of-cncf-minutes</guid>
             <pubDate>Thu, 30 May 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[We've now run over 1.5 million minutes of CI time for various CNCF projects on Ampere hardware. Here's what we've learned.]]></description>
             <content:encoded><![CDATA[<p>In this post I'll cover:</p>
@@ -507,12 +602,12 @@ With Actuated, we can focus on open-source deployment to cover more use case sce
 <p>You can watch the interview I mentioned earlier with Chris, Ed, Dave and myself on YouTube:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/sv3jtSvW9gk?si=2PVUFCx_QUt65v5-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <h3 id="we-could-help-you-too">We could help you too</h3>
-<p>Actuated can manage x86 and Arm64 servers for GitHub Actions and <a href="/blog/secure-microvm-ci-gitlab">self-managed GitLab CI</a>. If you'd like to speak to us about how we can speed up your jobs, reduce your maintenance efforts and lower your CI costs, <a href="https://actuated.dev/pricing/">reach out via this page</a>.</p>]]></content:encoded>
+<p>Actuated can manage x86 and Arm64 servers for GitHub Actions and <a href="/blog/secure-microvm-ci-gitlab">self-managed GitLab CI</a>. If you'd like to speak to us about how we can speed up your jobs, reduce your maintenance efforts and lower your CI costs, <a href="https://actuated.com/pricing/">reach out via this page</a>.</p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Introducing burst billing and capacity for GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/burst-billing-capacity</link>
-            <guid>https://actuated.dev/blog/burst-billing-capacity</guid>
+            <link>https://actuated.com/blog/burst-billing-capacity</link>
+            <guid>https://actuated.com/blog/burst-billing-capacity</guid>
             <pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[Actuated now offers burst billing and capacity for customers with spiky and unpredictable CI/CD workloads.]]></description>
             <content:encoded><![CDATA[<p><a href="/blog/blazing-fast-ci-with-microvms">Why did we make Actuated</a>? Actuated provides a securely isolated, managed, white-glove experience for customers who want to run CI/CD on GitHub Actions, with access to fast and private hardware. It's ideal for moving your organisation off Jenkins, customers who spend far too much on hosted runners, or those who cringe at the security implications of building with Docker using Kubernetes.</p>
@@ -534,8 +629,8 @@ With Actuated, we can focus on open-source deployment to cover more use case sce
 <p>As part of our white-glove service, we monitor the usage of customers to see when they're hitting their limits, or encountering delays. We'll also let them know if they are under or overutilising their servers based upon free RAM and CPU usage.</p>
 <p>Then, there are two additional free tools we offer for self-service:</p>
 <ul>
-<li>Our open-source <a href="https://actuated.dev/blog/github-actions-usage-cli">actions-usage</a> tool can give you a good idea of what your patterns look like for a given period of time.</li>
-<li>We built <a href="https://actuated.dev/blog/right-sizing-vms-github-actions">vmmeter</a> to help customers right-size VMs to CI jobs. So often customers pick VM sizes that are an order of magnitude too big for their jobs, meaning fewer jobs can run in parallel on the same set of servers</li>
+<li>Our open-source <a href="/blog/github-actions-usage-cli">actions-usage</a> tool can give you a good idea of what your patterns look like for a given period of time.</li>
+<li>We built <a href="/blog/right-sizing-vms-github-actions">vmmeter</a> to help customers right-size VMs to CI jobs. So often customers pick VM sizes that are an order of magnitude too big for their jobs, meaning fewer jobs can run in parallel on the same set of servers</li>
 </ul>
 <p><strong>Extra billing on your own servers</strong></p>
 <p>If you're on a plan that has 20 concurrent builds, and it's "Release day", which means you ideally need 40 concurrent builds, but only for that day, it doesn't make sense to upgrade to a 40 concurrent build plan for the whole month. So we've introduced billing for burst billing where you pay extra for the extra concurrency you use, but only for the days in which you use it.</p>
@@ -574,8 +669,8 @@ With Actuated, we can focus on open-source deployment to cover more use case sce
         </item>
         <item>
             <title><![CDATA[Run AI models with ollama in CI with GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/ollama-in-github-actions</link>
-            <guid>https://actuated.dev/blog/ollama-in-github-actions</guid>
+            <link>https://actuated.com/blog/ollama-in-github-actions</link>
+            <guid>https://actuated.com/blog/ollama-in-github-actions</guid>
             <pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[With the new GPU support for actuated, we've been able to run models like llama2 from ollama in CI on consumer and datacenter grade Nvidia cards.]]></description>
             <content:encoded><![CDATA[<p>That means you can run real end to end tests in CI with the same models you may use in dev and production. And if you use OpenAI or AWS SageMaker extensively, you could perhaps swap out what can be a very expensive API endpoint for your CI or testing environments to save money.</p>
@@ -649,10 +744,10 @@ response_json = response.json()
 <span class="hljs-built_in">print</span>(json.dumps(response_json, indent=<span class="hljs-number">4</span>))
 </code></pre>
 <p>When you're constructing a request by API, make sure you include any tags in the <code>model</code> name, if you've used one. I.e. <code>"model": "llama2:13b"</code>.</p>
-<p>I hear from so many organisations who have gone to lengths to get SOC2 compliance, doing CVE scanning, or who are running Open Policy Agent or Kyverno to enforce strict Pod admission policies in Kubernetes, but then are happy to run their CI in Pods in privileged mode. So I asked the model why that may not be a smart idea. You can run the sample for yourself or <a href="https://gist.githubusercontent.com/alexellis/4c85e5927d251153c41379c4cac1a6c8/raw/257a02df0e01dff966c68509baf299bc32d3a11e/security.txt">see the response here</a>. We also go into detail in the <a href="https://docs.actuated.dev/faq/">actuated FAQ</a>, the security situation around self-hosted runners and containers is the main reason we built the solution.</p>
+<p>I hear from so many organisations who have gone to lengths to get SOC2 compliance, doing CVE scanning, or who are running Open Policy Agent or Kyverno to enforce strict Pod admission policies in Kubernetes, but then are happy to run their CI in Pods in privileged mode. So I asked the model why that may not be a smart idea. You can run the sample for yourself or <a href="https://gist.githubusercontent.com/alexellis/4c85e5927d251153c41379c4cac1a6c8/raw/257a02df0e01dff966c68509baf299bc32d3a11e/security.txt">see the response here</a>. We also go into detail in the <a href="https://docs.actuated.com/faq/">actuated FAQ</a>, the security situation around self-hosted runners and containers is the main reason we built the solution.</p>
 <h3 id="putting-it-together-for-a-github-action">Putting it together for a GitHub Action</h3>
-<p>The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the <a href="https://actuated.dev/pricing">Pricing page</a>.</p>
-<p>The <code>self-actuated/nvidia-run</code> installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be <a href="https://docs.actuated.dev/tasks/local-github-cache/">cached using a local S3 bucket</a>.</p>
+<p>The following GitHub Action will run on for customers who are enrolled for GPU support for actuated. If you'd like to gain access, contact us via the form on the <a href="https://actuated.com/pricing">Pricing page</a>.</p>
+<p>The <code>self-actuated/nvidia-run</code> installs either the consumer or datacenter driver for Nvidia, depending on what you have in your system. This only takes about 30 seconds and could be cached if you like. The ollama models could also be <a href="https://docs.actuated.com/tasks/local-github-cache/">cached using a local S3 bucket</a>.</p>
 <p>Then, we simply run the equivalent bash commands from the previous section to:</p>
 <ul>
 <li>Install ollama</li>
@@ -707,7 +802,7 @@ response_json = response.json()
 <h3 id="interactive-access-with-ssh">Interactive access with SSH</h3>
 <p>By modifying your CI job, you can drop into a remote SSH session and run interactive commands at any point in the workflow.</p>
 <p>That's how I came up with the commands for the Nvidia driver installation, and for the various ollama commands I shared.</p>
-<p>Find out more about SSH for GitHub Actions <a href="https://docs.actuated.dev/tasks/debug-ssh/">in the actuated docs</a>.</p>
+<p>Find out more about SSH for GitHub Actions <a href="https://docs.actuated.com/tasks/debug-ssh/">in the actuated docs</a>.</p>
 <p><img src="/images/2024-04-ollama-in-ci/ssh.png" alt="Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM"></p>
 <blockquote>
 <p>Pulling one of the larger llama2 models interactively in an SSH session, directly to the runner VM</p>
@@ -722,8 +817,8 @@ response_json = response.json()
         </item>
         <item>
             <title><![CDATA[Accelerate GitHub Actions with dedicated GPUs]]></title>
-            <link>https://actuated.dev/blog/gpus-for-github-actions</link>
-            <guid>https://actuated.dev/blog/gpus-for-github-actions</guid>
+            <link>https://actuated.com/blog/gpus-for-github-actions</link>
+            <guid>https://actuated.com/blog/gpus-for-github-actions</guid>
             <pubDate>Tue, 12 Mar 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[You can now accelerate GitHub Actions with dedicated GPUs for machine learning and AI use-cases.]]></description>
             <content:encoded><![CDATA[<p>With the surge of interest in AI and machine learning models, it's not hard to think of reasons why people want GPUs in their workstations and production environments. They make building &#x26; training, fine-tuning and serving (inference) from a machine learning model just that much quicker than running with a CPU alone.</p>
@@ -732,7 +827,7 @@ response_json = response.json()
 <p>One of our earliest customers moved all their GitHub Actions to actuated for a team of around 30 people, but since Firecracker has no support for GPUs, they had to keep a few self-hosted runners around for testing their models. Their second hand Dell servers were racked in their own datacentre, with 8x 3090 GPUs in each machine.</p>
 <p>Their request for GPU support in actuated predated the hype around OpenAI, and was the catalyst for us doing this work.</p>
 <p>They told us how many issues they had keeping drivers in sync when trying to use self-hosted runners, and the security issues they ran into with mounting Docker sockets or running privileged containers in Kubernetes.</p>
-<p>With a microVM and actuated, you'll be able to test out different versions of drivers as you see fit, and know there will never be side-effects between builds. You can read more in <a href="https://docs.actuated.dev/faq/">our FAQ</a> on how actuated differs from other solutions which rely on the poor isolation afforded by containers. Actuated is the closest you can get to a hosted runner, whilst having full access to your own hardware.</p>
+<p>With a microVM and actuated, you'll be able to test out different versions of drivers as you see fit, and know there will never be side-effects between builds. You can read more in <a href="https://docs.actuated.com/faq/">our FAQ</a> on how actuated differs from other solutions which rely on the poor isolation afforded by containers. Actuated is the closest you can get to a hosted runner, whilst having full access to your own hardware.</p>
 <p>I'll tell you a bit more about it, how to build your own workstation with commodity hardware, or where to rent a powerful bare-metal host with a capable GPU for less than 200 USD / mo that you can use with actuated.</p>
 <h3 id="available-in-early-access">Available in early access</h3>
 <p>So today, we're announcing early access to actuated for GPUs. Whether your machine has one GPU, two, or ten, you can allocate them directly to a microVM for a CI job, giving strong isolation, and the same ephemeral environment that you're used to with GitHub's hosted runners.</p>
@@ -823,7 +918,7 @@ response_json = response.json()
 <li>The GPU took only 55s with very little CPU consumption</li>
 </ul>
 <p>The GPU increased the speed by 9x, imagine how much quicker it'd be if you used an Nvidia 3090, 4090, or even an RTX 4000.</p>
-<p>If you want to just explore the system, and run commands interactively, you can use <a href="https://docs.actuated.dev/tasks/debug-ssh/">actuated's SSH feature</a> to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.</p>
+<p>If you want to just explore the system, and run commands interactively, you can use <a href="https://docs.actuated.com/tasks/debug-ssh/">actuated's SSH feature</a> to get a shell. Once you know the commands you want to run, you can copy them into your workflow YAML file for GitHub Actions.</p>
 <p>We took the SSH debug session for a test-drive. We installed <a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html">the NVIDIA Container Toolkit</a>, then ran the ollama tool to test out some Large Language Models (LLMs).</p>
 <p><a href="https://ollama.com/">Ollama</a> is an open source tool for downloading and testing prepackaged models like Mistral or Llama2.</p>
 <p><a href="https://twitter.com/alexellisuk/status/1767899463471796278/"><img src="https://pbs.twimg.com/media/GIjXEXZWkAAiuKc?format=png&#x26;name=medium" alt="Our experiment with ollama within a GitHub Actions runner"></a></p>
@@ -847,17 +942,17 @@ response_json = response.json()
 <p>Do you want to fine-tune, train, or run a batch of inferences on a model? You can do that. GitHub Actions has a 6 hour timeout, which is plenty for many tasks.</p>
 <p>Would it make sense to run Stable Diffusion in the background, with different versions, different inputs, across a matrix? GitHub Actions makes that easy, and actuated can manage the GPU allocations for you.</p>
 <p>Do you run inference from OpenFaaS functions? We have a tutorial on <a href="https://www.openfaas.com/blog/transcribe-audio-with-openai-whisper/">OpenAI Whisper within a function with GPU acceleration here</a> and a separate one on how to <a href="https://www.openfaas.com/blog/openai-streaming-responses/">serve Server Sent Events (SSE) from OpenAI or self-hosted models</a>, which is popular for chat-style interfaces to AI models.</p>
-<p>If you're interested in GPU support for GitHub Actions, then reach out to talk to us with <a href="https://actuated.dev/pricing">this form</a>.</p>]]></content:encoded>
+<p>If you're interested in GPU support for GitHub Actions, then reach out to talk to us with <a href="https://actuated.com/pricing">this form</a>.</p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[The state of Arm CI for the CNCF]]></title>
-            <link>https://actuated.dev/blog/cncf-arm-march-update</link>
-            <guid>https://actuated.dev/blog/cncf-arm-march-update</guid>
+            <link>https://actuated.com/blog/cncf-arm-march-update</link>
+            <guid>https://actuated.com/blog/cncf-arm-march-update</guid>
             <pubDate>Mon, 04 Mar 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[After running almost 400k build minutes for top-tier CNCF projects, we give an update on the sponsored Arm CI program.]]></description>
-            <content:encoded><![CDATA[<p>It's now been 4 months since we <a href="https://actuated.dev/blog/arm-ci-cncf-ampere">kicked off the sponsored program with the Cloud Native Computing Foundation (CNCF) and Ampere to manage CI for the foundation's open source projects</a>. But even before that, <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Calyptia, the maintainer of Fluent approached us to run Arm CI for the open source fluent repos</a>, so we've been running CI for CNCF projects since June 2023.</p>
-<p>Over that time, we've got to work directly with some really bright, friendly, and helpful maintainers, who wanted to have a safe, fast and secure way to create release artifacts, test PRs, and to run end to end tests. Their alternative until this point was either to go against GitHub's own advice, and to <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">run an unsafe, self-hosted runner on an open source repo</a>, or <a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">to use QEMU</a> that in the case of Fluent meant their 5 minute build took over 6 hours before failing.</p>
-<p>You can find out more about why we put this program together in the original announcement: <a href="https://actuated.dev/blog/arm-ci-cncf-ampere">Announcing managed Arm CI for CNCF projects</a></p>
+            <content:encoded><![CDATA[<p>It's now been 4 months since we <a href="/blog/arm-ci-cncf-ampere">kicked off the sponsored program with the Cloud Native Computing Foundation (CNCF) and Ampere to manage CI for the foundation's open source projects</a>. But even before that, <a href="https://calyptia.com/blog/scaling-builds-with-actuated">Calyptia, the maintainer of Fluent approached us to run Arm CI for the open source fluent repos</a>, so we've been running CI for CNCF projects since June 2023.</p>
+<p>Over that time, we've got to work directly with some really bright, friendly, and helpful maintainers, who wanted to have a safe, fast and secure way to create release artifacts, test PRs, and to run end to end tests. Their alternative until this point was either to go against GitHub's own advice, and to <a href="/blog/is-the-self-hosted-runner-safe-github-actions">run an unsafe, self-hosted runner on an open source repo</a>, or <a href="/blog/how-to-run-multi-arch-builds-natively">to use QEMU</a> that in the case of Fluent meant their 5 minute build took over 6 hours before failing.</p>
+<p>You can find out more about why we put this program together in the original announcement: <a href="/blog/arm-ci-cncf-ampere">Announcing managed Arm CI for CNCF projects</a></p>
 <h2 id="measuring-the-impact">Measuring the impact</h2>
 <p>When we started out, Chris Aniszczyk, the CNCF's CTO wanted to create a small pilot to see if there'd be enough demand for our service. The CNCF partnered with Ampere to co-fund the program, Ampere sell a number of Arm based CPUs - which they brand as "Cloud Native" because they're so dense in cores and highly power efficient. Equinix Metal provide the credits and the hosting via the <a href="https://www.cncf.io/blog/2021/10/13/announcing-the-cloud-native-credits-program/">Cloud Native Credits program</a>.</p>
 <p>In a few weeks, not only did we fill up all available slots, but we personally hand-held and onboarded each of the project maintainers one by one, over Zoom, via GitHub, and Slack.</p>
@@ -933,7 +1028,7 @@ response_json = response.json()
 <p><strong>Making efficient use of shared resources</strong></p>
 <p>After fluent, etcd was the second project to migrate off self-managed runners. They had the impression that one of their jobs needed 32 vCPU and 32GB of RAM, and when we monitored the shared server pool, we noticed barely any load on the servers. That led me to build a quick Linux profiling tool called vmmeter. When they ran the profiler, it turned out the job used a maximum of 1.3 vCPU and 3GB of RAM, that's not just a rounding error - that's a night and day difference.</p>
 <p>You can learn how to try out vmmeter to right-size your jobs on actuated, or on GitHub's hosted runners.</p>
-<p><a href="https://actuated.dev/blog/right-sizing-vms-github-actions">Right sizing VMs for GitHub Actions</a></p>
+<p><a href="/blog/right-sizing-vms-github-actions">Right sizing VMs for GitHub Actions</a></p>
 <p>The projects have had a fairly stable, steady-state of CI jobs throughout the day and night as contributors from around the globe send PRs and end to end tests run.</p>
 <p>But with etcd-io in particular we started to notice on Monday or Tuesday that there was a surge of up to 200 jobs all at once. When we asked them about this, they told us Dependabot was the cause. It would send a number of PRs to bump dependencies and that would in turn trigger dozens of jobs.</p>
 <p><img src="/images/2024-03-cncf-update/etcd-dependabot.png" alt="Thundering herd problem from dependabot"></p>
@@ -978,11 +1073,11 @@ response_json = response.json()
         </item>
         <item>
             <title><![CDATA[Right sizing VMs for GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/right-sizing-vms-github-actions</link>
-            <guid>https://actuated.dev/blog/right-sizing-vms-github-actions</guid>
+            <link>https://actuated.com/blog/right-sizing-vms-github-actions</link>
+            <guid>https://actuated.com/blog/right-sizing-vms-github-actions</guid>
             <pubDate>Fri, 01 Mar 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[How do you pick the right VM size for your GitHub Actions runners? We wrote a custom tool to help you find out.]]></description>
-            <content:encoded><![CDATA[<p>When we <a href="https://actuated.dev/blog/arm-ci-cncf-ampere">onboarded the etcd project from the CNCF</a>, they'd previously been using a self-hosted runner for their repositories on a bare-metal host. There are several drawbacks to this approach, <a href="/blog/is-the-self-hosted-runner-safe-github-actions">including potential security issues, especially when using Docker</a>.</p>
+            <content:encoded><![CDATA[<p>When we <a href="/blog/arm-ci-cncf-ampere">onboarded the etcd project from the CNCF</a>, they'd previously been using a self-hosted runner for their repositories on a bare-metal host. There are several drawbacks to this approach, <a href="/blog/is-the-self-hosted-runner-safe-github-actions">including potential security issues, especially when using Docker</a>.</p>
 <p>actuated VM sizes can be configured by a label, and you can pick any combination of vCPU and RAM, there's no need to pick a pre-defined size.</p>
 <p>At the same time, it can be hard to know what size to pick, and if you make the VM size too large, then you won't be able to run as many jobs at once.</p>
 <p>There's three main things to consider:</p>
@@ -1062,8 +1157,8 @@ Run time: 45s
         </item>
         <item>
             <title><![CDATA[Testing the impact of a local cache for building Discourse]]></title>
-            <link>https://actuated.dev/blog/local-caching-for-github-actions</link>
-            <guid>https://actuated.dev/blog/local-caching-for-github-actions</guid>
+            <link>https://actuated.com/blog/local-caching-for-github-actions</link>
+            <guid>https://actuated.com/blog/local-caching-for-github-actions</guid>
             <pubDate>Fri, 23 Feb 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[We compare the impact of switching Discourse's GitHub Actions from self-hosted runners and a hosted cache, to a local cache with S3.]]></description>
             <content:encoded><![CDATA[<p>We heard from the <a href="https://github.com/discourse/discourse">Discourse</a> project last year because they were looking to speed up their builds. After trying out a couple of solutions that automated self-hosted runners, they found out that whilst faster CPUs were nice, reliability was a problem and the cache hosted on GitHub's network became the new bottleneck. We ran some tests to compare the hosted cache with hosted runners, to self-hosted with a local cache running with S3. This post will cover what we found.</p>
@@ -1073,7 +1168,7 @@ Run time: 45s
 </blockquote>
 <h2 id="set-up-a-local-cache">Set up a local cache</h2>
 <p>Hosted runners are placed close to the cache which means the latency is very low. Self-hosted runners can also make good use of this cache but the added latency can negate the advantage of switching to these faster runners. Running a local S3 cache with <a href="https://github.com/minio/minio">Minio</a> or <a href="https://github.com/seaweedfs/seaweedfs">Seaweedfs</a> on the self hosted runner or in the same region/network can solve this problem.</p>
-<p>For this test we ran the cache on the runner host. <a href="https://docs.actuated.dev/tasks/local-github-cache/">Instructions</a> to set up a local S3 cache with Seaweedfs can be found in our docs.</p>
+<p>For this test we ran the cache on the runner host. <a href="https://docs.actuated.com/tasks/local-github-cache/">Instructions</a> to set up a local S3 cache with Seaweedfs can be found in our docs.</p>
 <p>The Discourse repo is already using the <code>actions/cache</code>in their tests workflow which makes it easy to switch out the official <a href="https://github.com/actions/cache">actions/cache</a> with <a href="https://github.com/tespkg/actions-cache">tespkg/actions-cache</a>.</p>
 <p>The S3 cache is not directly compatible with the official <a href="https://github.com/actions/cache">actions/cache</a> and some changes to the workflows are required to start using the cache.</p>
 <p>The <code>tespkg/actions-cache</code> supports the same properties as the actions cache and only requires some additional parameters to configure the S3 connection.</p>
@@ -1222,19 +1317,19 @@ Run time: 45s
 <li>No egress costs for pushing data to the cache from self-hosted runners.</li>
 </ul>
 <p>GitHub's caching action does not yet support using a custom S3 server, so we had to make some minor adjustments to the Discourse's workflow files. For this reason, if you use something like setup-go or setup-node, you won't be able to just set <code>cache: true</code>. Instead you'll need an independent caching step with the <code>testpkg/actions-cache</code> action.</p>
-<p>If you'd like to reach out to us and see if we can advise you on how to optmise your builds, you can <a href="https://actuated.dev/pricing">set up a call with us here.</a>.</p>
+<p>If you'd like to reach out to us and see if we can advise you on how to optmise your builds, you can <a href="https://actuated.com/pricing">set up a call with us here.</a>.</p>
 <p>If you want to learn more about caching for GitHub Actions checkout some of our other blog posts:</p>
 <p>You may also like:</p>
 <ul>
-<li><a href="https://actuated.dev/blog/caching-in-github-actions">Make your builds run faster with Caching for GitHub Actions</a></li>
-<li><a href="https://actuated.dev/blog/faster-self-hosted-cache">Fixing the cache latency for self-hosted GitHub Actions</a></li>
-<li><a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is GitHub's self-hosted runner safe for open source?</a></li>
+<li><a href="/blog/caching-in-github-actions">Make your builds run faster with Caching for GitHub Actions</a></li>
+<li><a href="/blog/faster-self-hosted-cache">Fixing the cache latency for self-hosted GitHub Actions</a></li>
+<li><a href="/blog/is-the-self-hosted-runner-safe-github-actions">Is GitHub's self-hosted runner safe for open source?</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[December Boost: Custom Job Sizes, eBPF Support & KVM Acceleration]]></title>
-            <link>https://actuated.dev/blog/custom-sizes-bpf-kvm</link>
-            <guid>https://actuated.dev/blog/custom-sizes-bpf-kvm</guid>
+            <link>https://actuated.com/blog/custom-sizes-bpf-kvm</link>
+            <guid>https://actuated.com/blog/custom-sizes-bpf-kvm</guid>
             <pubDate>Mon, 04 Dec 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[You can now request custom amounts of RAM and vCPU for jobs, run eBPF within jobs, and use KVM acceleration.]]></description>
             <content:encoded><![CDATA[<p>In this December update, we've got three new updates to the platform that we think you'll benefit from. From requesting custom vCPU and RAM per job, to eBPF features, to spreading your plan across multiple machines dynamically, it's all new and makes actuated better value.</p>
@@ -1288,10 +1383,10 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
             nix-build '&#x3C;nixpkgs/nixos/tests/doas.nix>'
 </span></code></pre>
 <ul>
-<li><a href="https://actuated.dev/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></li>
-<li><a href="https://actuated.dev/blog/automate-packer-qemu-image-builds">Automate Packer Images with QEMU and Actuated</a></li>
-<li><a href="https://actuated.dev/blog/faster-nix-builds">Faster Nix builds with GitHub Actions and actuated</a></li>
-<li><a href="https://docs.actuated.dev/examples/kvm-guest">Docs: Run a KVM guest</a></li>
+<li><a href="/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></li>
+<li><a href="/blog/automate-packer-qemu-image-builds">Automate Packer Images with QEMU and Actuated</a></li>
+<li><a href="/blog/faster-nix-builds">Faster Nix builds with GitHub Actions and actuated</a></li>
+<li><a href="https://docs.actuated.com/examples/kvm-guest">Docs: Run a KVM guest</a></li>
 </ul>
 <h2 id="wrapping-up">Wrapping up</h2>
 <p>We've now released eBPF/BTF support as part of onboarding CNCF projects, updated to the latest Kernel revision, made scheduling better value for money &#x26; easier to customise, and have added a range of tutorials for getting the most out of nested virtualisation.</p>
@@ -1300,13 +1395,13 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 <p>You may also like:</p>
 <ul>
 <li><a href="/blog/arm-ci-cncf-ampere">Announcing managed Arm CI for CNCF projects</a></li>
-<li><a href="https://docs.actuated.dev/">Actuated docs &#x26; FAQ</a></li>
+<li><a href="https://docs.actuated.com/">Actuated docs &#x26; FAQ</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Announcing managed Arm CI for CNCF projects]]></title>
-            <link>https://actuated.dev/blog/arm-ci-cncf-ampere</link>
-            <guid>https://actuated.dev/blog/arm-ci-cncf-ampere</guid>
+            <link>https://actuated.com/blog/arm-ci-cncf-ampere</link>
+            <guid>https://actuated.com/blog/arm-ci-cncf-ampere</guid>
             <pubDate>Wed, 25 Oct 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Ampere Computing and The Cloud Native Computing Foundation are sponsoring a pilot of actuated's managed Arm CI for CNCF projects.]]></description>
             <content:encoded><![CDATA[<p>In this post, we'll cover why <a href="https://amperecomputing.com/">Ampere Computing</a> and <a href="https://www.cncf.io/">The Cloud Native Computing Foundation (CNCF)</a> are sponsoring a pilot of actuated for open source projects, how you can get involved.</p>
@@ -1329,7 +1424,7 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 </blockquote>
 <h2 id="one-year-recap-on-actuated">One year recap on actuated</h2>
 <p>In case you are hearing about actuated for the first time, I wanted to give you a quick one year recap.</p>
-<p>Just over 12 months ago, we <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">announced the work we'd been doing with actuated</a> to improve self-hosted runner security and management. We were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.</p>
+<p>Just over 12 months ago, we <a href="/blog/blazing-fast-ci-with-microvms">announced the work we'd been doing with actuated</a> to improve self-hosted runner security and management. We were pleasantly surprised with the amount of people that responded who'd had a common experience with slow builds, running out of RAM, limited disk space, and a lack of an easy and secure way to run self-hosted runners.</p>
 <p>Fast forward to today, and we have run over 140,000 individual Firecracker VMs for customers on their own hardware. Rather than the fully managed service that GitHub offers, we believe that you should be able to bring your own hardware, and pay a flat-rate fee for the service, rather than being charged per-minute.</p>
 <p>The CNCF project brings about 64-bit Arm support, but we see a good mix of <code>x86_64</code> and Arm builds from customers, with both closed and open-source repositories being used.</p>
 <p>The main benefits are having access to bigger, faster and more specialist hardware.</p>
@@ -1337,7 +1432,7 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 <li>For <code>x86_64</code> builds, we see about a 3x speed-up vs. using GitHub's hosted runners, in addition to being able to add more RAM and disk space to builds.</li>
 <li>For Arm64, we see builds which take several hours or which fail to complete within a 6 hour window using QEMU, go down to 3-5 minutes.</li>
 </ul>
-<p>Vendors and consumers are becoming increasingly aware of the importance of the supply chain, GitHub's self-hosted runner is <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">not recommended for open source repos</a>. Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.</p>
+<p>Vendors and consumers are becoming increasingly aware of the importance of the supply chain, GitHub's self-hosted runner is <a href="/blog/is-the-self-hosted-runner-safe-github-actions">not recommended for open source repos</a>. Why? Due to the way side-effects can be left over between builds. Actuated uses a fresh, immutable, Firecracker VM for every build which boots up in less than 1 second and is destroyed after the build completes, which removes this risk.</p>
 <p>If you're wanting to know more about why we think microVMs are the only tool that makes sense for secure CI, then I'd recommend my talk from Cloud Native Rejekts earlier in the year: <a href="https://www.youtube.com/watch?v=pTQ_jVYhAoc">Face off: VMs vs. Containers vs Firecracker</a>.</p>
 <h2 id="what-are-maintainers-saying">What are maintainers saying?</h2>
 <p><a href="https://www.linkedin.com/in/ellmh">Ellie Huxtable</a> is the maintainer of <a href="https://atuin.sh/">Atuin</a>, a popular open-source tool to sync, search and backup shell history. Her Rust build for the CLI took 90 minutes with QEMU, but was reduced to just 3 minutes with actuated, and a native Arm server.</p>
@@ -1373,13 +1468,13 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 </ol>
 <p>The label for <code>runs-on:</code> allows for dynamic configuration of vCPU and GBs of RAM, just edit the label to match your needs, for etcd, the team asked for 8vCPU and 32GB of RAM, so they used <code>runs-on: actuated-arm64-8cpu-32gb</code>.</p>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I had to split the docker build so that the ARM half would build on ARM, and x86 on x86, and then a step to combine the two - overall this works out to be a very significant improvement<a href="https://t.co/69cIxjYRcW">https://t.co/69cIxjYRcW</a></p>&mdash; Ellie Huxtable (@ellie_huxtable) <a href="https://twitter.com/ellie_huxtable/status/1715266936592904446?ref_src=twsrc%5Etfw">October 20, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<p>We have full instructions for 2, in the following tutorial: <a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a>.</p>
+<p>We have full instructions for 2, in the following tutorial: <a href="/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a>.</p>
 <p><strong>Is there access for AMD64?</strong></p>
 <p>This program is limited to CNCF projects and Arm CI only. That said, most actuated customers run AMD64 builds with us.</p>
 <p>GitHub already provides access to AMD64 runners for free for open source projects, that should cover most OSS project's needs.</p>
 <p>So why would you want dedicated AMD64 support from actuated? Firstly, our recommended provider makes builds up to 3x quicker, secondly, you can run on private repos if required, without accuring a large bill.</p>
 <p><strong>What are all the combinations of CPU and RAM?</strong></p>
-<p>We get this question very often, but have tried to be as clear as possible in this blog post and <a href="https://docs.actuated.dev/examples/custom-vm-size/">in the docs</a>. There are no set combinations. You can come up with what you need.</p>
+<p>We get this question very often, but have tried to be as clear as possible in this blog post and <a href="https://docs.actuated.com/examples/custom-vm-size/">in the docs</a>. There are no set combinations. You can come up with what you need.</p>
 <p>That helps us make best use of the hardware, you can even have just a couple of cores, and max out to 256GB of RAM, if that's what your build needs.</p>
 <p><strong>What if the sponsored program is full?</strong></p>
 <p>The program has been very popular and there is a limit to the budget and number of projects that Ampere and the CNCF agreed to pay for. If you contact us and we tell you the limit has been reached, then your employer could sponsor the subscription, and we'll give you a special discount - you could get started immediately. Or you'll need to contact <a href="https://www.linkedin.com/in/caniszczyk/">Chris Aniszczyk</a> and tell him why it would be of value to the OSS project you represent to have native Arm CI. If you get in touch with us, we can introduce you to him via email if needed.</p>
@@ -1387,25 +1482,25 @@ AGENT_KERNEL_REF="ghcr.io/openfaasltd/actuated-kernel:aarch64-latest"
 <p>We're initially offering access to managed Arm CI for CNCF projects, but if you're working for a company that is experiencing friction with CI, please reach out to us to talk <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">using this form</a>.</p>
 <p>Ampere who are co-sponsoring our service with the CNCF have their own announcement here: <a href="https://amperecomputing.com/blogs/ampere-computing-and-cncf-supporting-arm-native-ci-for-ncf-projects">Ampere Computing and CNCF Supporting Arm Native CI for CNCF Projects</a>.</p>
 <ul>
-<li>Read one of our <a href="https://actuated.dev/blog">recent blog posts</a></li>
-<li>Learn more about <a href="https://docs.actuated.dev">actuated in the docs</a></li>
-<li><a href="https://actuated.dev">Read what our customers are saying about our service</a></li>
+<li>Read one of our <a href="https://actuated.com/blog">recent blog posts</a></li>
+<li>Learn more about <a href="https://docs.actuated.com">actuated in the docs</a></li>
+<li><a href="https://actuated.com">Read what our customers are saying about our service</a></li>
 </ul>
 <blockquote>
-<p>Did you know? <a href="https://actuated.dev/blog/secure-microvm-ci-gitlab">Actuated for GitLab CI is now in technical preview, watch a demo here</a>.</p>
+<p>Did you know? <a href="/blog/secure-microvm-ci-gitlab">Actuated for GitLab CI is now in technical preview, watch a demo here</a>.</p>
 </blockquote>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Grab your lab coat - we're building a microVM from a container]]></title>
-            <link>https://actuated.dev/blog/firecracker-container-lab</link>
-            <guid>https://actuated.dev/blog/firecracker-container-lab</guid>
+            <link>https://actuated.com/blog/firecracker-container-lab</link>
+            <guid>https://actuated.com/blog/firecracker-container-lab</guid>
             <pubDate>Tue, 05 Sep 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[No more broken tutorials, build a microVM from a container, boot it, access the Internet]]></description>
-            <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use. (You can still get a copy of the <a href="https://actuated.dev/blog/kvm-in-github-actions">original Firecracker quickstart in our tutorial on nested virtualisation</a>)</p>
+            <content:encoded><![CDATA[<p>When I started learning <a href="https://github.com/firecracker-microvm/firecracker">Firecracker</a>, I ran into frustration after frustration with broken tutorials that were popular in their day, but just hadn't been kept up to date. Almost nothing worked, or was far too complex for the level of interest I had at the time. Most recently, one of the Firecracker maintainers in an effort to make the quickstart better, made it even harder to use. (You can still get a copy of the <a href="/blog/kvm-in-github-actions">original Firecracker quickstart in our tutorial on nested virtualisation</a>)</p>
 <p>So I wrote a lab that takes a container image and converts it to a microVM. You'll get your hands dirty, you'll run a microVM, you'll be able to use <code>curl</code> and <code>ssh</code>, even expose a HTTP server to the Internet via inlets, if (like me), you find that kind of thing fun.</p>
 <p>Why would you want to explore Firecracker? A friend of mine, <a href="https://iximiuz.com/en/about/">Ivan Velichko</a> is a prolific writer on containers, and Docker. He is one of the biggest independent evangelists for containers and Kubernetes that I know.</p>
 <p>So when he wanted to build an <a href="https://labs.iximiuz.com/">online labs and training environment</a>, why did he pick Firecracker instead? Simply put, he told us that containers don't cut it. He needed something that would mirror the type of machine that you'd encounter in production, when you provision an EC2 instance or a GCP VM. Running Docker, Kubernetes, and performing are hard to do securely within a container, and he knew that was important for his students.</p>
-<p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of <a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/">Docker In Docker's (DIND)</a> Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">developed actuated.dev</a> as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a <a href="https://actuated.dev/blog/secure-microvm-ci-gitlab">tech preview for GitLab CI</a> where a job can be running within 1 second of pushing a "commit".</p>
+<p>For us - we had very similar reasons for picking Firecracker for a secure CI solution. Too often the security issues around running privileged containers, and the slow speed of <a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/">Docker In Docker's (DIND)</a> Virtual Filesystem Driver (VFS), are ignored. Heads are put into the sand. We couldn't do that and <a href="/blog/blazing-fast-ci-with-microvms">developed actuated</a> as a result. Since we launched the pilot, we've now run over 110k VMs for customer CI jobs on GitHub Actions, and have a <a href="/blog/secure-microvm-ci-gitlab">tech preview for GitLab CI</a> where a job can be running within 1 second of pushing a "commit".</p>
 <p>So let's get that microVM running for you?</p>
 <h2 id="how-it-works-">How it works 🔬</h2>
 <p>How to build a microVM from a container</p>
@@ -1603,14 +1698,14 @@ ip route
 <p>I was frustrated by the lack of a simple guide for tinkering with Firecracker, and so that's why I wrote this lab and am keeping it up to date.</p>
 <p>For production use, you could use a HTTP client to make the API requests to the UNIX socket, or an SDK, which abstracts away some of the complexity. There's an <a href="https://github.com/firecracker-microvm/firecracker-go-sdk">official SDK for Go</a> and several <a href="https://lib.rs/crates/firec">unofficial ones for Rust</a>. If you look at the sample code for either, you'll see that they are doing the same things we did in the lab, so you should find it relatively easy to convert the lab to use an SDK instead.</p>
 <p>Did you enjoy the lab? Have you got a use-case for Firecracker? Let me know on Twitter <a href="https://x.com/alexellisuk">@alexellisuk</a></p>
-<p>If you'd like to see how we've applied Firecracker to bring fast and secure CI to teams, check out our product <a href="https://actuated.dev/">actuated.dev</a></p>
+<p>If you'd like to see how we've applied Firecracker to bring fast and secure CI to teams, check out our product <a href="https://actuated.com/">actuated.com</a></p>
 <p>Here's a quick demo of our control-plane, scheduler and bare-metal agent in action:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2o28iUC-J1w?si=xAt7YG4YCJ_ZleCA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[How to develop a great CLI with Go]]></title>
-            <link>https://actuated.dev/blog/develop-a-great-go-cli</link>
-            <guid>https://actuated.dev/blog/develop-a-great-go-cli</guid>
+            <link>https://actuated.com/blog/develop-a-great-go-cli</link>
+            <guid>https://actuated.com/blog/develop-a-great-go-cli</guid>
             <pubDate>Tue, 22 Aug 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Alex shares his insights from building half a dozen popular Go CLIs. Which can you apply to your projects?]]></description>
             <content:encoded><![CDATA[<p>Is your project's CLI growing with you? I'll cover some of the lessons learned writing the OpenFaaS, actuated, actions-usage, arkade and k3sup CLIs, going as far back as 2016. I hope you'll find some ideas or inspiration for your own projects - either to start them off, or to improve them as you go along.</p>
@@ -1644,7 +1739,7 @@ faas-cli deploy
     -token-file ~/pat.txt \
     -user alexellis
 </code></pre>
-<p>We then got a bit clever and started adding some extra reports and details, you can see what it looks in the article <a href="https://actuated.dev/blog/github-actions-usage-cli">Understand your usage of GitHub Actions</a></p>
+<p>We then got a bit clever and started adding some extra reports and details, you can see what it looks in the article <a href="/blog/github-actions-usage-cli">Understand your usage of GitHub Actions</a></p>
 <h2 id="whats-new-for-actuated-cli">What's new for actuated-cli</h2>
 <p>I'm very much a believer in a Minimal Viable Product (MVP). If you can create some value or utility to users, you should ship it as early as possible, especially if you have a good feedback loop with them.</p>
 <p>A quick note about the <a href="https://github.com/self-actuated/actuated-cli">actuated-cli</a>, it's main use-cases are to:</p>
@@ -1712,7 +1807,7 @@ faas-cli deploy
 <span class="hljs-punctuation">]</span>
 </code></pre>
 <h3 id="ssh-commands-and-doing-the-right-thing">SSH commands and doing the right thing</h3>
-<p>Actuated has a <a href="https://docs.actuated.dev/tasks/debug-ssh/">built-in SSH gateway</a>, this means that any job can be debugged - whether running on a hosted or self-hosted runner, just by editing the workflow YAML.</p>
+<p>Actuated has a <a href="https://docs.actuated.com/tasks/debug-ssh/">built-in SSH gateway</a>, this means that any job can be debugged - whether running on a hosted or self-hosted runner, just by editing the workflow YAML.</p>
 <p>Add the following to the <code>- steps:</code> section, and the <code>id_token: write</code> permission, and your workflow will pause, and then you can connect over SSH using the CLI or the UI.</p>
 <pre><code class="hljs language-yaml">    <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/connect-ssh@master</span>
 </code></pre>
@@ -1841,8 +1936,8 @@ status.`</span>,
         </item>
         <item>
             <title><![CDATA[How Calyptia fixed its Arm builds whilst saving money]]></title>
-            <link>https://actuated.dev/blog/calyptia-case-study-arm</link>
-            <guid>https://actuated.dev/blog/calyptia-case-study-arm</guid>
+            <link>https://actuated.com/blog/calyptia-case-study-arm</link>
+            <guid>https://actuated.com/blog/calyptia-case-study-arm</guid>
             <pubDate>Fri, 11 Aug 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how Calyptia fixed its failing Arm builds for open-source Fluent Bit and accelerated our commercial development by adopting Actuated and bare-metal runners.]]></description>
             <content:encoded><![CDATA[<p>This is a case-study, and guest article by <a href="https://www.linkedin.com/in/patrickjkstephens/">Patrick Stephens, Tech Lead of Infrastructure at Calyptia</a>.</p>
@@ -1882,7 +1977,7 @@ status.`</span>,
 <blockquote>
 <p>"Actuated aims to give teams the closest possible experience to managed runners, but with native arm support flat rate billing, and secure VM-level isolation. Since Calyptia adopted actuated, we’ve also shipped an SSH debug experience (like you’d find with CircleCI) and detailed reports and insights on usage across repos, users and organisations."</p>
 </blockquote>
-<p>To use Actuated, you have to provision a machine with the Actuated agent, which is trivial and well documented: <a href="https://docs.actuated.dev/install-agent/">https://docs.actuated.dev/install-agent/</a>.</p>
+<p>To use Actuated, you have to provision a machine with the Actuated agent, which is trivial and well documented: <a href="https://docs.actuated.com/install-agent/">https://docs.actuated.com/install-agent/</a>.</p>
 <p>We deployed an Ampere Altra Q80 server with 256GB of RAM and 80 cores ARM64 machine via Equinix (Equinix donates resources to the CNCF which we use for Fluent Bit so this satisfies the cost side of things) and installed the Actuated agent on it per the Actuated docs.</p>
 <p>The update required to start using Actuated in OSS Fluent Bit is a one-liner. (Thanks in part to my excellent work refactoring the CI workflows, or so I like to think. You can see the actual PR here for the change: <a href="https://github.com/fluent/fluent-bit/pull/7527">https://github.com/fluent/fluent-bit/pull/7527</a>.)</p>
 <p>The following is the code required to start using Actuated:</p>
@@ -1950,7 +2045,7 @@ NOK: ghcr.io/calyptia/internal/product:tag --> ghcr.io/calyptia/internal/amd64/p
 <p>As with all good failures, the tooling let me make a broken manifest at build time but unfortunately trying to pull it meant a failure at runtime.</p>
 <h3 id="actuated-container-registry-mirror">Actuated container registry mirror</h3>
 <p>All Github hosted runners provide default credentials to authenticate with docker.io for pulling public images. When running on a self-hosted runner you need to authenticate for this otherwise you will hit rate limits and builds may fail as they cannot download required base images.</p>
-<p>Actuated provide a registry mirror and Github Action to simplify this so make sure you set it up: <a href="https://docs.actuated.dev/tasks/registry-mirror/">https://docs.actuated.dev/tasks/registry-mirror/</a></p>
+<p>Actuated provide a registry mirror and Github Action to simplify this so make sure you set it up: <a href="https://docs.actuated.com/tasks/registry-mirror/">https://docs.actuated.com/tasks/registry-mirror/</a></p>
 <p>As part of this, ensure it is set up for anything that uses images (e.g. we run integration tests on KIND that failed as the cluster could not download its images) and that it is done after any buildx config as it creates a dedicated buildx builder for the mirror usage.</p>
 <h3 id="actuated-support">Actuated support</h3>
 <p>The Actuated team helped us in two ways: the first was that we were able to enable Arm builds for our OSS projects and our commercial products, when they timed out with hosted runners. The second way was where our costs were getting out of hand on GitHub’s larger hosted runners: Actuated not only reduced the build time, but the billing model is flat-rate, meaning our costs are now fixed, rather than growing.</p>
@@ -1963,8 +2058,8 @@ NOK: ghcr.io/calyptia/internal/product:tag --> ghcr.io/calyptia/internal/amd64/p
         </item>
         <item>
             <title><![CDATA[Update your AMD hosts now to mitigate the Zenbleed exploit]]></title>
-            <link>https://actuated.dev/blog/amd-zenbleed-update-now</link>
-            <guid>https://actuated.dev/blog/amd-zenbleed-update-now</guid>
+            <link>https://actuated.com/blog/amd-zenbleed-update-now</link>
+            <guid>https://actuated.com/blog/amd-zenbleed-update-now</guid>
             <pubDate>Mon, 31 Jul 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how to update the microcode on your AMD CPU to avoid the Zenbleed exploit.]]></description>
             <content:encoded><![CDATA[<p>On 24th July 2023, <a href="https://www.theregister.com/2023/07/24/amd_zenbleed_bug/">The Register covered a new exploit</a> for certain AMD CPUs based upon the Zen architecture. The exploit, dubbed Zenbleed, allows an attacker to read arbitrary physical memory locations on the host system. It works by allowing memory to be read after it's been set to be freed up aka "use-after-free". This is a serious vulnerability, and you should update your AMD hosts as soon as possible.</p>
@@ -2067,8 +2162,8 @@ microcode	: 0x830107a
         </item>
         <item>
             <title><![CDATA[Automate Packer Images with QEMU and Actuated]]></title>
-            <link>https://actuated.dev/blog/automate-packer-qemu-image-builds</link>
-            <guid>https://actuated.dev/blog/automate-packer-qemu-image-builds</guid>
+            <link>https://actuated.com/blog/automate-packer-qemu-image-builds</link>
+            <guid>https://actuated.com/blog/automate-packer-qemu-image-builds</guid>
             <pubDate>Tue, 25 Jul 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how to automate Packer images using QEMU and nested virtualisation through actuated.]]></description>
             <content:encoded><![CDATA[<p>One of the most popular tools for creating images for virtual machines is <a href="https://www.packer.io/">Packer</a> by <a href="https://hashicorp.com">Hashicorp</a>. Packer automates the process of building images for a variety of platforms from a single source configuration. Different builders can be used to create machines and generate images from those machines.</p>
@@ -2076,7 +2171,7 @@ microcode	: 0x830107a
 <p>We will see how the Packer build can be completely automated by integrating Packer into a continuous integration (CI) pipeline with GitHub Actions. The workflow will automatically trigger image builds on changes and publish the resulting images as GitHub release artifacts.</p>
 <p>Actuated supports nested virtualsation where a VM can make use of KVM to launch additional VMs within a GitHub Action. This makes it possible to run the Packer QEMU builder in GitHub Action workflows. Something that is not possible with GitHub's default hosted runners.</p>
 <blockquote>
-<p>See also: <a href="https://actuated.dev/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></p>
+<p>See also: <a href="/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></p>
 </blockquote>
 <h2 id="create-the-packer-template">Create the Packer template</h2>
 <p>We will be starting from a <a href="https://cloud-images.ubuntu.com/">Ubuntu Cloud Image</a> and modify it to suit our needs. If you need total control of what goes into the image you can start from scratch using the ISO.</p>
@@ -2234,7 +2329,7 @@ chpasswd:
 <li><code>arm64</code> runners are not supported at the moment</li>
 <li>A bare-metal host that supports nested virtualization is required for the Agent.</li>
 </ul>
-<p>To configure your Actuated Agent for KVM support follow the <a href="https://docs.actuated.dev/examples/kvm-guest/">instructions in the docs</a>.</p>
+<p>To configure your Actuated Agent for KVM support follow the <a href="https://docs.actuated.com/examples/kvm-guest/">instructions in the docs</a>.</p>
 <h3 id="the-github-actions-workflow">The GitHub actions workflow</h3>
 <p>The default GitHub hosted runners come with Packer pre-installed. On self-hosted runners you will need a step to install the Packer binary. The official [setup-packer][<a href="https://github.com/hashicorp/setup-packer">https://github.com/hashicorp/setup-packer</a>] action can be used for this.</p>
 <p>We set <code>runs-on</code> to <code>actuated</code> so that the build workflow will run on an Actuated runner:</p>
@@ -2303,12 +2398,12 @@ chpasswd:
 <p>We exported the image in <code>qcow2</code> format but you might need a different image format. The QEMU builder also supports outputting images in <code>raw</code> format. In our Packer template the output format can be changed by setting the <code>format</code> variable.</p>
 <p>Additional tools like the <a href="https://www.qemu.org/docs/master/tools/qemu-img.html">qemu disk image utility</a> can also be used to convert images between different formats. A <a href="https://developer.hashicorp.com/packer/docs/templates/hcl_templates/blocks/build/post-processor">post-processor</a> would be the ideal place for these kinds of extra processing steps.</p>
 <p>AWS also supports importing VM images and converting them to an AMI so they can be used to launch EC2 instances. See: <a href="https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-image-import.html">Create an AMI from a VM image</a></p>
-<p>If you'd like to know more about nested virtualisation support, check out: <a href="https://actuated.dev/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></p>]]></content:encoded>
+<p>If you'd like to know more about nested virtualisation support, check out: <a href="/blog/kvm-in-github-actions">How to run KVM guests in your GitHub Actions</a></p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Understand your usage of GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/github-actions-usage-cli</link>
-            <guid>https://actuated.dev/blog/github-actions-usage-cli</guid>
+            <link>https://actuated.com/blog/github-actions-usage-cli</link>
+            <guid>https://actuated.com/blog/github-actions-usage-cli</guid>
             <pubDate>Fri, 16 Jun 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how you or your team is using GitHub Actions across your personal account or organisation.]]></description>
             <content:encoded><![CDATA[<p>Whenever GitHub Actions users get in touch with us to ask about actuated, we ask them a number of questions. What do you build? What pain points have you been running into? What are you currently spending? And then - how many minutes are you using?</p>
@@ -2397,7 +2492,7 @@ actuated-samples/faasd-nix                6              6              0       
 <pre><code>-days 14 
 </code></pre>
 <p>The team at Todoist got in touch with us to see if actuated could reduce their bill on GitHub Actions. When he tried to run the tool the rate-limit was exhausted even when he changed the flag to <code>-days 1</code>. Why? They were using 550,000 minutes!</p>
-<p>So we can see one of the limitations already of this approach. Fortunately, actuated customers have their job stats recorded in a database and can generate reports <a href="https://docs.actuated.dev/dashboard/">from the dashboard very quickly</a>.</p>
+<p>So we can see one of the limitations already of this approach. Fortunately, actuated customers have their job stats recorded in a database and can generate reports <a href="https://docs.actuated.com/dashboard/">from the dashboard very quickly</a>.</p>
 <h2 id="finding-out-about-your-personal-account">Finding out about your personal account</h2>
 <p>Actuated isn't built for personal users, but for teams, so we didn't add this feature initially. Then we saw a few people reach out via Twitter and GitHub and decided to add it for them.</p>
 <p>For your personal account, you only have to change one of the input parameters:</p>
@@ -2442,7 +2537,7 @@ actuated-samples/faasd-nix                6              6              0       
         <span class="hljs-attr">print-summary:</span> <span class="hljs-literal">false</span>
     <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Generate</span> <span class="hljs-string">actions-usage</span> <span class="hljs-string">report</span>
       <span class="hljs-attr">run:</span> <span class="hljs-string">|
-       echo "### Actions Usage report by [actuated.dev](https://actuated.dev)" >> SUMMARY
+       echo "### Actions Usage report by [actuated.dev](https://actuated.com)" >> SUMMARY
        echo "\`\`\`" >> SUMMARY
        actions-usage \
         -org $GITHUB_REPOSITORY_OWNER \
@@ -2467,8 +2562,8 @@ actuated-samples/faasd-nix                6              6              0       
         </item>
         <item>
             <title><![CDATA[Secure CI for GitLab with Firecracker microVMs]]></title>
-            <link>https://actuated.dev/blog/secure-microvm-ci-gitlab</link>
-            <guid>https://actuated.dev/blog/secure-microvm-ci-gitlab</guid>
+            <link>https://actuated.com/blog/secure-microvm-ci-gitlab</link>
+            <guid>https://actuated.com/blog/secure-microvm-ci-gitlab</guid>
             <pubDate>Fri, 16 Jun 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how actuated for GitLab CI can help you secure your CI/CD pipelines with Firecracker.]]></description>
             <content:encoded><![CDATA[<p>We started building actuated for GitHub Actions because we at OpenFaaS Ltd had a need for: unmetered CI minutes, faster &#x26; more powerful x86 machines, native Arm builds and low maintenance CI builds.</p>
@@ -2510,19 +2605,19 @@ actuated-samples/faasd-nix                6              6              0       
 <li>🚀 Fixed-costs &#x26; less management</li>
 <li>🚀 Insights into CI usage across your organisation</li>
 </ul>
-<p>Runners are registered and running a job in a dedicated VM within less than one second. Our scheduler can pack in jobs across a fleet of servers, <a href="https://docs.actuated.dev/provision-server/">they just need to have KVM available</a>.</p>
+<p>Runners are registered and running a job in a dedicated VM within less than one second. Our scheduler can pack in jobs across a fleet of servers, <a href="https://docs.actuated.com/provision-server/">they just need to have KVM available</a>.</p>
 <p>If you think your automation for runners could be improved, or work with customers who need faster builds, better isolation or Arm support, get in touch with us.</p>
 <ul>
 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Sign-up for the Actuated pilot</a></li>
-<li><a href="https://docs.actuated.dev/">Browse the docs and FAQ for actuated for GitHub Actions</a></li>
-<li><a href="https://actuated.dev/">Read customer testimonials</a></li>
+<li><a href="https://docs.actuated.com/">Browse the docs and FAQ for actuated for GitHub Actions</a></li>
+<li><a href="https://actuated.com/">Read customer testimonials</a></li>
 </ul>
 <p>You can follow <a href="https://twitter.com/selfactuated">@selfactuated</a> on Twitter, or find <a href="https://twitter.com/alexellisuk">me there too</a> to keep an eye on what we're building.</p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Faster Nix builds with GitHub Actions and actuated]]></title>
-            <link>https://actuated.dev/blog/faster-nix-builds</link>
-            <guid>https://actuated.dev/blog/faster-nix-builds</guid>
+            <link>https://actuated.com/blog/faster-nix-builds</link>
+            <guid>https://actuated.com/blog/faster-nix-builds</guid>
             <pubDate>Mon, 12 Jun 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Speed up your Nix project builds on GitHub Actions with runners powered by Firecracker.]]></description>
             <content:encoded><![CDATA[<p><a href="https://github.com/openfaas/faasd">faasd</a> is a lightweight and portable version of <a href="https://www.openfaas.com/">OpenFaaS</a> that was created to run on a single host. In my spare time I maintain <a href="https://github.com/welteki/faasd-nix">faasd-nix</a>, a project that packages faasd and exposes a NixOS module so it can be run with NixOS.</p>
@@ -2540,7 +2635,7 @@ actuated-samples/faasd-nix                6              6              0       
 <p>Because Nix is declarative and offers reproducible builds, it is easy to setup a concise build pipeline for GitHub actions. A lot of steps usually required to setup the build environment can be left out. For instance, faasd requires Go, but there's no need to install it onto the build machine, and you'd normally have to install btrfs-progs to build containerd, but that's not something you have to think about, because Nix will take care of it for you.</p>
 <p>Another advantage of the reproducible builds is that if it works on your local machine it most likely also works in CI. No need to debug and find any discrepancies between your local and CI environment.</p>
 <blockquote>
-<p>Of course, if you ever do get frustrated and want to debug a build, you can use the built-in <a href="https://docs.actuated.dev/tasks/debug-ssh/">SSH feature in Actuated</a>. Alex Ellis, Founder of Actuated.</p>
+<p>Of course, if you ever do get frustrated and want to debug a build, you can use the built-in <a href="https://docs.actuated.com/tasks/debug-ssh/">SSH feature in Actuated</a>. Alex Ellis, Founder of Actuated.</p>
 </blockquote>
 <p>This is what the workflow looks like for building faasd and its related packages:</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">jobs:</span>
@@ -2622,18 +2717,18 @@ actuated-samples/faasd-nix                6              6              0       
 <h2 id="wrapping-up">Wrapping up</h2>
 <p>Building your projects with Nix allows your GitHub actions pipelines to be concise and easy to maintain.</p>
 <p>Even when you are not using Nix to build your project it can still help you to create concise and easy to maintain GitHub Action workflows. With Nix shell environments you can use Nix to declare which dependencies you want to make available inside an isolated shell environment for your project: <a href="https://determinate.systems/posts/nix-github-actions">Streamline your GitHub Actions dependencies using Nix</a></p>
-<p>Building Nix packages or entire NixOS systems on GitHub Actions can be slow especially if you need to build for Arm. Bringing your own metal to GitHub actions can speed up your builds. If you need Arm runners, Actuated is one of the only options for securely isolated CI that is safe for Open Source and public repositories. Alex explains why in: <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></p>
-<p>Another powerful feature of the Nix ecosystem is the ability to run integration tests using virtual machines (NixOS test). This feature requires hardware acceleration to be available in the CI runner. Actuated makes it possible to run these tests in GitHub Actions CI pipelines: <a href="https://actuated.dev/blog/kvm-in-github-actions">how to run KVM guests in your GitHub Actions</a>.</p>
+<p>Building Nix packages or entire NixOS systems on GitHub Actions can be slow especially if you need to build for Arm. Bringing your own metal to GitHub actions can speed up your builds. If you need Arm runners, Actuated is one of the only options for securely isolated CI that is safe for Open Source and public repositories. Alex explains why in: <a href="/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></p>
+<p>Another powerful feature of the Nix ecosystem is the ability to run integration tests using virtual machines (NixOS test). This feature requires hardware acceleration to be available in the CI runner. Actuated makes it possible to run these tests in GitHub Actions CI pipelines: <a href="/blog/kvm-in-github-actions">how to run KVM guests in your GitHub Actions</a>.</p>
 <p>See also:</p>
 <ul>
-<li><a href="https://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions">Bring Your Own Metal - Case Study with GitHub Actions</a></li>
-<li><a href="https://actuated.dev/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a></li>
+<li><a href="/blog/case-study-bring-your-own-bare-metal-to-actions">Bring Your Own Metal - Case Study with GitHub Actions</a></li>
+<li><a href="/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Fixing the cache latency for self-hosted GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/faster-self-hosted-cache</link>
-            <guid>https://actuated.dev/blog/faster-self-hosted-cache</guid>
+            <link>https://actuated.com/blog/faster-self-hosted-cache</link>
+            <guid>https://actuated.com/blog/faster-self-hosted-cache</guid>
             <pubDate>Wed, 24 May 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[The cache for GitHub Actions can speed up CI/CD pipelines. But what about when it slows you down?]]></description>
             <content:encoded><![CDATA[<p>In some of our builds for actuated we cache things like the Linux Kernel, so we don't needlessly rebuild it when we update packages in our base images. It can shave minutes off every build meaning our servers can be used more efficiently. Most customers we've seen so far only make light to modest use of GitHub's hosted cache, so haven't noticed much of a latency problem.</p>
@@ -2641,7 +2736,7 @@ actuated-samples/faasd-nix                6              6              0       
 <p>Go, Rust, Python and other languages don't tend to make heavy use of caches, and Docker has some of its own mechanisms like building cached steps into published images aka <em><a href="https://docs.docker.com/build/cache/backends/inline/">inline caching</a></em>. But for the Node.js ecosystem, the <code>node_modules</code> folder and yarn cache can become huge and take a long time to download. That's one place where you may start to see tension between the speed of self-hosted runners and the latency of the cache. If your repository is a monorepo or has lots of large artifacts, you may get a speed boost by caching that too.</p>
 <p>So why is GitHub's cache so fast for hosted runners, and (sometimes) so slow self-hosted runners?</p>
 <p>Simply put - GitHub runs VMs and the accompanying cache on the same network, so they can talk over a high speed backbone connection. But when you run a self-hosted runner, then any download or upload operations are taking place over the public Internet.</p>
-<p>Something else that can slow builds down is having to download large base images from the Docker Hub. We've already <a href="https://docs.actuated.dev/tasks/registry-mirror/">covered how to solve that for actuated in the docs</a>.</p>
+<p>Something else that can slow builds down is having to download large base images from the Docker Hub. We've already <a href="https://docs.actuated.com/tasks/registry-mirror/">covered how to solve that for actuated in the docs</a>.</p>
 <h2 id="speeding-up-in-the-real-world">Speeding up in the real world</h2>
 <p>We recently worked with Roderik, the CTO of <a href="https://settlemint.com">SettleMint</a> to migrate their CI from a self-hosted Kubernetes solution Actions Runtime Controller (ARC) to actuated. He told me that they originally moved from GitHub's hosted runners to ARC to save money, increase speed and to lower the latency of their builds. Unfortunately, running container builds within Kubernetes provided very poor isolation, and side effects were being left over between builds, even with a pool of ephemeral containers. They also wanted to reduce the amount of effort required to maintain a Kubernetes cluster and control-plane for CI.</p>
 <p>Roderik explained that he'd been able to get times down by using <a href="https://pnpm.io">pnpm</a> instead of yarn, and said every Node project should try it out to see the speed increases. He believes the main improvement is due to efficient downloading and caching. pnpm is a drop-in replacement for npm and yarn, and is compatible with both.</p>
@@ -2657,8 +2752,8 @@ actuated-samples/faasd-nix                6              6              0       
 <p>This post is about speed improvements for caching, but if you're finding that QEMU is too slow to build your Arm containers on hosted runners, you may benefit from switching to actuated with bare-metal Arm servers.</p>
 <p>See also:</p>
 <ul>
-<li><a href="https://actuated.dev/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a></li>
-<li><a href="https://actuated.dev/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a></li>
+<li><a href="/blog/how-to-run-multi-arch-builds-natively">How to split up multi-arch Docker builds to run natively</a></li>
+<li><a href="/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a></li>
 </ul>
 <h2 id="set-up-a-self-hosted-cache-for-github-actions">Set up a self-hosted cache for GitHub Actions</h2>
 <p>In order to set up a self-hosted cache for GitHub Actions, we switched out the official <a href="https://github.com/actions/cache">actions/cache@v3</a> action for <a href="https://github.com/tespkg/actions-cache">tespkg/actions-cache@v1</a> created by Target Energy Solutions, a UK-based company, which can target S3 instead of the proprietary GitHub cache.</p>
@@ -2805,23 +2900,23 @@ Part means it takes the last one that matches, then updates at the end of the ru
 <p>"You need to determine a good key and restore key. For pnpm, we use the hash of the lock file in the key, but leave it out of the restore key. So if I update the lock file, it starts from the last cache, updates it, and stores the new cache with the new hash"</p>
 </blockquote>
 <p>If you'd like a good starting-point for GitHub Actions Caching, Han Verstraete from our team wrote up a good primer for the actuated docs:</p>
-<p><a href="https://docs.actuated.dev/examples/github-actions-cache/">Example: GitHub Actions cache</a></p>
+<p><a href="https://docs.actuated.com/examples/github-actions-cache/">Example: GitHub Actions cache</a></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>We were able to dramatically speed up caching for GitHub Actions by using a self-hosted S3 service. We used Seaweedfs directly on the server running Firecracker with a fallback to GitHub's cache if the S3 service was unavailable.</p>
 <p><a href="https://twitter.com/alexellisuk/status/1661282581617229827/"><img src="https://pbs.twimg.com/media/Fw4PQEfWwAIl-6u?format=jpg&#x26;name=medium" alt="Brr"></a></p>
 <blockquote>
-<p>An <a href="https://amperecomputing.com/en/">Ampere</a> Altra Arm server running parallel VMs using Firecracker. The CPU is going brr. <a href="https://docs.actuated.dev/provision-server/">Find a server with our guide</a></p>
+<p>An <a href="https://amperecomputing.com/en/">Ampere</a> Altra Arm server running parallel VMs using Firecracker. The CPU is going brr. <a href="https://docs.actuated.com/provision-server/">Find a server with our guide</a></p>
 </blockquote>
 <p>We also tend to recommend that all customers enable a mirror of the Docker Hub to counter restrictive rate-limits. The other reason is to avoid any penalties that you'd see from downloading large base images - or from downloading small to medium sized images when running in high concurrency.</p>
-<p>You can find out how to configure a container mirror for the Docker Hub using actuated here: <a href="https://docs.actuated.dev/tasks/registry-mirror/">Set up a registry mirror</a>. When testing builds for the <a href="https://github.com/discourse/discourse">Discourse</a> team, there was a 2.5GB container image used for UI testing with various browsers preinstalled within it. We found that we could shave off a few minutes off the build time by using the local mirror. Imagine 10x of those builds running at once, needlessly downloading 250GB of data.</p>
+<p>You can find out how to configure a container mirror for the Docker Hub using actuated here: <a href="https://docs.actuated.com/tasks/registry-mirror/">Set up a registry mirror</a>. When testing builds for the <a href="https://github.com/discourse/discourse">Discourse</a> team, there was a 2.5GB container image used for UI testing with various browsers preinstalled within it. We found that we could shave off a few minutes off the build time by using the local mirror. Imagine 10x of those builds running at once, needlessly downloading 250GB of data.</p>
 <p>What if you're not an actuated customer? Can you still benefit from a faster cache? You could try out a hosted service like AWS S3 or Google Cloud Storage, provisioned in a region closer to your runners. The speed probably won't quite be as good, but it should still be a lot faster than reaching over the Internet to GitHub's cache.</p>
 <p>If you'd like to try out actuated for your team, <a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">reach out to us to find out more</a>.</p>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Book 20 mins with me if you think your team could benefit from the below for GitHub Actions:<br><br>🚀 Insights into CI usage across your organisation<br>🚀 Faster x86 builds<br>🚀 Native Arm builds that can actually finish<br>🚀 Fixed-costs &amp; less management<a href="https://t.co/iTiZsH9pgv">https://t.co/iTiZsH9pgv</a></p>&mdash; Alex Ellis (@alexellisuk) <a href="https://twitter.com/alexellisuk/status/1656300308325179393?ref_src=twsrc%5Etfw">May 10, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Keyless deployment to OpenFaaS with OIDC and GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/oidc-proxy-for-openfaas</link>
-            <guid>https://actuated.dev/blog/oidc-proxy-for-openfaas</guid>
+            <link>https://actuated.com/blog/oidc-proxy-for-openfaas</link>
+            <guid>https://actuated.com/blog/oidc-proxy-for-openfaas</guid>
             <pubDate>Fri, 05 May 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[We're announcing a new OIDC proxy for OpenFaaS for keyless deployments from GitHub Actions.]]></description>
             <content:encoded><![CDATA[<p>In 2021, GitHub released <a href="https://openid.net/connect/">OpenID Connect (OIDC)</a> support for CI jobs running under GitHub Actions. This was a huge step forward for security meaning that any GitHub Action could mint an OIDC token and use it to securely federate into another system without having to store long-lived credentials in the repository.</p>
@@ -3001,8 +3096,8 @@ helm upgrade --install actuated/openfaas-oidc-proxy \
         </item>
         <item>
             <title><![CDATA[Lessons learned managing GitHub Actions and Firecracker]]></title>
-            <link>https://actuated.dev/blog/managing-github-actions</link>
-            <guid>https://actuated.dev/blog/managing-github-actions</guid>
+            <link>https://actuated.com/blog/managing-github-actions</link>
+            <guid>https://actuated.com/blog/managing-github-actions</guid>
             <pubDate>Fri, 31 Mar 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Alex shares lessons from building a managed service for GitHub Actions with Firecracker.]]></description>
             <content:encoded><![CDATA[<p>Over the past few months, we've launched over 20,000 VMs for customers and have handled over 60,000 webhook messages from the GitHub API. We've learned a lot from every customer PoC and from our own usage in OpenFaaS.</p>
@@ -3013,14 +3108,14 @@ helm upgrade --install actuated/openfaas-oidc-proxy \
 <blockquote>
 <p>Asahi Linux running on my lab of two M1 Mac Minis - used for building the Arm64 base images and Kernels.</p>
 </blockquote>
-<p>Can't you just use a self-hosted runner on a VM? Yes, of course you can. But it's actually more nuanced than that. The self-hosted runner <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">isn't safe</a> for OSS or public repos. And whether you run it directly on the host, or in Kubernetes - it's subject to side-effects, poor isolation, malware and in some cases uses very high privileges that could result in taking over a host completely.</p>
-<p>You can learn more in the <a href="https://actuated.dev/blog/blazing-fast-ci-with-microvms">actuated announcement</a> and <a href="https://docs.actuated.dev/faq">FAQ</a>.</p>
+<p>Can't you just use a self-hosted runner on a VM? Yes, of course you can. But it's actually more nuanced than that. The self-hosted runner <a href="/blog/is-the-self-hosted-runner-safe-github-actions">isn't safe</a> for OSS or public repos. And whether you run it directly on the host, or in Kubernetes - it's subject to side-effects, poor isolation, malware and in some cases uses very high privileges that could result in taking over a host completely.</p>
+<p>You can learn more in the <a href="/blog/blazing-fast-ci-with-microvms">actuated announcement</a> and <a href="https://docs.actuated.com/faq">FAQ</a>.</p>
 <h2 id="how-does-it-work">how does it work?</h2>
 <p>We run a SaaS - a managed control-plane which is installed onto your organisation as a GitHub App. At that point, we'll receive webhooks about jobs in a queued state.</p>
 <p><img src="/images/2023-03-lessons-learned/conceptual.jpg" alt="Conceptual architecture"></p>
 <p>As you can see in the diagram above, when a webhook is received, and we determine it's for your organisation, we'll schedule a <a href="https://firecracker-microvm.github.io/">Firecracker</a> MicroVM on one of your servers.</p>
 <p>We have no access to your code or build secrets. We just obtain a registration token and send the runner a bit of metadata. Then we get out the way and let the self-hosted runner do its thing - in an isolated Kernel, with an immutable filesystem and its own Docker daemon.</p>
-<p>Onboarding doesn't take very long - you can use your own servers or get them from a cloud provider. We've got a <a href="https://docs.actuated.dev/provision-server/">detailed guide</a>, but can also recommend an option on a discovery call.</p>
+<p>Onboarding doesn't take very long - you can use your own servers or get them from a cloud provider. We've got a <a href="https://docs.actuated.com/provision-server/">detailed guide</a>, but can also recommend an option on a discovery call.</p>
 <p>Want to learn more about how Firecracker compares to VMs and containers? <a href="https://www.youtube.com/watch?v=CYCsa5e2vqg">Watch my webinar on YouTube</a></p>
 <h2 id="lesson-1---githubs-images-are-big-and-beautiful">Lesson 1 - GitHub's images are big and beautiful</h2>
 <p>The first thing we noticed when building our actuated VM images was that the GitHub ones are huge.</p>
@@ -3086,7 +3181,7 @@ helm upgrade --install actuated/openfaas-oidc-proxy \
 <p>Want to <a href="https://www.youtube.com/watch?v=2o28iUC-J1w">watch a demo</a>?</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2o28iUC-J1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 <h2 id="lesson-6---sometimes-we-need-to-debug-a-runner">Lesson 6 - Sometimes we need to debug a runner</h2>
-<p>When I announced actuated, I heard a lot of people asking for CircleCI's debug experience, <a href="https://docs.actuated.dev/tasks/debug-ssh/">so I built something similar</a> and it's proved to be really useful for us in building actuated.</p>
+<p>When I announced actuated, I heard a lot of people asking for CircleCI's debug experience, <a href="https://docs.actuated.com/tasks/debug-ssh/">so I built something similar</a> and it's proved to be really useful for us in building actuated.</p>
 <p>Only yesterday, Ivan Subotic from Dasch Swiss messaged me and said:</p>
 <blockquote>
 <p>"How cool!!! you don’t know how many hours I have lost on GitHub Actions without this."</p>
@@ -3124,28 +3219,28 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 <p>I ran into this problem whilst trying to rebuild around 20 OpenFaaS Pro repositories to upgrade a base image. So after a very short period of time, all code ground to a halt and every build failed.</p>
 <p>GitHub has a deal to pay Docker Inc so that you don't run into rate limits. At time of writing, you'll find a valid Docker Hub credential in the <code>$HOME/.docker/config.json</code> file on any hosted runner.</p>
 <p>Actuated customers would need to login at the top of every one of their builds that used Docker, and create an organisation-level secret with a pull token from the Docker Hub.</p>
-<p>We found a way to automate this, and speed up subsequent jobs by <a href="https://docs.actuated.dev/tasks/registry-mirror/">caching images directly on the customer's server</a>.</p>
+<p>We found a way to automate this, and speed up subsequent jobs by <a href="https://docs.actuated.com/tasks/registry-mirror/">caching images directly on the customer's server</a>.</p>
 <p>All they need to add to their builds is:</p>
 <pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/hub-mirror@master</span>
 </code></pre>
 <h2 id="wrapping-up">Wrapping up</h2>
 <p>I hope that you've enjoyed hearing a bit about our journey so far. With every new pilot customer we learn something new, and improve the offering.</p>
 <p>Whilst there was a significant amount of very technical work at the beginning of actuated, most of our time now is spent on customer support, education, and improving the onboarding experience.</p>
-<p>If you'd like to know how actuated compares to hosted runners or managing the self-hosted runner on your own, we'd encourage <a href="https://actuated.dev/blog">checking out the blog</a> and <a href="https://actuated.dev/faq">FAQ</a>.</p>
+<p>If you'd like to know how actuated compares to hosted runners or managing the self-hosted runner on your own, we'd encourage <a href="https://actuated.com/blog">checking out the blog</a> and <a href="https://actuated.com/faq">FAQ</a>.</p>
 <p>Are your builds slowing the team down? Do you need better organisation-level insights and reporting? Or do you need Arm support? Are you frustrated with managing self-hosted runners?</p>
 <p><a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Reach out to us take part in the pilot</a></p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[How to split up multi-arch Docker builds to run natively]]></title>
-            <link>https://actuated.dev/blog/how-to-run-multi-arch-builds-natively</link>
-            <guid>https://actuated.dev/blog/how-to-run-multi-arch-builds-natively</guid>
+            <link>https://actuated.com/blog/how-to-run-multi-arch-builds-natively</link>
+            <guid>https://actuated.com/blog/how-to-run-multi-arch-builds-natively</guid>
             <pubDate>Fri, 24 Mar 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[QEMU is a convenient way to publish containers for multiple architectures, but it can be incredibly slow. Native is much faster.]]></description>
             <content:encoded><![CDATA[<p>In two previous articles, we covered huge improvements in performance for the Parca project and VPP (Network Service Mesh) simply by switching to actuated with Arm64 runners instead of using QEMU and hosted runners.</p>
-<p>In the <a href="http://actuated.dev/blog/native-arm64-for-github-actions">first case</a>, using QEMU took over 33 minutes, and bare-metal Arm showed a 22x improvement at only 1 minute 26 seconds. For Network Service Mesh, <a href="http://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions">VPP</a> couldn't even complete a build in 6 hours using QEMU - and I got it down to 9 minutes flat using a bare-metal <a href="https://amperecomputing.com/processors/ampere-altra">Ampere Altra server</a>.</p>
+<p>In the <a href="/blog/native-arm64-for-github-actions">first case</a>, using QEMU took over 33 minutes, and bare-metal Arm showed a 22x improvement at only 1 minute 26 seconds. For Network Service Mesh, <a href="/blog/case-study-bring-your-own-bare-metal-to-actions">VPP</a> couldn't even complete a build in 6 hours using QEMU - and I got it down to 9 minutes flat using a bare-metal <a href="https://amperecomputing.com/processors/ampere-altra">Ampere Altra server</a>.</p>
 <h2 id="what-are-we-going-to-see-and-why-is-it-better">What are we going to see and why is it better?</h2>
 <p>In this article, I'll show you how to run multi-arch builds natively on bare-metal hardware using GitHub Actions and actuated.</p>
-<p><a href="https://actuated.dev/">Actuated</a> is a SaaS service that we built so that you can Bring Your Own compute to GitHub Actions, and have every build run in an immutable, single-use VM.</p>
+<p><a href="https://actuated.com/">Actuated</a> is a SaaS service that we built so that you can Bring Your Own compute to GitHub Actions, and have every build run in an immutable, single-use VM.</p>
 <p><a href="https://twitter.com/alexellisuk/status/1639232258887372801?s=20"><img src="https://pbs.twimg.com/media/Fr_CcVJWIAEY1gL?format=png&#x26;name=medium" alt="Comparison of the two builds"></a></p>
 <blockquote>
 <p>Comparison of splitting out to run in parallel on native hardware and QEMU.</p>
@@ -3163,7 +3258,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 <p>So if the timings are so bad, why does anyone use QEMU?</p>
 <p>Well it's free - as in beer, there's no cost at all to use it. And many builds can complete in a reasonable amount of time using QEMU, even if it's not as fast as native.</p>
 <p>That's why we wrote up how we build 80+ multi-arch images for various products like OpenFaaS and Inlets:</p>
-<p><a href="https://actuated.dev/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></p>
+<p><a href="/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></p>
 <p>Here's what the build looks like with QEMU:</p>
 <pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">split-operator</span>
 
@@ -3385,7 +3480,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 <p>The self-hosted runner is not suitable for open source / public repositories, the GitHub documentation has a stark warning about this.</p>
 <p>The Kubernetes controller that's available has the same issues, because it re-uses the Pods by default, and runs in a dangerous Docker In Docker Mode as a privileged container or by mounting the Docker Socket. I'm not sure which is worse, but both mean that code in CI can take over the host, potentially even the whole cluster.</p>
 <p>Hosted runners solve this by creating a fresh VM per job, and destroying it immediately. That's the same approach that we took with actuated, but you get to bring your own metal along, so that you keep costs from growing out of control. Actuated also supports Arm, out of the box.</p>
-<p>Want to know more about the security of self-hosted runners? <a href="https://docs.actuated.dev/faq/">Read more in our FAQ</a>.</p>
+<p>Want to know more about the security of self-hosted runners? <a href="https://docs.actuated.com/faq/">Read more in our FAQ</a>.</p>
 <p>Want to talk to us about your CI/CD needs? We're happy to help.</p>
 <ul>
 <li><a href="/pricing#sign-up-for-the-pilot">Contact us about a PoC</a></li>
@@ -3393,8 +3488,8 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
         </item>
         <item>
             <title><![CDATA[Bring Your Own Metal Case Study with GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions</link>
-            <guid>https://actuated.dev/blog/case-study-bring-your-own-bare-metal-to-actions</guid>
+            <link>https://actuated.com/blog/case-study-bring-your-own-bare-metal-to-actions</link>
+            <guid>https://actuated.com/blog/case-study-bring-your-own-bare-metal-to-actions</guid>
             <pubDate>Fri, 10 Mar 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[See how BYO bare-metal made a 6 hour GitHub Actions build complete 25x faster.]]></description>
             <content:encoded><![CDATA[<p>I'm going to show you how both a regular x86_64 build and an Arm build were made dramatically faster by using Bring Your Own (BYO) bare-metal servers.</p>
@@ -3417,7 +3512,7 @@ dpkg -i ./google-chrome-stable_current_amd64.deb
 </li>
 </ol>
 <p>We explain how to use QEMU in Docker Actions in the following blog post:</p>
-<p><a href="https://actuated.dev/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></p>
+<p><a href="/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></p>
 <h2 id="rubbing-some-bare-metal-on-it">Rubbing some bare-metal on it</h2>
 <p>So GitHub does actually have a beta going for "larger runners", and if Ed wanted to try that out, he'd have to apply to a beta waitlist, upgrade to a Team or Enterprise Plan, and then pick a new runner size.</p>
 <p>But that wouldn't have covered him for the Arm build, GitHub don't have any support there right now. I'm sure it will come one, day, but here we are unable to release binaries for our Arm users.</p>
@@ -3430,7 +3525,7 @@ Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and A
 </blockquote>
 <p>And who is behind actuated? We are a nimble team, but have a pedigree with Cloud Native and self-hosted software going back 6-7 years from <a href="https://openfaas.com/">OpenFaaS</a>. OpenFaaS is a well known serverless platform which is used widely in production by commercial companies including Fortune 500s.</p>
 <p>Actuated uses a Bring Your Own (BYO) server model, but there's very little for you to do once you've installed the actuated agent.</p>
-<p>Here's how to set up the agent software: <a href="https://docs.actuated.dev/install-agent/">Actuated Docs: Install the Agent</a>.</p>
+<p>Here's how to set up the agent software: <a href="https://docs.actuated.com/install-agent/">Actuated Docs: Install the Agent</a>.</p>
 <p>You then get detailed stats about each runner, the build queue and insights across your whole GitHub organisation, in one place:</p>
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Actuated now aggregates usage data at the organisation level, so you can get insights and spot changes in behaviour.<br><br>This peak of 57 jobs was when I was quashing CVEs for <a href="https://twitter.com/openfaas?ref_src=twsrc%5Etfw">@openfaas</a> Pro customers in Alpine Linux and a bunch of Go <a href="https://t.co/a84wLNYYjo">https://t.co/a84wLNYYjo</a>… <a href="https://t.co/URaxgMoQGW">https://t.co/URaxgMoQGW</a> <a href="https://t.co/IuPQUjyiAY">pic.twitter.com/IuPQUjyiAY</a></p>&mdash; Alex Ellis (@alexellisuk) <a href="https://twitter.com/alexellisuk/status/1633059062639108096?ref_src=twsrc%5Etfw">March 7, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <h2 id="first-up---x86_64">First up - x86_64</h2>
@@ -3455,14 +3550,14 @@ Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and A
 <blockquote>
 <p>To prove the point, that BYO means cloud servers, just as much as physically owned machines, <a href="https://github.com/actuated-samples/govpp/actions/runs/4391240138">I also ran the same build on an Ampere Altra from Equinix Metal</a> with 20 GB of RAM, and 32 vCPUs, it completed in 9 minutes 39 seconds.</p>
 </blockquote>
-<p>See our hosting recommendations: <a href="https://docs.actuated.dev/provision-server/">Actuated Docs: Provision a Server</a></p>
+<p>See our hosting recommendations: <a href="https://docs.actuated.com/provision-server/">Actuated Docs: Provision a Server</a></p>
 <p>In October last year, I benchmarked a Raspberry Pi 4 as an actuated server and pitted it directly against QEMU and GitHub's Hosted runners.</p>
 <p>It was 24 minutes faster. That's how bad using QEMU can be instead of using bare-metal Arm.</p>
 <blockquote class="twitter-tweet" data-conversation="none"><p lang="en" dir="ltr">Then, just for run I scheduled the MicroVM on my <a href="https://twitter.com/Raspberry_Pi?ref_src=twsrc%5Etfw">@Raspberry_Pi</a> instead of an <a href="https://twitter.com/equinixmetal?ref_src=twsrc%5Etfw">@equinixmetal</a> machine.<br><br>Poor little thing has 8GB RAM and 4 Cores with an SSD connected over USB-C.<br><br>Anyway, it still beat QEMU by 24 minutes! <a href="https://t.co/ITyRpbnwEE">pic.twitter.com/ITyRpbnwEE</a></p>&mdash; Alex Ellis (@alexellisuk) <a href="https://twitter.com/alexellisuk/status/1583092051398524928?ref_src=twsrc%5Etfw">October 20, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <h2 id="wrapping-up">Wrapping up</h2>
 <p>So, wrapping up - if you only build x86_64, and have very few build minutes, and are willing to upgrade to a Team or Enterprise Plan on GitHub, "faster runners" may be an option you want to consider.</p>
 <p>If you don't want to worry about how many minutes you're going to use, or surprise bills because your team got more productive, or grew in size, or is finally running those 2 hour E2E tests every night, then actuated may be faster and better value overall for you.</p>
-<p>But if you need Arm runners, and <a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">want to use them with public repos</a>, then there are not many options for you which are going to be secure and easy to manage.</p>
+<p>But if you need Arm runners, and <a href="/blog/is-the-self-hosted-runner-safe-github-actions">want to use them with public repos</a>, then there are not many options for you which are going to be secure and easy to manage.</p>
 <h3 id="a-recap-on-the-results">A recap on the results</h3>
 <p><a href="https://twitter.com/alexellisuk/status/1634128821124313091?s=20"><img src="/images/2023-03-vpp/background.jpg" alt="The improvement on the x86 build"></a></p>
 <blockquote>
@@ -3486,18 +3581,18 @@ Actually, bare-metal isn't strictly needed at all, and even DigitalOcean's and A
 <ul>
 <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScA12IGyVFrZtSAp2Oj24OdaSMloqARSwoxx3AZbQbs0wpGww/viewform">Register for the actuated pilot</a></li>
 </ul>
-<p>Learn more about how it compares to other solutions in the FAQ: <a href="https://docs.actuated.dev/faq">Actuated FAQ</a></p>
+<p>Learn more about how it compares to other solutions in the FAQ: <a href="https://docs.actuated.com/faq">Actuated FAQ</a></p>
 <p>See also:</p>
 <ul>
-<li><a href="https://actuated.dev/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></li>
-<li><a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
-<li><a href="https://actuated.dev/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a></li>
+<li><a href="/blog/multi-arch-docker-github-actions">The efficient way to publish multi-arch containers from GitHub Actions</a></li>
+<li><a href="/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
+<li><a href="/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[How to run KVM guests in your GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/kvm-in-github-actions</link>
-            <guid>https://actuated.dev/blog/kvm-in-github-actions</guid>
+            <link>https://actuated.com/blog/kvm-in-github-actions</link>
+            <guid>https://actuated.com/blog/kvm-in-github-actions</guid>
             <pubDate>Fri, 17 Feb 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[From building cloud images, to running NixOS tests and the android emulator, we look at how and why you'd want to run a VM in GitHub Actions.]]></description>
             <content:encoded><![CDATA[<p>GitHub's hosted runners do not support nested virtualization. This means some frequently used tools that require KVM like packer, the Android emulator, etc can not be used in GitHub Actions CI pipelines.</p>
@@ -3690,15 +3785,15 @@ curl --unix-socket /tmp/firecracker.socket -i \
 <p>At time of writing there is no support for aarch64 runners. Only Intel and AMD CPUs support nested virtualisation.</p>
 <p>While it is possible to deploy your own self-hosted runners to run jobs that need KVM support, this is not recommended:</p>
 <ul>
-<li><a href="https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
+<li><a href="/blog/is-the-self-hosted-runner-safe-github-actions">Is the GitHub Actions self-hosted runner safe for Open Source?</a></li>
 </ul>
 <p>Want to see a demo or talk to our team? <a href="https://forms.gle/8XmpTTWXbZwWkfqT6">Contact us here</a></p>
 <p>Just want to try it out instead? <a href="/pricing">Register your GitHub Organisation and set-up a subscription</a></p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Make your builds run faster with Caching for GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/caching-in-github-actions</link>
-            <guid>https://actuated.dev/blog/caching-in-github-actions</guid>
+            <link>https://actuated.com/blog/caching-in-github-actions</link>
+            <guid>https://actuated.com/blog/caching-in-github-actions</guid>
             <pubDate>Fri, 10 Feb 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how we made a Golang project build 4x faster using GitHub's built-in caching mechanism.]]></description>
             <content:encoded><![CDATA[<p>GitHub provides a <a href="https://github.com/actions/cache">cache action</a> that allows caching dependencies and build outputs to improve workflow execution time.</p>
@@ -3807,8 +3902,8 @@ jobs:
         </item>
         <item>
             <title><![CDATA[The efficient way to publish multi-arch containers from GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/multi-arch-docker-github-actions</link>
-            <guid>https://actuated.dev/blog/multi-arch-docker-github-actions</guid>
+            <link>https://actuated.com/blog/multi-arch-docker-github-actions</link>
+            <guid>https://actuated.com/blog/multi-arch-docker-github-actions</guid>
             <pubDate>Wed, 01 Feb 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how to publish container images for both Arm and Intel machines from GitHub Actions.]]></description>
             <content:encoded><![CDATA[<p>In 2017, I wrote an article on <a href="https://docs.docker.com/build/building/multi-stage/">multi-stage builds with Docker</a>, and it's now part of the Docker Documentation. In my opinion, multi-arch builds were the proceeding step in the evolution of container images.</p>
@@ -4028,13 +4123,13 @@ docker buildx build \
 <p>See also: <a href="https://github.com/openfaas/templates">OpenFaaS templates</a></p>
 <p><em>A word of caution</em></p>
 <p>QEMU can be incredibly slow at times when using a hosted runner, where a build takes takes 1-2 minutes can extend to over half an hour. If you do run into that, one option is to check out actuated or another solution, which can build directly on an Arm server with a securely isolated Virtual Machine.</p>
-<p>In <a href="https://actuated.dev/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a>, we showed how we decreased the build time of an open-source Go project from 30.5 mins to 1.5 mins. If this is the direction you go in, you can use a <a href="https://docs.actuated.dev/examples/matrix/">matrix-build</a> instead of a QEMU-based multi-arch build.</p>
-<p>See also: <a href="https://docs.actuated.dev/provision-server/#arm64-aka-aarch64">Recommended bare-metal Arm servers</a></p>]]></content:encoded>
+<p>In <a href="/blog/native-arm64-for-github-actions">How to make GitHub Actions 22x faster with bare-metal Arm</a>, we showed how we decreased the build time of an open-source Go project from 30.5 mins to 1.5 mins. If this is the direction you go in, you can use a <a href="https://docs.actuated.com/examples/matrix/">matrix-build</a> instead of a QEMU-based multi-arch build.</p>
+<p>See also: <a href="https://docs.actuated.com/provision-server/#arm64-aka-aarch64">Recommended bare-metal Arm servers</a></p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[How to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions]]></title>
-            <link>https://actuated.dev/blog/sbom-in-github-actions</link>
-            <guid>https://actuated.dev/blog/sbom-in-github-actions</guid>
+            <link>https://actuated.com/blog/sbom-in-github-actions</link>
+            <guid>https://actuated.com/blog/sbom-in-github-actions</guid>
             <pubDate>Wed, 25 Jan 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Learn how to add a Software Bill of Materials (SBOM) to your containers with GitHub Actions in a few easy steps.]]></description>
             <content:encoded><![CDATA[<h2 id="what-is-a-software-bill-of-materials-sbom">What is a Software Bill of Materials (SBOM)?</h2>
@@ -4241,8 +4336,8 @@ arkade get grype
         </item>
         <item>
             <title><![CDATA[Is the GitHub Actions self-hosted runner safe for Open Source?]]></title>
-            <link>https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions</link>
-            <guid>https://actuated.dev/blog/is-the-self-hosted-runner-safe-github-actions</guid>
+            <link>https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions</link>
+            <guid>https://actuated.com/blog/is-the-self-hosted-runner-safe-github-actions</guid>
             <pubDate>Fri, 20 Jan 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[GitHub warns against using self-hosted Actions runners for public repositories - but why? And are there alternatives?]]></description>
             <content:encoded><![CDATA[<p>First of all, why would someone working on an open source project need a self-hosted runner?</p>
@@ -4342,7 +4437,7 @@ The first customer for actuated, which I'll mention later in the article was a t
 </ul>
 <p>Need to test against a dozen different Kubernetes versions?</p>
 <p>Not a problem:</p>
-<p><img src="https://actuated.dev/images/k3sup.png" alt="Testing multiple Kubernetes versions"></p>
+<p><img src="https://actuated.com/images/k3sup.png" alt="Testing multiple Kubernetes versions"></p>
 <p>What about running the same on Arm servers?</p>
 <p>Just change <code>runs-on: actuated</code> to <code>runs-on: actuated-aarch64</code> and you're good to go. We test and maintain support for Docker and Kubernetes for both Intel and Arm CPU architectures.</p>
 <p>Do you need insights for your Open Source Program Office (OSPO) or for the Technical Steering Committee (TSC)?</p>
@@ -4357,17 +4452,17 @@ The first customer for actuated, which I'll mention later in the article was a t
 <p>And finally, what if your repositories are private? Well, we've made you aware of the trade-offs with a static self-hosted runner, or running builds within Kubernetes. It's up to you to decide what's best for your team, and your customers. Actuated works just as well with private repositories as it does with public ones.</p>
 <p>See microVMs launching in ~ 1s during a matrix build for testing a Custom Resource Definition (CRD) on different Kubernetes versions:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2o28iUC-J1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<p>Want to know how actuated works? <a href="https://docs.actuated.dev/faq/">Read the FAQ for more technical details</a>.</p>
+<p>Want to know how actuated works? <a href="https://docs.actuated.com/faq/">Read the FAQ for more technical details</a>.</p>
 <ul>
 <li><a href="/pricing">Find a server for your builds</a></li>
-<li><a href="https://docs.actuated.dev/provision-server/">Register for actuated</a></li>
+<li><a href="https://docs.actuated.com/provision-server/">Register for actuated</a></li>
 </ul>
 <p>Follow us on Twitter - <a href="https://twitter.com/selfactuated">selfactuated</a></p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[How to make GitHub Actions 22x faster with bare-metal Arm]]></title>
-            <link>https://actuated.dev/blog/native-arm64-for-github-actions</link>
-            <guid>https://actuated.dev/blog/native-arm64-for-github-actions</guid>
+            <link>https://actuated.com/blog/native-arm64-for-github-actions</link>
+            <guid>https://actuated.com/blog/native-arm64-for-github-actions</guid>
             <pubDate>Tue, 17 Jan 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[GitHub doesn't provide hosted Arm runners, so how can you use native Arm runners safely & securely?]]></description>
             <content:encoded><![CDATA[<p>GitHub Actions is a modern, fast and efficient way to build and test software, with free runners available. We use the free runners for various open source projects and are generally very pleased with them, after all, who can argue with good enough and free? But one of the main caveats is that GitHub's hosted runners don't yet support the Arm architecture.</p>
@@ -4494,18 +4589,18 @@ We want to build for Arm - Arm builds is what brought us to actuated</p>
 </ul>
 <p>Additional links:</p>
 <ul>
-<li><a href="https://docs.actuated.dev/">Actuated docs</a></li>
-<li><a href="https://docs.actuated.dev/faq">FAQ &#x26; comparison to other solutions</a></li>
+<li><a href="https://docs.actuated.com/">Actuated docs</a></li>
+<li><a href="https://docs.actuated.com/faq">FAQ &#x26; comparison to other solutions</a></li>
 <li><a href="https://twitter.com/selfactuated">Follow actuated on Twitter</a></li>
 </ul>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Blazing fast CI with MicroVMs]]></title>
-            <link>https://actuated.dev/blog/blazing-fast-ci-with-microvms</link>
-            <guid>https://actuated.dev/blog/blazing-fast-ci-with-microvms</guid>
+            <link>https://actuated.com/blog/blazing-fast-ci-with-microvms</link>
+            <guid>https://actuated.com/blog/blazing-fast-ci-with-microvms</guid>
             <pubDate>Thu, 10 Nov 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[I saw an opportunity to fix self-hosted runners for GitHub Actions. Actuated is now in pilot and aims to solve most if not all of the friction.]]></description>
-            <content:encoded><![CDATA[<p>Around 6-8 months ago I started exploring MicroVMs out of curiosity. Around the same time, I saw an opportunity to <strong>fix</strong> self-hosted runners for GitHub Actions. <a href="https://docs.actuated.dev/">Actuated</a> is now in pilot and aims to solve <a href="https://twitter.com/alexellisuk/status/1573599285362532353?s=20&#x26;t=dFcd54c4KIynk6vIGTb7QA">most if not all of the friction</a>.</p>
+            <content:encoded><![CDATA[<p>Around 6-8 months ago I started exploring MicroVMs out of curiosity. Around the same time, I saw an opportunity to <strong>fix</strong> self-hosted runners for GitHub Actions. <a href="https://docs.actuated.com/">Actuated</a> is now in pilot and aims to solve <a href="https://twitter.com/alexellisuk/status/1573599285362532353?s=20&#x26;t=dFcd54c4KIynk6vIGTb7QA">most if not all of the friction</a>.</p>
 <p>There's three parts to this post:</p>
 <ol>
 <li>A quick debrief on Firecracker and MicroVMs vs legacy solutions</li>
@@ -4591,14 +4686,14 @@ We want to build for Arm - Arm builds is what brought us to actuated</p>
 <p>There is a third option which is to use a non-root container, but that means you can't use <code>sudo</code> in your builds. You've now crippled your CI.</p>
 <p>What if you don't need to use Docker build/run, Kaniko or Kubernetes in CI at all? Well ARC may be a good solution for you, until the day you do need to ship a container image.</p>
 <h2 id="3-can-we-fix-it-yes-we-can">3) Can we fix it? Yes we can.</h2>
-<p><a href="https://docs.actuated.dev/">Actuated</a> ("cause (a machine or device) to operate.") is a semi-managed solution that we're building at OpenFaaS Ltd.</p>
-<p><img src="https://docs.actuated.dev/images/conceptual-high-level.png" alt="A semi-managed solution, where you provide hosts and we do the rest."></p>
+<p><a href="https://docs.actuated.com/">Actuated</a> ("cause (a machine or device) to operate.") is a semi-managed solution that we're building at OpenFaaS Ltd.</p>
+<p><img src="https://docs.actuated.com/images/conceptual-high-level.png" alt="A semi-managed solution, where you provide hosts and we do the rest."></p>
 <blockquote>
 <p>A semi-managed solution, where you provide hosts and we do the rest.</p>
 </blockquote>
 <p>You provide your own hosts to run jobs, we schedule to them and maintain a VM image with everything you need.</p>
 <p>You install our GitHub App, then change <code>runs-on: ubuntu-latest</code> to <code>runs-on: actuated</code> or <code>runs-on: actuated-aarch64</code> for ARM.</p>
-<p>Then, provision one or more VMs with nested virtualisation enabled on GCP, DigitalOcean or Azure, or a bare-metal host, and <a href="https://docs.actuated.dev/add-agent/">install our agent</a>. That's it.</p>
+<p>Then, provision one or more VMs with nested virtualisation enabled on GCP, DigitalOcean or Azure, or a bare-metal host, and <a href="https://docs.actuated.com/add-agent/">install our agent</a>. That's it.</p>
 <p>If you need ARM support for your project, the <a href="https://aws.amazon.com/ec2/instance-types/a1/">a1.metal from AWS</a> is ideal with 16 cores and 32GB RAM, or an <a href="https://amperecomputing.com/processors/ampere-altra/">Ampere Altra</a> machine like the c3.large.arm64 from <a href="https://metal.equinix.com/product/servers/c3-large-arm64/">Equinix Metal</a> with 80 Cores and 256GB RAM if you really need to push things. The 2020 M1 Mac Mini also works well with <a href="https://asahilinux.org/">Asahi Linux</a>, and can be maxed out at 16GB RAM / 8 Cores. <a href="https://twitter.com/alexellisuk/status/1585228202087415808?s=20&#x26;t=kW-cfn44pQTzUsRiMw32kQ">I even tried Frederic's Parca job on my Raspberry Pi</a> and it was 26m30s quicker than a hosted runner!</p>
 <p>Whenever a build is triggered by a repo in your organisation, the control plane will schedule a microVM on one of your own servers, then GitHub takes over from there. When the GitHub runner exits, we forcibly delete the VM.</p>
 <p>You get:</p>
@@ -4609,10 +4704,10 @@ We want to build for Arm - Arm builds is what brought us to actuated</p>
 <li>Docker preinstalled and running at boot-up</li>
 <li>Efficient scheduling and packing of builds to your fleet of hosts</li>
 </ul>
-<p>It's capable of running Docker and Kubernetes (KinD, kubeadm, K3s) with full isolation. You'll find some <a href="https://docs.actuated.dev/">examples in the docs</a>, but anything that works on a hosted runner we expect to work with actuated also.</p>
+<p>It's capable of running Docker and Kubernetes (KinD, kubeadm, K3s) with full isolation. You'll find some <a href="https://docs.actuated.com/">examples in the docs</a>, but anything that works on a hosted runner we expect to work with actuated also.</p>
 <p>Here's what it looks like:</p>
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2o28iUC-J1w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-<p>Want the deeply technical information and comparisons? <a href="https://docs.actuated.dev/faq/">Check out the FAQ</a></p>
+<p>Want the deeply technical information and comparisons? <a href="https://docs.actuated.com/faq/">Check out the FAQ</a></p>
 <p>You may also be interested in a debug experience that we're building for GitHub Actions. It can be used to launch a shell session over SSH with hosted and self-hosted runners: <a href="https://www.youtube.com/watch?v=l9VuQZ4a5pc">Debug GitHub Actions with SSH and launch a cloud shell</a></p>
 <h2 id="wrapping-up">Wrapping up</h2>
 <p>We're piloting actuated with customers today. If you're interested in faster, more isolated CI without compromising on security, we would like to hear from you.</p>
@@ -4626,7 +4721,7 @@ We want to build for Arm - Arm builds is what brought us to actuated</p>
 </blockquote>
 <p>Other links:</p>
 <ul>
-<li><a href="https://docs.actuated.dev/faq/">Read the FAQ</a></li>
+<li><a href="https://docs.actuated.com/faq/">Read the FAQ</a></li>
 <li><a href="https://www.youtube.com/watch?v=2o28iUC-J1w">Watch a short video demo</a></li>
 <li><a href="https://twitter.com/selfactuated">Follow actuated on Twitter</a></li>
 </ul>
