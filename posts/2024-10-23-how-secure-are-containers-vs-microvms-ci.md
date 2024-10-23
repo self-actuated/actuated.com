@@ -1,6 +1,6 @@
 ---
 title: How secure are containers & Kubernetes vs. microVMs for self-hosted CI?
-description: How secure are your self-hosted CI runners? We compare running CI jobs on VMs, containers, and Kubernetes against using dedicated, ephemeral microVMs.
+description: How secure are your self-hosted CI runners? We compare running CI jobs on VMs, containers, and Kubernetes versus one-shot, ephemeral microVMs.
 tags:
 - security
 - containers
