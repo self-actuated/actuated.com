@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 23 Oct 2024 11:31:56 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 23 Oct 2024 11:35:51 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -17,7 +17,7 @@
             <link>https://actuated.com/blog/how-secure-are-containers-vs-microvms-ci</link>
             <guid>https://actuated.com/blog/how-secure-are-containers-vs-microvms-ci</guid>
             <pubDate>Wed, 23 Oct 2024 00:00:00 GMT</pubDate>
-            <description><![CDATA[How secure are your self-hosted CI runners? We compare running CI jobs on VMs, containers, and Kubernetes against using dedicated, ephemeral microVMs.]]></description>
+            <description><![CDATA[How secure are your self-hosted CI runners? We compare running CI jobs on VMs, containers, and Kubernetes versus one-shot, ephemeral microVMs.]]></description>
             <content:encoded><![CDATA[<blockquote>
 <p>You've landed here because you're looking for a secure way to run self-hosted CI runners. Our solution isolates CI jobs in one-shot, ephemeral microVMs, but you might be wondering: Why microVMs? Why not just install a self-hosted runner on a VM or use Kubernetes?</p>
 </blockquote>
