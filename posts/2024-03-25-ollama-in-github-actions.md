@@ -10,6 +10,7 @@ tags:
 - openai
 - llama
 - machinelearning
+rollup: true
 author_img: alex
 image: /images/2024-04-ollama-in-ci/background.png
 date: "2024-04-25"

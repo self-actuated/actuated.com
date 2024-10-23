@@ -6,6 +6,7 @@ tags:
 - packer
 - qemu
 - kvm
+rollup: true
 author_img: patrick-stephens
 image: /images/2023-08-calyptia-casestudy/background.png
 date: "2023-08-11"

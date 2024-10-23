@@ -8,9 +8,10 @@ import TestimonialPrimary from '../components/testimonial-primary'
 import GitHubQuote from '../components/GitHubQuote'
 import BlogRollup from '../components/rollup'
 // import Subscribe from '../components/subscribe'
+import { getRollupPosts } from '../lib/posts';
 
 
-export default function Home() {
+export default function Home({ rollupPosts }) {
   return (
     <>
       <div>
@@ -109,7 +110,7 @@ export default function Home() {
 
       <Solutions></Solutions>
 
-      <BlogRollup></BlogRollup>
+      <BlogRollup posts={rollupPosts}></BlogRollup>
 
       <Testimonial></Testimonial>
 
@@ -122,5 +123,12 @@ export default function Home() {
   )
 }
 
+export async function getStaticProps() {  
+  return {
+    props: {
+      rollupPosts: getRollupPosts(6)
+    },
+  };
+}
 
 
