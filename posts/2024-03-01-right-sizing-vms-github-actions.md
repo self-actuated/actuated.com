@@ -37,12 +37,8 @@ Add to the top of your GitHub action:
 ```yaml
 
 steps:
-
 # vmmeter start
         - uses: alexellis/setup-arkade@master
-        - name: Install vmmeter
-          run: |
-            sudo -E arkade oci install ghcr.io/openfaasltd/vmmeter:latest --path /usr/local/bin/
         - uses: self-actuated/vmmeter-action@master
 # vmmeter end
 ```
@@ -88,6 +84,14 @@ Processes since boot: 18081
 Run time: 45s
 ```
 
+The above text will be added to each job's summary when using vmmeter, but you can disable the summary by setting `createSummary: false` in the action's inputs. The output will still be available in the logs of the action under the *post* step, click to expand it.
+
+```yaml
+- uses: self-actuated/vmmeter-action@master
+  with:
+    createSummary: false
+```
+
 The main thing to look for is the peak load on the system. This roughly corresponds to the amount of vCPUs used at peak. If the number is close to the amount you allocated, then try allocating more and measuring the effect in build time and peak usage.
 
 We've found that some jobs are RAM hungry, and others use a lot of CPU. So if you find that the RAM requested is much higher than the peak or average usage, the chances are that you can safely reduce it.
@@ -113,5 +117,30 @@ The source-code for the action is available here: [self-actuated/vmmeter-action]
 
 *What if you're not using GitHub Actions?*
 
-You can run vmmeter with bash on your own system, and may also able to use vmmeter in GitLab CI or Jenkins. We've got [manual instructions for vmmeter here](https://gist.github.com/alexellis/1f33e581c75e11e161fe613c46180771#running-vmmeter-inside-github-actions). You can even just start it up right now, do some work and then call the collect endpoint to see what was used over that period of time, a bit like a generic profiler.
+You can run vmmeter with bash on your own system, and may also able to use vmmeter in GitLab CI or Jenkins. You can even just start it up right now, do some work and then call the collect endpoint to see what was used over that period of time, a bit like a generic profiler.
+
+Here are the steps if you want to try out vmmeter on a different CI system like GitLab CI, Jenkins, or just as a standalone tool:
+
+### Running vmmeter outside of GitHub Actions
+
+Download arkade, then extract vmmeter from its OCI image:
+
+```bash
+curl https://get.arkade.dev | sudo sh
+sudo -E arkade oci install ghcr.io/openfaasltd/vmmeter:latest --path /usr/local/bin/
+```
+
+Start the vmmeter in the background, and check its logs to see that it started up:
+
+```bash
+/usr/local/bin/vmmeter &
+cat /tmp/vmmeter.log
+```
+
+At the end of the measurement period, make a HTTP request via curl to the collect the results, and to shutdown the tool:
+
+```bash
+port=$(cat /tmp/vmmeter.port)
+curl http://127.0.0.1:$port/collect
+```
 
