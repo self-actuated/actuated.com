@@ -35,7 +35,6 @@ This action will work with a Linux VM environment, so with a hosted runner or wi
 Add to the top of your GitHub action:
 
 ```yaml
-
 steps:
 # vmmeter start
         - uses: alexellis/setup-arkade@master
