@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 06 Nov 2024 10:49:50 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 06 Nov 2024 10:50:40 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -1096,8 +1096,7 @@ response_json = response.json()
 <h2 id="running-vmmeter-inside-github-actions">Running vmmeter inside GitHub Actions</h2>
 <p>This action will work with a Linux VM environment, so with a hosted runner or with actuated. It may not work when used within the <code>containers:</code> section of a workflow, or with a Kubernetes-based runner.</p>
 <p>Add to the top of your GitHub action:</p>
-<pre><code class="hljs language-yaml">
-<span class="hljs-attr">steps:</span>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">steps:</span>
 <span class="hljs-comment"># vmmeter start</span>
         <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">alexellis/setup-arkade@master</span>
         <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/vmmeter-action@master</span>
