@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 25 Oct 2024 11:13:48 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 06 Nov 2024 10:49:50 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -1098,13 +1098,9 @@ response_json = response.json()
 <p>Add to the top of your GitHub action:</p>
 <pre><code class="hljs language-yaml">
 <span class="hljs-attr">steps:</span>
-
 <span class="hljs-comment"># vmmeter start</span>
         <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">alexellis/setup-arkade@master</span>
-        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">vmmeter</span>
-          <span class="hljs-attr">run:</span> <span class="hljs-string">|
-            sudo -E arkade oci install ghcr.io/openfaasltd/vmmeter:latest --path /usr/local/bin/
-</span>        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/vmmeter-action@master</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/vmmeter-action@master</span>
 <span class="hljs-comment"># vmmeter end</span>
 </code></pre>
 <p>The first set installs arkade, which we then use to extract vmmeter from a container image to the host.</p>
@@ -1142,6 +1138,11 @@ Processes since boot: 18081
 
 Run time: 45s
 </code></pre>
+<p>The above text will be added to each job's summary when using vmmeter, but you can disable the summary by setting <code>createSummary: false</code> in the action's inputs. The output will still be available in the logs of the action under the <em>post</em> step, click to expand it.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">self-actuated/vmmeter-action@master</span>
+  <span class="hljs-attr">with:</span>
+    <span class="hljs-attr">createSummary:</span> <span class="hljs-literal">false</span>
+</code></pre>
 <p>The main thing to look for is the peak load on the system. This roughly corresponds to the amount of vCPUs used at peak. If the number is close to the amount you allocated, then try allocating more and measuring the effect in build time and peak usage.</p>
 <p>We've found that some jobs are RAM hungry, and others use a lot of CPU. So if you find that the RAM requested is much higher than the peak or average usage, the chances are that you can safely reduce it.</p>
 <p>Disk usage is self-explanatory, if you've allocated around 30GB per VM, and a job is getting close to that limit, it may need increasing to avoid future failures.</p>
@@ -1157,7 +1158,21 @@ Run time: 45s
 <li><a href="https://github.com/self-actuated/vmmeter-action/blob/master/post.js">post.js</a> communicates to vmmeter over a TCP port and tells it to dump its response to <code>/tmp/vmmeter.log</code>, then to exit</li>
 </ul>
 <p><em>What if you're not using GitHub Actions?</em></p>
-<p>You can run vmmeter with bash on your own system, and may also able to use vmmeter in GitLab CI or Jenkins. We've got <a href="https://gist.github.com/alexellis/1f33e581c75e11e161fe613c46180771#running-vmmeter-inside-github-actions">manual instructions for vmmeter here</a>. You can even just start it up right now, do some work and then call the collect endpoint to see what was used over that period of time, a bit like a generic profiler.</p>]]></content:encoded>
+<p>You can run vmmeter with bash on your own system, and may also able to use vmmeter in GitLab CI or Jenkins. You can even just start it up right now, do some work and then call the collect endpoint to see what was used over that period of time, a bit like a generic profiler.</p>
+<p>Here are the steps if you want to try out vmmeter on a different CI system like GitLab CI, Jenkins, or just as a standalone tool:</p>
+<h3 id="running-vmmeter-outside-of-github-actions">Running vmmeter outside of GitHub Actions</h3>
+<p>Download arkade, then extract vmmeter from its OCI image:</p>
+<pre><code class="hljs language-bash">curl https://get.arkade.dev | sudo sh
+sudo -E arkade oci install ghcr.io/openfaasltd/vmmeter:latest --path /usr/local/bin/
+</code></pre>
+<p>Start the vmmeter in the background, and check its logs to see that it started up:</p>
+<pre><code class="hljs language-bash">/usr/local/bin/vmmeter &#x26;
+<span class="hljs-built_in">cat</span> /tmp/vmmeter.log
+</code></pre>
+<p>At the end of the measurement period, make a HTTP request via curl to the collect the results, and to shutdown the tool:</p>
+<pre><code class="hljs language-bash">port=$(<span class="hljs-built_in">cat</span> /tmp/vmmeter.port)
+curl http://127.0.0.1:<span class="hljs-variable">$port</span>/collect
+</code></pre>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Testing the impact of a local cache for building Discourse]]></title>
