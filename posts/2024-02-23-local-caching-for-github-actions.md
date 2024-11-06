@@ -35,8 +35,7 @@ The `tespkg/actions-cache` supports the same properties as the actions cache and
 +  uses: tespkg/actions-cache@v1
    with:
 +    endpoint: "192.168.128.1"
-+    port: 8333
-+    insecure: true
++    port: 443
 +    accessKey: ${{ secrets.ACTIONS_CACHE_ACCESS_KEY }}
 +    secretKey: ${{ secrets.ACTIONS_CACHE_SECRET_KEY }}
 +    bucket: actuated-runners
