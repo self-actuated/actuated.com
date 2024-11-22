@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Wed, 06 Nov 2024 10:50:40 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 22 Nov 2024 20:51:46 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -1195,8 +1195,7 @@ curl http://127.0.0.1:<span class="hljs-variable">$port</span>/collect
 <span class="hljs-addition">+  uses: tespkg/actions-cache@v1</span>
    with:
 <span class="hljs-addition">+    endpoint: "192.168.128.1"</span>
-<span class="hljs-addition">+    port: 8333</span>
-<span class="hljs-addition">+    insecure: true</span>
+<span class="hljs-addition">+    port: 443</span>
 <span class="hljs-addition">+    accessKey: ${{ secrets.ACTIONS_CACHE_ACCESS_KEY }}</span>
 <span class="hljs-addition">+    secretKey: ${{ secrets.ACTIONS_CACHE_SECRET_KEY }}</span>
 <span class="hljs-addition">+    bucket: actuated-runners</span>
