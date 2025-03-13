@@ -2,36 +2,18 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 
 const includedFeatures = [
-  'Unlimited build minutes',
-  'Bring your own server',
-  'Onboarding call with our engineers',
+  'microVM isolation & security',
   'Linux x86_64 & Arm supported',
-  'Reporting and usage metrics',
-  'Debug tricky builds with SSH',
-  'Support via email',
-  'Shared Slack channel'
-]
-
-const premiumFeatures = [
-  'Multiple GitHub organisations',
-  'White-glove agent installation',
-  'Initial CI pipeline review via Zoom',
-  'Run our agent behind a firewall',
-  'Nested virtualisation x86_64'
-]
-
-const upgradedFeatures = [
-  'Unlimited advice for CI improvements',
-  'Server/agent maintenance',
-  'Private Prometheus metrics',
-  'Private Slack channel',
-  'Enhanced SLA',
+  'Managed base images with OTA updates',
+  'Detailed usage metrics and reports',
+  'Debug tricky builds via SSH',
+  'Nested virtualisation x86_64',
+  'Support via Slack/email'
 ]
 
 const earlyAccess = [
-  'Burst billing for spikes in usage',
   'GitLab CI (self-hosted)',
-  'GPU and PCIe support for builds',
+  'Access GPUs/PCI devices from jobs',
   'GitHub Enterprise Server (GHES)'
 ]
 
@@ -45,7 +27,7 @@ export default function Pricing({ posts }) {
                 Plans & Pricing
             </h1>
             <p className="max-w-l mt-5 mx-auto text-xl leading-7 text-gray-500">
-              Unlimited blazing fast builds with a month-by-month subscription.{' '}
+              Blazing fast builds without the management overheads.{' '}
             </p>
           </div>
         </div>
@@ -56,18 +38,16 @@ export default function Pricing({ posts }) {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
               <div className="p-8 sm:p-10 lg:flex-auto">
-                <h3 className="text-2xl font-bold tracking-tight text-gray-900">Simple, flat-rate pricing for GitHub Actions</h3>
+                <h3 className="text-2xl font-bold tracking-tight text-gray-900">Custom plans for GitHub Actions and GitLab CI</h3>
+
                 <p className="mt-6 text-base leading-7 text-gray-600">
-                  Actuated plans are based upon the total number of concurrent builds needed for your team. All plans include unmetered minutes, without additional charges.
+                  Everyone has different needs, so we'll come up with a custom plan based upon your usage and specific needs. Whether that's reducing management, increasing security, controlling costs, or speeding up builds.
                 </p>
                 <p className="mt-6 text-base leading-7 text-gray-600">
-                  For spikes in usage, the Burst Billing add-on means you only pay for extra concurrent builds on the days you need them.
-                </p>
-                <p className="mt-6 text-base leading-7 text-gray-600">
-                  The onboarding process is quick and easy: <a className='text-blue-500 underline' href="https://docs.actuated.com/register">learn more</a>.
+                  The setup process is quick and easy and you could be running builds within the same day that you reach out to us.
                 </p>
                 <div className="mt-6 flex items-center gap-x-4">
-                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">In the base tier</h4>
+                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">Included features</h4>
                   <div className="h-px flex-auto bg-gray-100" />
                 </div>
             
@@ -76,41 +56,6 @@ export default function Pricing({ posts }) {
                   className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
                 >
                   {includedFeatures.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-
-                <div className="mt-6 flex items-center gap-x-4">
-                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">With 10+ concurrent builds</h4>
-                  <div className="h-px flex-auto bg-gray-100" />
-                </div>
-            
-                <ul
-                  role="list"
-                  className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
-                >
-                  {premiumFeatures.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-6 flex items-center gap-x-4">
-                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">With 20+ concurrent builds</h4>
-                  <div className="h-px flex-auto bg-gray-100" />
-                </div>
-            
-                <ul
-                  role="list"
-                  className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
-                >
-                  {upgradedFeatures.map((feature) => (
                     <li key={feature} className="flex gap-x-3">
                       <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
                       {feature}
@@ -140,26 +85,15 @@ export default function Pricing({ posts }) {
               <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
                 <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
                   <div className="mx-auto max-w-xs px-8">
-                    <p className="text-base font-semibold text-gray-600">For up to 3x faster CI</p>
-                    <p className="mt-6 flex items-baseline justify-center gap-x-2">
-                      <span className="text-5xl font-bold tracking-tight text-gray-900">$100</span>
-                      <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">USD</span>
-                      <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600"> / concurrent build</span>
-                    </p>
-                    <a
-                      href="https://subscribe.openfaas.com/buy/6869822f-d5bd-40be-9b93-c45c25dcf2f1"
-                      className="mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      See the plans
-                    </a>
+                    <p className="text-base font-semibold text-gray-600">Find out if actuated is right for you</p>
                     <a
                       href="https://forms.gle/8XmpTTWXbZwWkfqT6"
-                      className="mt-10 block w-full rounded-md  px-3 py-2 text-center text-sm font-semibold bg-white px-4 py-3 text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8"
+                      className="mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Talk to us first
+                      Talk to us
                     </a>
                     <p className="mt-6 text-xs leading-5 text-gray-600">
-                      You'll meet with our engineers to understand your needs and answer your questions.
+                      No sales, just a quick chat with our engineers.
                     </p>
                   </div>
                 </div>
