@@ -29,14 +29,14 @@ export default function Home({ rollupPosts }) {
               </div>
               <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
                 <h1 className="text-center text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                  <span className="block text-white">Blazing fast GitHub Actions</span>
-                  <span className="block text-indigo-200">with fixed costs.</span>
+                  <span className="block text-white">Blazing fast CI</span>
+                  <span className="block text-indigo-200">without the management overheads.</span>
                 </h1>
                 <p className="mx-auto mt-6 max-w-lg text-center text-xl text-indigo-200 sm:max-w-3xl">
                   Standard hosted runners are slow and expensive, larger runners cost even more.
                   </p>
                 <p className="mx-auto mt-6 max-w-lg text-center text-xl text-indigo-200 sm:max-w-3xl">
-                  Actuated runs on your own infrastructure with flat-rate pricing, low management and secure isolation with Firecracker.
+                  Actuated runs on your own infrastructure with flexible pricing, low management and secure isolation with Firecracker.
                 </p>
                 <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                   <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
