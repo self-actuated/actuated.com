@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 13 Mar 2025 11:20:24 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 03 Jun 2025 10:02:37 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,97 @@
             <url>https://actuated.com/images/actuated.png</url>
             <link>https://actuated.com</link>
         </image>
+        <item>
+            <title><![CDATA[Egress Filtering for CI to mitigate data exfiltration]]></title>
+            <link>https://actuated.com/blog/egress-filtering</link>
+            <guid>https://actuated.com/blog/egress-filtering</guid>
+            <pubDate>Tue, 03 Jun 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Egress filtering is a security measure that restricts outbound traffic from your CI environment, preventing data exfiltration and ensuring that sensitive information remains secure.]]></description>
+            <content:encoded><![CDATA[<p>We take at how to implement egress filtering in a CI environment, without relying on a solution that runs within the job itself. This approach is particularly useful for preventing data exfiltration and ensuring that sensitive information remains secure.</p>
+<h2 id="introduction">Introduction</h2>
+<p>In a time where high-street names, large retailers and airlines are regularly experiencing global outages due to cyber attacks, organisations are asking themselves how they can better protect their data and systems.</p>
+<p>The rise of malware, cyber attacks, and ransomware are becoming a major concern for organizations - and rightly so. A single successful attack can lead to significant financial losses, reputational damage, and legal consequences. A notable <a href="https://www.bbc.co.uk/news/articles/c93llkg4n51o">example in the UK is the brand M&#x26;S</a>, which ii likely to suffer disruption to last until July and will cost £300m (approx 400m USD).</p>
+<p>It's not just big brands - malware is increasingly being included in the software supply chain such as <a href="https://www.akamai.com/blog/security-research/critical-linux-backdoor-xz-utils-discovered-what-to-know">the xz incident</a>, <a href="https://unit42.paloaltonetworks.com/malicious-packages-in-pypi/">malicious packages in PyPy</a>, and <a href="https://www.sonatype.com/blog/multiple-crypto-packages-hijacked-turned-into-info-stealers">npm</a>.</p>
+<p>Typically, we would consider a language like Go to be a safe choice, however it is also not immune and has been a target for data exfiltration attacks and <a href="https://thehackernews.com/2025/05/malicious-go-modules-deliver-disk.html">more recently disk wiping</a>.</p>
+<p>So what's the answer? There are many - from runtime security measure, to static analysis, to careful control over what software and base images are used within a job.</p>
+<p>But many of these measures rely on software executing within the job itself, which means that there is potential for the job to be compromised before the security measures are applied. This is where egress filtering with actuated comes in.</p>
+<h2 id="egress-filtering-with-actuated">Egress Filtering with Actuated</h2>
+<p>Actuated is a CI solution that provides a secure and ephemeral microVM for each job whether that's for GitHub.com or GitLab CI users.</p>
+<p>With a container-based CI solution, you may typically need to run a Kubernetes cluster, and then run a set of long-lived containers within that, which can be compromised over time by side-effects of previous job runs. You may consider using a tool like Istio to implement egress filtering, but it will often get in the way of your other workloads or control-plane components within the cluster.</p>
+<p>Not to mention the complexity of setting up and maintaining such a system, and the inherent risk of <a href="/posts/2024-10-23-how-secure-are-containers-vs-microvms-ci/">running containers as privileged or mounting a Docker socket</a>.</p>
+<p>The Actuated agent is a lightweight process that runs on a Linux host and is responsible for managing the lifecycle of the microVMs. It provides a secure environment for each job, ensuring that the job runs in isolation and cannot access any sensitive information or resources outside of its own environment.</p>
+<p><a href="https://docs.actuated.com/#watch-a-live-demo"><img src="https://docs.actuated.com/images/conceptual-high-level.png" alt=""></a></p>
+<blockquote>
+<p>The Actuated agent starts a microVM for each job, which is isolated from the host and other jobs. All network access has to go through a special Linux bridge.</p>
+</blockquote>
+<p>All network traffic from the microVM is routed through a network bridge, which means we can apply policies and control the traffic that is allowed to leave the microVM. This allows us to implement egress filtering without relying on software running within the job itself.</p>
+<p>Example of HTTPS filtering for an allowed domain:</p>
+<p><img src="/images/2025-06-egress/transparent-https.png" alt="Allowed"></p>
+<blockquote>
+<p>Pictured: HTTPS request is allowed to egress when it matches the whitelist, otherwise it is blocked. The agent also applies DNS filtering to prevent data exfiltration.</p>
+</blockquote>
+<p>For a domain that's not in the list:</p>
+<p><img src="/images/2025-06-egress/transparent-https.png" alt="Not allowed"></p>
+<blockquote>
+<p>Pictured: The request to a domain which is not on the whitelist is blocked by the agent, preventing the malware from accessing the remote endpoint.</p>
+</blockquote>
+<h3 id="the-whitelist">The whitelist</h3>
+<p>The most practical form of filtering bans all outgoing TCP and UDP traffic, then allows only a sub-set of whitelisted domains to be accessed, ideally without involving a costly enterprise-grade intercepting HTTPS proxy server such as <a href="https://umbrella.cisco.com/solutions/web-content-filtering">Cisco Umbrella</a> or <a href="https://www.zscaler.com/">Zscaler</a>.</p>
+<p>Egress filtering is not for the feint of heart, it requires careful consideration of the traffic that is allowed to leave the microVM - and a basic GitHub Actions job that only prints "Hello World" may genuinely need to access up to 10-20 different domains just to run and publish its built-in telemetry.</p>
+<p><img src="/images/2025-06-egress/egress.jpeg" alt="Audit-only mode"></p>
+<blockquote>
+<p>Pictured: a build that starts a K3s cluster, something which is not possible on Kubernetes without resorting to privileged containers or mounting the Docker socket.</p>
+</blockquote>
+<p>A practical whitelist may look like this for a very minimal build:</p>
+<p><em><code>/etc/actuated-egress/whitelist.yaml</code></em></p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">allowed_domains:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">api.github.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">gitlab.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">github.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">google.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">archive.ubuntu.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">security.ubuntu.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">'*.actions.githubusercontent.com'</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">checkip.amazonaws.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">'*.blob.core.windows.net'</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">raw.githubusercontent.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">codeload.github.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">objects.githubusercontent.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">deb.nodesource.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">download.docker.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">trafficmanager.net</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">a2z.com</span>
+<span class="hljs-comment"># Custom entries for our usage</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">get.arkade.dev</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">openfaas-live.actuated.dev</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">"*.o6s.io"</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">"*.openfaas.com"</span> 
+</code></pre>
+<p>To build the list, you can set actuated to run in audit-only mode.</p>
+<p><em><code>/etc/default/actuated-egress</code></em></p>
+<pre><code>AUDIT_MODE="true"
+COREFILE="/etc/coredns/Corefile"
+WHITELIST="/etc/actuated-egress/whitelist.yaml"
+LOGS_PATH="/var/log/actuated-egress"
+</code></pre>
+<p>Instead of blocking traffic not present within the whitelist, it will log the domains accessed to a file in: <code>/var/log/actuated-egress</code>.</p>
+<p>You can then run a well-known job, gather the list of domains, assess them one-by-one and add any required.</p>
+<p>Then flip the <code>AUDIT_MODE</code> to <code>false</code> and restart the agent - at this point, you can try to run the job again to see if it works as expected.</p>
+<h3 id="8020-principle">80/20 principle</h3>
+<p>Whilst you could purchase a costly web-filtering solution such as the ones mentioned above to look at layer 7 traffic - this requires that every process in the job is proxy-aware, and can be configured to use a HTTP proxy. That's not often the case with Linux-based software, and it is a serious pain to configure.</p>
+<p>Instead, we can rely on actuated's transparent HTTPS proxying and DNS filtering to provide a solid level of protection against data exfiltration, without overwhelming the user with configuration.</p>
+<p>First, all traffic outgoing from the VM is blocked and denied by default.</p>
+<p>Then, all traffic to port 80 and 443 is transparently redirected to actuated's agent, which applies the whitelist we've already explored.</p>
+<p>Next, ICMP, UDP and other non-TCP traffic is blocked by default, and then DNS traffic is again, re-routed to actuated's agent, which applies the same whitelist to the DNS queries.</p>
+<p>This means, that if an npm package, PiPy package, or Go module tries to access a domain that is not on the whitelist to exfiltrate a credential or source code, it will be blocked by the agent.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>When you combine a ephemeral microVM with egress filtering, you can create a secure CI environment that is resistant to many kinds of data exfiltration and malware attacks.</p>
+<p>Unlike with containers and Kubernetes, the one-shot microVMs used by actuated have their own guest Kernel so they can run Docker, Kubernetes, even custom Kernel modules without any risk to the host or other jobs.</p>
+<p>Then a default deny for all outgoing network traffic, combined with restrictive whitelisting of domains applies the 80/20 principle to egress filtering, allowing you to run jobs without needing to configure a complex proxy or web-filtering solution.</p>
+<p>If you'd like to talk to us or find out more: <a href="https://actuated.com/pricing">contact us here</a>.</p>
+<p>You can watch a demo below of the filtering in action:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/L1iOmwquNVg?si=H9xxBe6mvC5F5V1Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[How secure are containers & Kubernetes vs. microVMs for self-hosted CI?]]></title>
             <link>https://actuated.com/blog/how-secure-are-containers-vs-microvms-ci</link>
