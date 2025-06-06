@@ -1,5 +1,6 @@
 
 import { CheckIcon } from '@heroicons/react/20/solid'
+import PriceCalculator from '../../components/PriceCalculator'
 
 const includedFeatures = [
   'microVM isolation & security',
@@ -36,6 +37,7 @@ export default function Pricing({ posts }) {
     <ul className="container max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8 min-height-500">
         <div className="bg-white">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <PriceCalculator />
             <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
               <div className="p-8 sm:p-10 lg:flex-auto">
                 <h3 className="text-2xl font-bold tracking-tight text-gray-900">Custom plans for GitHub Actions and GitLab CI</h3>
@@ -103,6 +105,7 @@ export default function Pricing({ posts }) {
         </div>
       
       </ul>
+
     </>
   );
 }
