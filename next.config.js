@@ -15,5 +15,7 @@ module.exports = (phase) => {
   return {
     env,
     reactStrictMode: true,
+    output: 'export', // This tells Next.js to produce a static HTML export
+    distDir: 'build',
   }
 }
