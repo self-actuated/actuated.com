@@ -252,6 +252,8 @@ function GitHubLogo() {
 }
 
 function PricingSummary({ summary }) {
+  const dailyPrice = (summary.price / 30).toFixed(2);
+
   return (
     <div className="rounded-2xl bg-gray-50 py-6 px-6 ring-1 ring-inset ring-gray-900/5">
       <div className="max-w-xs">
@@ -284,6 +286,9 @@ function PricingSummary({ summary }) {
               {" "}
               / month
             </span>
+          </p>
+          <p className="mt-1 text-sm text-gray-500">
+            ${dailyPrice} USD / day
           </p>
           {summary.costPerMinute > 0 && (
             <p className="mt-2 text-xs text-gray-500">
