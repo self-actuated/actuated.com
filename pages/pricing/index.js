@@ -1,4 +1,3 @@
-
 import { CheckIcon } from '@heroicons/react/20/solid'
 import PriceCalculator from '../../components/PriceCalculator'
 
@@ -105,6 +104,19 @@ export default function Pricing({ posts }) {
         </div>
       
       </ul>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <h4 className="text-2xl font-bold tracking-tight text-gray-900">Find out if Actuated is right for you</h4>
+        <p className="mt-2 text-lg text-gray-600">No sales, just a quick chat with our engineers.</p>
+        <div className="mt-6">
+          <a
+            href="https://forms.gle/8XmpTTWXbZwWkfqT6"
+            className="inline-block rounded-md bg-indigo-600 px-8 py-3 text-center text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Talk to us
+          </a>
+        </div>
+      </div>
 
     </>
   );
