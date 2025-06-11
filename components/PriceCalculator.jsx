@@ -145,37 +145,37 @@ const plans = [
     name: "Basic",
     description: "Small team (5-10)",
     concurrency: "5x",
-    price: 500,
+    price: 5*50,
   },
   {
     name: "Pro",
     description: "Growing team (10-15)",
     concurrency: "10x",
-    price: 1000,
+    price: 10*50,
   },
   {
     name: "Pro Plus",
     description: "Medium team (15-20)",
     concurrency: "15x",
-    price: 1500,
+    price: 15*50,
   },
   {
     name: "Team",
     description: "Large team (20-30)",
     concurrency: "20x",
-    price: 2000,
+    price: 20*50,
   },
   {
     name: "Team Plus",
     description: "Expanding team (30-50)",
     concurrency: "35x",
-    price: 2500,
+    price: 35*50,
   },
   {
-    name: "Turbo Plan",
-    description: "Enterprise team (50+)",
+    name: "Enterprise",
+    description: "Enterprise organsiation (50+)",
     concurrency: "50x",
-    price: 3500,
+    price: 50*50,
   },
 ];
 
@@ -372,7 +372,7 @@ function Calculator({ onChange }) {
     jobs: 100,
     minutes: 50,
     costPerMinute: 0,
-    price: 500,
+    price: 5*50,
   });
 
   useEffect(() => {
