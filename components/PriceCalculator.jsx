@@ -287,9 +287,7 @@ function PricingSummary({ summary }) {
               / month
             </span>
           </p>
-          <p className="mt-1 text-sm text-gray-500">
-            ${dailyPrice} USD / day
-          </p>
+          <p className="mt-1 text-sm text-gray-500">${dailyPrice} USD / day</p>
           {summary.costPerMinute > 0 && (
             <p className="mt-2 text-xs text-gray-500">
               or <span className="font-bold">{summary.costPerMinute}</span> USD
@@ -483,11 +481,17 @@ function Calculator({ onChange }) {
             </div>
             <p className="text-sm text-gray-500 mt-4 max-w-lg">
               Get a report on your current usage using{" "}
-              <a href="https://github.com/self-actuated/actions-usage" className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2">
+              <a
+                href="https://github.com/self-actuated/actions-usage"
+                className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
+              >
                 our free tool
               </a>{" "}
               or view the metrics for your Organization{" "}
-              <a href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/viewing-github-actions-metrics-for-your-organization" className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2">
+              <a
+                href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/viewing-github-actions-metrics-for-your-organization"
+                className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
+              >
                 on GitHub
               </a>
             </p>
@@ -534,19 +538,6 @@ function PriceCalculator() {
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <PricingCard
-              title="GitHub Actions hosted runners"
-              prices={runnerPricing.map((price) => {
-                return {
-                  runnerSize: price.runnerSize,
-                  costPerMinute: price.github.costPerMinute,
-                  costPerMonth: price.github.costPerMonth,
-                };
-              })}
-              logo={<GitHubLogo />}
-            />
-          </div>
-          <div className="flex-1">
-            <PricingCard
               title="Self-hosted with actuated"
               borderStyle="highlight"
               prices={runnerPricing.map((price) => {
@@ -558,6 +549,19 @@ function PriceCalculator() {
                 };
               })}
               logo={<ActuatedLogo />}
+            />
+          </div>
+          <div className="flex-1">
+            <PricingCard
+              title="GitHub Actions hosted runners"
+              prices={runnerPricing.map((price) => {
+                return {
+                  runnerSize: price.runnerSize,
+                  costPerMinute: price.github.costPerMinute,
+                  costPerMonth: price.github.costPerMonth,
+                };
+              })}
+              logo={<GitHubLogo />}
             />
           </div>
         </div>
