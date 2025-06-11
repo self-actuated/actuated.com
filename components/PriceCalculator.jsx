@@ -149,25 +149,25 @@ const plans = [
   },
   {
     name: "Pro",
-    description: "Growing team (10-15)",
+    description: "Average team (10-20)",
     concurrency: "10x",
     price: 10*50,
   },
   {
     name: "Pro Plus",
-    description: "Medium team (15-20)",
+    description: "Average+ team (20-30)",
     concurrency: "15x",
     price: 15*50,
   },
   {
     name: "Team",
-    description: "Large team (20-30)",
+    description: "Scale-up (30-40)",
     concurrency: "20x",
     price: 20*50,
   },
   {
     name: "Team Plus",
-    description: "Expanding team (30-50)",
+    description: "Expanding team (40+)",
     concurrency: "35x",
     price: 35*50,
   },
@@ -270,10 +270,15 @@ function PricingSummary({ summary }) {
             <li className="text-sm text-gray-600">
               {summary.plan.concurrency} concurrent jobs
             </li>
-            <li className="text-sm text-gray-600">Unlimited minutes</li>
+            <li className="text-sm text-gray-600">Unmetered build minutes</li>
+            <li className="text-sm text-gray-600">Organisation, repo, & user metrics</li>
+            <li className="text-sm text-gray-600">Detailed job profiling</li>
+            <li className="text-sm text-gray-600">Debug jobs via SSH</li>
+            <li className="text-sm text-gray-600">Support &amp; advice via Slack</li>
+
           </ul>
         </div>
-        <div className="mt-6 border-t border-gray-200 pt-4">
+        <div className="mt-3 border-t border-gray-200 pt-3">
           <p className="text-sm font-medium text-gray-900">Total</p>
           <p className="mt-2 flex items-baseline gap-x-2">
             <span className="text-3xl font-bold tracking-tight text-gray-900">
@@ -479,20 +484,20 @@ function Calculator({ onChange }) {
                 />
               </div>
             </div>
-            <p className="text-sm text-gray-500 mt-4 max-w-lg">
-              Get a report on your current usage using{" "}
+            <p className="text-sm text-gray-500 mt-4 pt-4 max-w-lg">
+              Get a detailed report of your total usage with {" "}
               <a
                 href="https://github.com/self-actuated/actions-usage"
                 className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
               >
-                our free tool
+                our free actions-usage tool
               </a>{" "}
-              or view the metrics for your Organization{" "}
+              or view only paid minutes for {" "}
               <a
                 href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/viewing-github-actions-metrics-for-your-organization"
                 className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
               >
-                on GitHub
+                your organisation on GitHub
               </a>
             </p>
           </div>
