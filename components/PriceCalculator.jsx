@@ -172,8 +172,8 @@ const plans = [
     price: 35*50,
   },
   {
-    name: "Enterprise",
-    description: "Enterprise organsiation (50+)",
+    name: "Multi Team",
+    description: "Large organisation (50+)",
     concurrency: "50x",
     price: 50*50,
   },
