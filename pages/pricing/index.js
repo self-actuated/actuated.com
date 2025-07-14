@@ -1,14 +1,16 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import PriceCalculator from '../../components/PriceCalculator'
 
-const includedFeatures = [
-  'microVM isolation & security',
+const basePlatformFeatures = [
+  'Fully managed control-plane, just add servers',
+  'Expert support via Slack 9-5pm UTC',
+  'Fast microVM isolation & security with Firecracker',
+  'Minimal permissions needed for GitHub\'s API with no access to code',
   'Linux x86_64 & Arm supported',
-  'Managed base images with OTA updates',
-  'Detailed usage metrics and reports',
-  'Debug tricky builds via SSH',
-  'Nested virtualisation x86_64',
-  'Support via Slack/email'
+  'Managed base images with Over The Air (OTA) updates',
+  'Detailed usage metrics and reports across your organizations',
+  'Nested virtualisation for x86_64',
+  'Mount GPUs for jobs',
 ]
 
 const earlyAccess = [
@@ -39,65 +41,24 @@ export default function Pricing({ posts }) {
           <PriceCalculator />
             <div className="mx-auto mt-16 max-w-2xl rounded-xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
               <div className="p-8 sm:p-10 lg:flex-auto">
-                <h3 className="text-2xl font-bold tracking-tight text-gray-900">Custom plans for GitHub Actions and GitLab CI</h3>
+                <h3 className="text-2xl font-bold tracking-tight text-gray-900">Low-management CI/CD for GitHub Actions and GitLab CI</h3>
 
-                <p className="mt-6 text-base leading-7 text-gray-600">
-                  Everyone has different needs, so we'll come up with a custom plan based upon your usage and specific needs. Whether that's reducing management, increasing security, controlling costs, or speeding up builds.
-                </p>
-                <p className="mt-6 text-base leading-7 text-gray-600">
-                  The onboarding process is quick and easy: <a className='text-blue-500 underline' href="https://docs.actuated.com/register">learn more</a>.
-                </p>
-                {/* <div className="mt-6 flex items-center gap-x-4">
-                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">In the base tier</h4>
-                  <div className="h-px flex-auto bg-gray-100" />
-                </div> */}
-            
-                <ul
-                  role="list"
-                  className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
-                >
-                  {includedFeatures.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                  <p className="mt-6 text-base leading-7 text-gray-600">
+                  The ultimate in security and isolation with no need to manage access tokens, bot users, Helm charts, or Kubernetes clusters.
+                  </p>
 
-                {/* <div className="mt-6 flex items-center gap-x-4">
-                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">With higher concurrency</h4>
-                  <div className="h-px flex-auto bg-gray-100" />
-                </div>
-            
-                <ul
-                  role="list"
-                  className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
-                >
-                  {upgradedFeatures.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                  <ul
+                    role="list"
+                    className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
+                  >
 
-
-                <div className="mt-6 flex items-center gap-x-4">
-                  <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">Early access</h4>
-                  <div className="h-px flex-auto bg-gray-100" />
-                </div>
-
-                <ul
-                  role="list"
-                  className="mt-4 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-2"
-                >
-                  {earlyAccess.map((feature) => (
-                    <li key={feature} className="flex gap-x-3">
-                      <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul> */}
+                    {basePlatformFeatures.map((feature) => (
+                      <li key={feature} className="flex gap-x-3">
+                        <CheckIcon className="h-6 w-5 flex-none text-indigo-600" aria-hidden="true" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
               </div>
             </div>
           </div>
@@ -114,6 +75,10 @@ export default function Pricing({ posts }) {
             className="inline-block rounded-md bg-indigo-600 px-8 py-3 text-center text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Talk to us
+          </a>
+          <span className="pr-4"></span>
+          <a href="https://docs.actuated.com/faq/" className="inline-block text-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8">
+            Read the FAQ
           </a>
         </div>
       </div>

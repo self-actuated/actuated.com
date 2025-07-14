@@ -146,36 +146,68 @@ const plans = [
     description: "Small team (5-10)",
     concurrency: "5x",
     price: 5*50,
+    serverLimit: 1,
+    orgLimit: 1,
   },
   {
     name: "Pro",
     description: "Average team (10-20)",
     concurrency: "10x",
     price: 10*50,
+    serverLimit: 2,
+    orgLimit: 2,
   },
   {
     name: "Pro Plus",
     description: "Average+ team (20-30)",
     concurrency: "15x",
     price: 15*50,
+    serverLimit: 3,
+    orgLimit: 2,
   },
   {
     name: "Team",
     description: "Scale-up (30-40)",
     concurrency: "20x",
     price: 20*50,
+    serverLimit:  4,
+    orgLimit: 3,
   },
   {
     name: "Team Plus",
     description: "Expanding team (40+)",
     concurrency: "35x",
     price: 35*50,
+      serverLimit: 5,
+    orgLimit: 5,
   },
   {
     name: "Multi Team",
     description: "Large organisation (50+)",
     concurrency: "50x",
     price: 50*50,
+    serverLimit: 10,
+    orgLimit: 10,
+  },
+  {
+    name: "Enterprise",
+    description: "Built for central IT / DevOps teams",
+    concurrency: "Custom",
+    price: 0, // Custom pricing
+    serverLimit: "Unlimited",
+    orgLimit: "Unlimited",
+    isEnterprise: true,
+    enterpriseFeatures: [
+      "Low management, self-service onboarding for internal teams",
+      "Gain visibility and control over all CI/CD jobs",
+      "Egress filtering for HTTPS and DNS",
+      "Private peering for agents",
+      "Fine-grained access GitHub API",
+      "Support via email & Slack"
+    ],
+    enterpriseOptional: [
+      "Dedicated Actuated control-plane",
+    ],
   },
 ];
 
@@ -252,7 +284,7 @@ function GitHubLogo() {
 }
 
 function PricingSummary({ summary }) {
-  const dailyPrice = (summary.price / 30).toFixed(2);
+  const dailyPrice = summary.plan.isEnterprise ? 0 : (summary.price / 30).toFixed(2);
 
   return (
     <div className="rounded-2xl bg-gray-50 py-6 px-6 ring-1 ring-inset ring-gray-900/5">
@@ -267,33 +299,73 @@ function PricingSummary({ summary }) {
                 {summary.plan.description}
               </li>
             )}
-            <li className="text-sm text-gray-600">
-              {summary.plan.concurrency} concurrent jobs
-            </li>
-            <li className="text-sm text-gray-600">Unmetered build minutes</li>
-            <li className="text-sm text-gray-600">Organisation, repo, & user metrics</li>
-            <li className="text-sm text-gray-600">Detailed job profiling</li>
-            <li className="text-sm text-gray-600">Debug jobs via SSH</li>
-            <li className="text-sm text-gray-600">Support &amp; advice via Slack</li>
-
+            {!summary.plan.isEnterprise && (
+              <>
+                <li className="text-sm text-gray-600">
+                  {summary.plan.concurrency} concurrent jobs
+                </li>
+                <li className="text-sm text-gray-600">Unmetered build minutes</li>
+                <li className="text-sm text-gray-600">Add up to {summary.servers} VM host(s)</li>
+                {summary.plan.orgLimit == 1 && <li className="text-sm text-gray-600">Single GitHub organization</li>}
+                {summary.plan.orgLimit >1 && <li className="text-sm text-gray-600">GitHub organizations: {summary.plan.orgLimit}</li>}
+                <li className="text-sm text-gray-600">Reports across organisation, repos, & users</li>
+                <li className="text-sm text-gray-600">Debug jobs via SSH</li>
+                <li className="text-sm text-gray-600">Expert support via Slack</li>
+              </>
+            )}
+            {summary.plan.isEnterprise && summary.plan.enterpriseFeatures && (
+              <>
+                {summary.plan.enterpriseFeatures.map((feature, index) => (
+                  <li key={index} className="text-sm text-gray-600 font-medium">
+                    {feature}
+                  </li>
+                ))}
+              </>
+            )}
           </ul>
+            
+          {summary.plan.isEnterprise && summary.plan.enterpriseOptional && (
+            <>
+            <p className="text-sm text-gray-600 mt-4 mb-2">Additional options</p>
+
+            <ul className="list-disc pl-5 space-y-2">
+              {summary.plan.enterpriseOptional.map((feature, index) => (
+                <li key={index} className="text-sm text-gray-600 font-medium">
+                  {feature}
+                </li>
+              ))}
+              </ul>
+            </>
+          )}
+
         </div>
         <div className="mt-3 border-t border-gray-200 pt-3">
           <p className="text-sm font-medium text-gray-900">Total</p>
-          <p className="mt-2 flex items-baseline gap-x-2">
-            <span className="text-3xl font-bold tracking-tight text-gray-900">
-              ${summary.price}
-            </span>
-            <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
-              USD
-            </span>
-            <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
-              {" "}
-              / month
-            </span>
-          </p>
-          <p className="mt-1 text-sm text-gray-500">${dailyPrice} USD / day</p>
-          {summary.costPerMinute > 0 && (
+          {summary.plan.isEnterprise ? (
+            <div className="mt-2">
+              <p className="text-2xl font-bold tracking-tight text-gray-900">
+                Custom pricing
+              </p>
+              <p className="text-sm text-gray-600">Paid annually</p>
+            </div>
+          ) : (
+            <>
+              <p className="mt-2 flex items-baseline gap-x-2">
+                <span className="text-3xl font-bold tracking-tight text-gray-900">
+                  ${summary.price}
+                </span>
+                <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
+                  USD
+                </span>
+                <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
+                  {" "}
+                  / month
+                </span>
+              </p>
+              <p className="mt-1 text-sm text-gray-500">${dailyPrice} USD / day</p>
+            </>
+          )}
+          {summary.costPerMinute > 0 && !summary.plan.isEnterprise && (
             <p className="mt-2 text-xs text-gray-500">
               or <span className="font-bold">{summary.costPerMinute}</span> USD
               per minute for your current usage
@@ -374,6 +446,8 @@ function Calculator({ onChange }) {
 
   const [summary, setSummary] = useState({
     plan: selectedPlan,
+    orgLimit: 1,
+    servers: 1,
     jobs: 100,
     minutes: 50,
     costPerMinute: 0,
@@ -383,11 +457,13 @@ function Calculator({ onChange }) {
   useEffect(() => {
     let costPerMinute = 0;
 
-    if (jobs && jobs != 0 && minutes && minutes != 0) {
+    if (jobs && jobs != 0 && minutes && minutes != 0 && !selectedPlan.isEnterprise) {
       costPerMinute = (selectedPlan.price / (jobs * minutes)).toFixed(3);
     }
 
     setSummary({
+      orgLimit: selectedPlan.orgLimit,
+      servers: selectedPlan.serverLimit,
       plan: selectedPlan,
       jobs: jobs,
       minutes: minutes,
@@ -399,11 +475,13 @@ function Calculator({ onChange }) {
   useEffect(() => {
     let costPerMinute = 0;
 
-    if (minutesTotal != 0) {
+    if (minutesTotal != 0 && !selectedPlan.isEnterprise) {
       costPerMinute = (selectedPlan.price / minutesTotal).toFixed(3);
     }
 
     setSummary({
+      orgLimit: selectedPlan.orgLimit,
+      servers: selectedPlan.serverLimit,
       plan: selectedPlan,
       jobs: jobs,
       minutes: minutes,
@@ -431,76 +509,81 @@ function Calculator({ onChange }) {
       <div className="flex flex-col lg:flex-row gap-4 justify-between">
         <div className="lg:max-w-xl">
           <h3 className="text-xl font-semibold tracking-tight text-gray-900">
-            Pricing comparison
+            {selectedPlan.isEnterprise ? "Enterprise Plan" : "Pricing comparison"}
           </h3>
           <p className="mt-1 text-base leading-7 text-gray-600">
-            Compare actuated pricing with GitHub Actions.
+            {selectedPlan.isEnterprise 
+              ? "Enterprise-grade security and scalability with custom pricing."
+              : "Compare actuated pricing with GitHub Actions."
+            }
           </p>
           <div className="mt-4 pb-2 border-b border-gray-100">
             <PlanSelection plans={plans} onSelect={setSelectedPlan} />
           </div>
 
-          <div className="mt-4 space-y-3">
-            <div>
-              <div className="max-w-xs">
-                <Input
-                  id="minutes-total"
-                  label="Build minutes per month"
-                  trailingAddon="min"
-                  value={minutesTotal}
-                  onChange={setMinutesTotal}
-                  disabled={jobs && minutes}
-                />
+          {!selectedPlan.isEnterprise && (
+            <div className="mt-4 space-y-3">
+              <div>
+                <div className="max-w-xs">
+                  <Input
+                    id="minutes-total"
+                    label="Build minutes per month"
+                    trailingAddon="min"
+                    value={minutesTotal}
+                    onChange={setMinutesTotal}
+                    disabled={jobs && minutes}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="relative">
-              <div
-                className="absolute inset-0 flex items-center"
-                aria-hidden="true"
-              >
-                <div className="w-full border-t border-gray-200" />
+              <div className="relative">
+                <div
+                  className="absolute inset-0 flex items-center"
+                  aria-hidden="true"
+                >
+                  <div className="w-full border-t border-gray-200" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-white px-2 text-sm text-gray-500">or</span>
+                </div>
               </div>
-              <div className="relative flex justify-center">
-                <span className="bg-white px-2 text-sm text-gray-500">or</span>
-              </div>
-            </div>
 
-            <div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Input
-                  id="job-num"
-                  label="Number of jobs"
-                  trailingAddon="/month"
-                  value={jobs}
-                  onChange={setJobs}
-                />
-                <Input
-                  id="job-duration"
-                  label="Average job duration"
-                  trailingAddon="min"
-                  value={minutes}
-                  onChange={setMinutes}
-                />
+              <div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Input
+                    id="job-num"
+                    label="Number of jobs"
+                    trailingAddon="/month"
+                    value={jobs}
+                    onChange={setJobs}
+                  />
+                  <Input
+                    id="job-duration"
+                    label="Average job duration"
+                    trailingAddon="min"
+                    value={minutes}
+                    onChange={setMinutes}
+                  />
+                </div>
               </div>
+              <p className="text-sm text-gray-500 mt-4 pt-4 max-w-lg">
+                Get a detailed report of your total usage with {" "}
+                <a
+                  href="https://github.com/self-actuated/actions-usage"
+                  className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
+                >
+                  our free actions-usage tool
+                </a>{" "}
+                or view only paid minutes for {" "}
+                <a
+                  href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/viewing-github-actions-metrics-for-your-organization"
+                  className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
+                >
+                  your organisation on GitHub
+                </a>
+              </p>
             </div>
-            <p className="text-sm text-gray-500 mt-4 pt-4 max-w-lg">
-              Get a detailed report of your total usage with {" "}
-              <a
-                href="https://github.com/self-actuated/actions-usage"
-                className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
-              >
-                our free actions-usage tool
-              </a>{" "}
-              or view only paid minutes for {" "}
-              <a
-                href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/viewing-github-actions-metrics-for-your-organization"
-                className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
-              >
-                your organisation on GitHub
-              </a>
-            </p>
-          </div>
+          )}
         </div>
         <div className="mt-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0 flex-1">
           <PricingSummary summary={summary} />
@@ -529,17 +612,19 @@ function PriceCalculator() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    if (data && data.minutesTotal != 0) {
+    if (data && data.minutesTotal != 0 && !data.plan.isEnterprise) {
       setRunnerPrices(
         calculateRunnerPricing(data.minutesTotal, data.plan.price)
       );
+    } else {
+      setRunnerPrices(null);
     }
   }, [data]);
 
   return (
     <div>
       <Calculator onChange={setData} />
-      {runnerPricing && (
+      {runnerPricing && !data?.plan?.isEnterprise && (
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <PricingCard

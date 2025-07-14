@@ -75,24 +75,6 @@ export default function Solutions() {
                 </dd>
               </div>
 
-
-
-
-
-{/* 
-              <div className="relative pl-16">
-                <dt className="text-base font-semibold leading-7 text-gray-900 text-lg">
-                  <div className="absolute top-0 left-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <CommandLineIcon className="h-6 w-6 text-white" aria-hidden="true" />
-                  </div>
-                  Debug live over SSH
-                </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">
-                <p className="mb-2">We heard from many teams that they missed CircleCI's "debug this job" button, <a href="https://docs.actuated.com/tasks/debug-ssh/" className='text-blue-500 underline'>so we built it for you.</a></p>
-                  <p>We realise you won't debug your jobs on a regular basis, but when you are stuck, and have to wait 15-20 minutes to get to the line you've changed in a job, debugging with a terminal can save you hours.</p>
-                  <p className="mt-2"><i>"How cool!!! you don't know how many hours I have lost on GitHub Actions without this." - Ivan Subotic, Swiss National Data and Service Center (DaSCH)</i></p>
-                </dd>
-              </div> */}
           </dl>
         </div>
 
