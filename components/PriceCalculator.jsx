@@ -148,6 +148,7 @@ const plans = [
     price: 5*50,
     serverLimit: 1,
     orgLimit: 1,
+    prometheus: false,
   },
   {
     name: "Pro",
@@ -156,6 +157,7 @@ const plans = [
     price: 10*50,
     serverLimit: 2,
     orgLimit: 2,
+    prometheus: true,
   },
   {
     name: "Pro Plus",
@@ -164,6 +166,7 @@ const plans = [
     price: 15*50,
     serverLimit: 3,
     orgLimit: 2,
+    prometheus: true,
   },
   {
     name: "Team",
@@ -172,6 +175,7 @@ const plans = [
     price: 20*50,
     serverLimit:  4,
     orgLimit: 3,
+    prometheus: true,
   },
   {
     name: "Team Plus",
@@ -180,14 +184,16 @@ const plans = [
     price: 35*50,
       serverLimit: 5,
     orgLimit: 5,
+    prometheus: true,
   },
   {
-    name: "Multi Team",
-    description: "Large organisation (50+)",
+    name: "Turbo",
+    description: "Heavy concurrent usage",
     concurrency: "50x",
     price: 50*50,
     serverLimit: 10,
     orgLimit: 10,
+    prometheus: true,
   },
   {
     name: "Enterprise",
@@ -310,6 +316,7 @@ function PricingSummary({ summary }) {
                 {summary.plan.orgLimit >1 && <li className="text-sm text-gray-600">GitHub organizations: {summary.plan.orgLimit}</li>}
                 <li className="text-sm text-gray-600">Reports across organisation, repos, & users</li>
                 <li className="text-sm text-gray-600">Debug jobs via SSH</li>
+                {summary.plan.prometheus && <li className="text-sm text-gray-600">Prometheus metrics for servers and jobs</li>}
                 <li className="text-sm text-gray-600">Expert support via Slack</li>
               </>
             )}
