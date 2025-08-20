@@ -33,11 +33,15 @@ So when we need to rebuild 4-5 variations of that Kernel, our jobs get queued up
 
 ### Option 1 - Buy more servers
 
-The simplest solution is to purchase additional A102 servers from Hetzner, however our needs are sporadic and don't warrant having high-specification hardware sat idle 99% of the time.
+The simplest solution is to purchase additional A102 servers from Hetzner, however the needs of our small team are sporadic and low in volume. So they don't warrant having high-specification hardware sat idle 99% of the time.
+
+Another option could be to buy extra hardware and offer it to actuated customers, but the main reason to use actuated is for private, dedicated, and predictable tenancy.
 
 ### Option 2 - Lower the vCPU allocation
 
 At the same time, we recently purchased an Acemagic F3A Mini PC which has 24vCPU which run at a clock speed that almost matches the A102.
+
+[![Hetzner A102 vs. Acemagic F3A](/images/2025-08-burstable-cpu/geekbench.png)](/images/2025-08-burstable-cpu/geekbench.png)
 
 We could simply lower the vCPU allocation so that every Kernel job can run on either the A102 or the F3A, but that would result in a performance penalty when building a single Kernel. That may not be noticeable in automated builds, but it severely impacts the developer experience when we have to iterate on new Kernel versions or find a missing `CONFIG_` setting.
 
@@ -60,6 +64,13 @@ If we had a third mini PC enrolled into our account with i.e. 12vCPU, we could c
 ## Wrapping up
 
 The new burstable feature works for both x86_64 and arm64 builds. It's a convenient way to squeeze more out of your existing servers whilst only trading off performance during busy times.
+
+If you're interested in the Acemagic F3A, it's available on their [UK](https://acemagic.com/products/acemagic-f3a-mini-pc) and [US websites](https://acemagic.uk/products/acemagic-f3a-mini-pc).
+
+[![ADLink Ampere Developer Platform pictured with a GPU workstation and Mac Minis running Linux](/images/2025-08-burstable-cpu/lab.jpg)](/images/2025-08-burstable-cpu/lab.jpg)
+> ADLink Ampere Developer Platform pictured with a GPU workstation and Mac Minis running Linux
+
+Servers or mini PCs running in your datacenter, in an office cupboard, or under your desk can still be accessed via actuated.com through [private peering](https://docs.actuated.com/expose-agent/).
 
 **Did you know about the `actuated-any` label?**
 
