@@ -28,6 +28,9 @@ Our largest x86_64 server is an A102 from Hetzner which has 32vCPU and 128GB of 
 
 So when we need to rebuild 4-5 variations of that Kernel, our jobs get queued up and run in serial.
 
+[![htop showing all cores pegged to 100% whilst iterating locally](/images/2025-08-burstable-cpu/htop.webp)](/images/2025-08-burstable-cpu/htop.webp)
+> Iterating locally on my AMD Ryzen 9 7950X3D 16-Core Processor, before pushing changes to GitHub for a production build.
+
 ### Option 1 - Buy more servers
 
 The simplest solution is to purchase additional A102 servers from Hetzner, however our needs are sporadic and don't warrant having high-specification hardware sat idle 99% of the time.
