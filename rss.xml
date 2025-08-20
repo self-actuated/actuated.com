@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Tue, 05 Aug 2025 09:13:23 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 20 Aug 2025 12:04:09 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,75 @@
             <url>https://actuated.com/images/actuated.png</url>
             <link>https://actuated.com</link>
         </image>
+        <item>
+            <title><![CDATA[Introducing Burstable CPU Jobs]]></title>
+            <link>https://actuated.com/blog/burstable-cpu-jobs</link>
+            <guid>https://actuated.com/blog/burstable-cpu-jobs</guid>
+            <pubDate>Wed, 20 Aug 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Burstable CPU jobs request a minimum amount of vCPU to allocate, but will take more if available on a given server.]]></description>
+            <content:encoded><![CDATA[<p>We introduce Burstable CPU jobs which allow for a minimum amount of vCPU to be set for any job, but more is allocated if available.</p>
+<p>We'll also give you a reminder of other smart labels for more advanced scheduling like the <code>actuated-any-</code> label which can be used to allocate work to x86_64 or arm64 depending on availability to improve overall efficiency and resource utilization.</p>
+<p>As a tl;dr:</p>
+<p>Before: <code>actuated-32cpu-32gb</code> - a job would remain queued until a machine with 32vCPU was available</p>
+<p>After: <code>actuated-24cpu-32gb-burstable</code> - a job will take as many vCPU as are available on a host, but will run with fewer so long as 24 are available at a minimum.</p>
+<h2 id="impatiently-building-kernels">Impatiently Building Kernels</h2>
+<p>This new feature solves a problem we ran into when building many variations of the Linux Kernel on a finite set of servers.</p>
+<p>Our largest x86_64 server is an A102 from Hetzner which has 32vCPU and 128GB of RAM. It can produce a fully-featured Kernel in around 3min30s when all of the 32vCPUs are allocated to that single job.</p>
+<p>So when we need to rebuild 4-5 variations of that Kernel, our jobs get queued up and run in serial.</p>
+<p><a href="/images/2025-08-burstable-cpu/htop.webp"><img src="/images/2025-08-burstable-cpu/htop.webp" alt="htop showing all cores pegged to 100% whilst iterating locally"></a></p>
+<blockquote>
+<p>Iterating locally on my AMD Ryzen 9 7950X3D 16-Core Processor, before pushing changes to GitHub for a production build.</p>
+</blockquote>
+<h3 id="option-1---buy-more-servers">Option 1 - Buy more servers</h3>
+<p>The simplest solution is to purchase additional A102 servers from Hetzner, however the needs of our small team are sporadic and low in volume. So they don't warrant having high-specification hardware sat idle 99% of the time.</p>
+<p>Another option could be to buy extra hardware and offer it to actuated customers, but the main reason to use actuated is for private, dedicated, and predictable tenancy.</p>
+<h3 id="option-2---lower-the-vcpu-allocation">Option 2 - Lower the vCPU allocation</h3>
+<p>At the same time, we recently purchased an Acemagic F3A Mini PC which has 24vCPU which run at a clock speed that almost matches the A102.</p>
+<p><a href="/images/2025-08-burstable-cpu/geekbench.png"><img src="/images/2025-08-burstable-cpu/geekbench.png" alt="Hetzner A102 vs. Acemagic F3A"></a></p>
+<p>We could simply lower the vCPU allocation so that every Kernel job can run on either the A102 or the F3A, but that would result in a performance penalty when building a single Kernel. That may not be noticeable in automated builds, but it severely impacts the developer experience when we have to iterate on new Kernel versions or find a missing <code>CONFIG_</code> setting.</p>
+<h3 id="option-3---burstable-cpu-jobs">Option 3 - Burstable CPU Jobs</h3>
+<p>The third option gives us the best both worlds. We get to specify a minimum vCPU amount i.e. <code>24</code> and some extra metadata, in this instance a <code>-burstable</code> label means that our scheduler will allocate additional vCPUs if they are available on a server during scheduling.</p>
+<p>Old behaviour:</p>
+<p>The job label is <code>actuated-32cpu-32gb</code> and can only run on the A102. The F3A is idle, and we have no parallel Kernel builds.</p>
+<p>New behaviour:</p>
+<p>The job label is changed to <code>actuated-24cpu-32gb-burstable</code>.</p>
+<p>The first job runs on the A102, and subsequent jobs run on the F3A.</p>
+<p>If we had a third mini PC enrolled into our account with i.e. 12vCPU, we could change the label to <code>actuated-12cpu-32gb-burstable</code> and have a maximum of three Kernel builds running at any one time.</p>
+<h2 id="wrapping-up">Wrapping up</h2>
+<p>The new burstable feature works for both x86_64 and arm64 builds. It's a convenient way to squeeze more out of your existing servers whilst only trading off performance during busy times.</p>
+<p>If you're interested in the Acemagic F3A, it's available on their <a href="https://acemagic.com/products/acemagic-f3a-mini-pc">UK</a> and <a href="https://acemagic.uk/products/acemagic-f3a-mini-pc">US websites</a>.</p>
+<p><a href="/images/2025-08-burstable-cpu/lab.jpg"><img src="/images/2025-08-burstable-cpu/lab.jpg" alt="ADLink Ampere Developer Platform pictured with a GPU workstation and Mac Minis running Linux"></a></p>
+<blockquote>
+<p>ADLink Ampere Developer Platform pictured with a GPU workstation and Mac Minis running Linux</p>
+</blockquote>
+<p>Servers or mini PCs running in your datacenter, in an office cupboard, or under your desk can still be accessed via actuated.com through <a href="https://docs.actuated.com/expose-agent/">private peering</a>.</p>
+<p><strong>Did you know about the <code>actuated-any</code> label?</strong></p>
+<p>In a similar vein to Burstable CPU, in 2023 we introduced an <code>actuated-any</code> prefix for jobs that could run on either x86_64 or arm64 architectures, allowing for even greater flexibility in job scheduling.</p>
+<p>This is ideal for automation and jobs which use interpreted languages like Python or Node, that can run on either architecture without modification.</p>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">check-pull-requests</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">master</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">main</span>
+  <span class="hljs-attr">workflow_dispatch:</span>
+
+<span class="hljs-attr">permissions:</span>
+  <span class="hljs-attr">actions:</span> <span class="hljs-string">read</span>
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">check-pull-requests:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">check-pull-requests</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated-any-1cpu-2gb</span>
+    <span class="hljs-attr">steps:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v5</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Check</span> <span class="hljs-string">Pull</span> <span class="hljs-string">Requests</span> <span class="hljs-string">in</span> <span class="hljs-string">Repository</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">|
+            echo "Checking for open pull requests..."
+            npm run check-pull-requests
+</span></code></pre>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Egress Filtering for CI to mitigate data exfiltration]]></title>
             <link>https://actuated.com/blog/egress-filtering</link>
