@@ -5,6 +5,9 @@ tags:
 - jenkins
 - enterprise
 - cicd
+- security
+- docker
+- kubernetes
 author_img: alex
 image: /images/2025-10-slicer-jenkins/background.png
 date: "2025-10-13"
