@@ -378,10 +378,16 @@ function PricingSummary({ summary }) {
               per minute for your current usage
             </p>
           )}
-          <div className="mt-6">
+          <div className="mt-6 flex items-baseline gap-x-2">
+            <a
+              href="https://subscribe.openfaas.com/buy/6869822f-d5bd-40be-9b93-c45c25dcf2f1"
+              className="inline w-48 mr-8 rounded-md bg-indigo-600 px-6 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Checkout
+            </a>
             <a
               href="https://forms.gle/8XmpTTWXbZwWkfqT6"
-              className="inline-block w-48 rounded-md bg-indigo-600 px-6 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="inline-block w-48 text-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8"
             >
               Talk to us
             </a>

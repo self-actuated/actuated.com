@@ -3,14 +3,13 @@ import PriceCalculator from '../../components/PriceCalculator'
 
 const basePlatformFeatures = [
   'Fully managed control-plane, just add servers',
-  'Expert support via Slack 9-5pm UTC',
   'Fast microVM isolation & security with Firecracker',
-  'Minimal permissions needed for GitHub\'s API with no access to code',
+  'Expert support via Slack 9-5pm UTC',
+  'Minimal GitHub permissions needed - no access to code',
   'Linux x86_64 & Arm supported',
   'Managed base images with Over The Air (OTA) updates',
-  'Detailed usage metrics and reports across your organizations',
-  'Nested virtualisation for x86_64',
-  'Mount GPUs for jobs',
+  'Detailed usage metrics across all organizations',
+  'Mount GPUs to jobs for AI/LLM workloads',
 ]
 
 const earlyAccess = [
