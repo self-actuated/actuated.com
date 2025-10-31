@@ -108,7 +108,7 @@ When using a Hosted Cache with a self-hosted runner, these figures are often muc
 
 ## Fractional CPU
 
-![](/public/images/2025-10-q4-announcements/2x0.25.png)
+![Fraction CPU shown on htop](/images/2025-10-q4-announcements/2x0.25.png)
 > A DigitalOcean VM with 2x 0.25 vCPU actuated runners running jobs in parallel.
 
 GitHub recommends a minimum of 2 vCPU and 8GB of RAM for its Runner which is written in C# and undergoes a Just In Time (JIT) compilation step when it starts up.
@@ -123,6 +123,18 @@ At 1 vCPU each, a GCP `c4-standard-16` could run around 16 jobs at once, but if 
 * `runs-on: actuated-0.5cpu-1gb` - will run 32 jobs - that's 2x the amount.
 
 We're also adding fractional RAM support with 512MB and 750MB being available in addition to the existing full numbers of RAM.
+
+In practical terms, we ran a benchmark on DigitalOcean using a `4vcpu-8gb` machine which is of course much smaller than we'd ever recommend for production use.
+
+Installing `stressng` via apt took 9s with a VM with with 4vCPU and 1GB of RAM, but when throttled to 0.25 vCPU and 1GB of RAM, it took 30s.
+
+What does this mean?
+
+You get bin packing - the ability to run many more concurrent jobs, but at the cost of lower performance for those jobs.
+
+Should you use it for a production build or a critical Terraform deployment? Probably not.
+
+But if you're interacting with GitHub events, running linters, or bash scripts via a schedule - fractional CPU can save you a lot of money.
 
 ## Custom Billing for large teams with spiky workloads
 
