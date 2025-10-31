@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Thu, 23 Oct 2025 15:08:50 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 31 Oct 2025 13:48:21 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -12,6 +12,130 @@
             <url>https://actuated.com/images/actuated.png</url>
             <link>https://actuated.com</link>
         </image>
+        <item>
+            <title><![CDATA[Auto Enrollment, Super speedy transparent cache, Fractional CPU and Custom Billing]]></title>
+            <link>https://actuated.com/blog/q4-announcements</link>
+            <guid>https://actuated.com/blog/q4-announcements</guid>
+            <pubDate>Fri, 31 Oct 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Actuated.com's Q4 announcements - Auto Enrollment, Super speedy transparent cache, Fractional CPU and Custom Billing.]]></description>
+            <content:encoded><![CDATA[<p>We're releasing our Q4 announcements early and we've got a lot to share with you.</p>
+<ul>
+<li>Auto Enrollment - a single bash command and your server is ready to use and specially tuned for GCP VMs with Nested Virtualisation</li>
+<li>Super speedy transparent cache - a cache that works with actions/cache and BuildKit - the only limit? local NVMe SSD</li>
+<li>Fractional CPU - run your builds on a fractional CPU i.e. 0.25 or 0.5 vCPU to lower your costs and improve efficiency</li>
+<li>Custom Billing - do you need high spikes of concurrency? In addition to our concurrency plans, you can reach out for plans charged by the minute</li>
+</ul>
+<h2 id="auto-enrollment">Auto Enrollment</h2>
+<p><strong>Before</strong></p>
+<p>In the past, actuated customers would pick a server, load up an OS then do the following:</p>
+<ul>
+<li>Figure out the best free disk or partition to format for microVM snapshots</li>
+<li><a href="https://docs.actuated.com/tasks/registry-mirror/">Install and configure a Docker Registry Mirror/pull-through cache</a></li>
+<li>Install the actuated agent</li>
+<li>Create a DNS entry for the agent</li>
+<li>Send us an encrypted enrollment YAML file via email or Slack</li>
+</ul>
+<p>Wait for us to add the host.</p>
+<p><strong>After</strong></p>
+<p>Now, with a simple snippet in your userdata, Terraform or Ansible playbook your server will be taking jobs in a minute or two.</p>
+<p>After it's been offline for 15 minutes, it'll get cleaned up automatically.</p>
+<p>Yes that means you can use <a href="https://docs.cloud.google.com/compute/docs/instance-groups">Managed Instance Groups (MIGs) on GCP</a>, or your own autoscaler to scale up and down as needed.</p>
+<pre><code class="hljs language-bash"><span class="hljs-meta">#!/bin/bash</span>
+
+curl -LSsf https://get.actuated.com | \
+  LICENSE=<span class="hljs-string">""</span> \
+  TOKEN=<span class="hljs-string">""</span> \
+  LABELS=<span class="hljs-string">"gcp-ssd"</span> \
+  HOME=<span class="hljs-string">"/root"</span> bash -
+</code></pre>
+<p>The LICENSE is sent via email at checkout, and the TOKEN is available on request after checking out. The TOKEN is known as an Account API Token and is used for onboarding new hosts, and for <a href="https://docs.actuated.com/tasks/monitoring/">gathering Prometheus</a> metrics</p>
+<p>A Docker Registry Mirror/pull-through cache is installed by default, but if you give a <code>DOCKER_USERNAME</code> and <code>DOCKER_PASSWORD</code> to the script, it'll use your own Docker Hub credentials to pull images to greatly increase the pull limits.</p>
+<p>When onboarding a recent customer they'd explained they were concerned about the steps to set up a new machine. We're happy to say that this is now a single command and your server is ready to use.</p>
+<p>We're excited by how well the new auto-enrollment works and could see it leading to an autoscaler for GCP.</p>
+<p><strong>Savings with spot instances</strong></p>
+<p>One of our customers was excited to see this announcement because it means they can switch from a pre-provisioned <code>c4-standard-16-lssd</code> to spot instances, and save a considerable amount of money. They can also take their runner down over the weekend and bring it back any time they like with cron.</p>
+<p><strong>Auto Enrollment Demo videos</strong></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6SH9nEBWpbQ?si=Los_aFfzWTxRx_YO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=6SH9nEBWpbQ">Actuated Autoenrollment on Bare-Metal Cloud with Hetzner</a></li>
+<li><a href="https://www.youtube.com/watch?v=AKJOkFSIpkU">Actuated Autoenrollment on Nested Virtualisation (DigitalOcean)</a> - the same approach can be used for GCP with Terraform, Ansible, or your own custom binary</li>
+</ul>
+<h2 id="super-speedy-transparent-cache">Super speedy transparent cache</h2>
+<p>This announcement is a close second favourite for us behind Auto Enrollment.</p>
+<p>One of the number one complaints about GitHub's hosted cache is that it's slow, especially from self-hosted runners.</p>
+<p><img src="/images/2025-10-q4-announcements/cache-speed.png" alt=""></p>
+<p>We've always offered the ability for you to <a href="https://docs.actuated.com/tasks/local-github-cache/">run an S3 cache directly on your servers</a>, and instructions on how to use forked caching actions like <code>testpkg/actions-cache</code> which can target S3 instead of the proprietary GitHub cache.</p>
+<p>But, this also involved manual setup and configuration of the cache.</p>
+<p>The new approach is completely transparent to you.</p>
+<ul>
+<li><code>actions/cache</code> - will now use the local cache by default</li>
+<li>BuildKit - will now use the local cache by default</li>
+<li><code>setup-node</code>, <code>setup-python</code>, <code>setup-java</code>, <code>setup-ruby</code>, <code>setup-go</code> - will now use the local cache by default</li>
+</ul>
+<p>How does it work?</p>
+<p>All requests to GitHub's caching servers (and only those requests) are intercepted and redirected to the local machine. No changes to your workflows are required.</p>
+<p><img src="/images/2025-10-q4-announcements/cache-transparent.png" alt="Transparent cache"></p>
+<p>Rough speed tests:</p>
+<ul>
+<li>GCP c4-standard-4 - Saving cache ~ 100MB/s</li>
+<li>Hetzner AX102 - Saving/restoring cache ~ 167.6MB/s</li>
+<li>AMD Ryzen™ 9 9950X3D - 276MB/s</li>
+<li>Intel N100 - 99MB/s</li>
+</ul>
+<p>When using a Hosted Cache on a Hosted Runner, cache saves and restores can often throttled down to 1-10MB/s.</p>
+<p>When using a Hosted Cache with a self-hosted runner, these figures are often much lower.</p>
+<h2 id="fractional-cpu">Fractional CPU</h2>
+<p>GitHub recommends a minimum of 2 vCPU and 8GB of RAM for its Runner which is written in C# and undergoes a Just In Time (JIT) compilation step when it starts up.</p>
+<p>That said, since we introduced Profiling in the Actuated Dashboard, customers have noticed they can get away with much less than that, as low as <code>actuated-1cpu-1gb</code>.</p>
+<p>Now, what if you have 100 jobs queued up which all perform basic automation tasks on PRs, issues, and repos?</p>
+<p>At 1 vCPU each, a GCP <code>c4-standard-16</code> could run around 16 jobs at once, but if you don't mind the extra time:</p>
+<ul>
+<li><code>runs-on: actuated-0.25cpu-1gb</code> - will run 64 jobs - that's 4x the amount.</li>
+<li><code>runs-on: actuated-0.5cpu-1gb</code> - will run 32 jobs - that's 2x the amount.</li>
+</ul>
+<p>We're also adding fractional RAM support with 512MB and 750MB being available in addition to the existing full numbers of RAM.</p>
+<h2 id="custom-billing-for-large-teams-with-spiky-workloads">Custom Billing for large teams with spiky workloads</h2>
+<p>This year, we revisited the pricing for actuated and now offer two plans:</p>
+<h3 id="concurrency-based-plans">Concurrency based plans</h3>
+<p>Servers: no limit
+Minutes: no limit
+vCPU: no limit
+RAM: no limit</p>
+<p>Charges: maximum concurrent builds</p>
+<p>This mode is a great place to start because the pricing is flat-rate and predictable. It never needs to change or spike, even if you have a large backlog to run through.</p>
+<p>Our pricing calculator shows how easy it is to save money compared to GitHub's hosted runners, especially once you start needing more than 2x vCPU for jobs.</p>
+<p>One customer told us they were running 36,000 builds per month on 4 vCPU Hosted Runners, costing them 1,440 USD per month.</p>
+<p>With <a href="/pricing">actuated's pricing calculator</a>, that works out at roughly 1/2 of the price with a 10 concurrent build plan.</p>
+<p><img src="/images/2025-10-q4-announcements/vs-gha.png" alt=""></p>
+<p>If they upgraded to 8 vCPU hosted runners their bill would have been 2,880 USD per month with GitHub, and 4x cheaper with actuated.</p>
+<h3 id="custom-billing">Custom Billing</h3>
+<p>With Custom Billing, we'll do our best to work out a plan that scales with your organisation's needs.</p>
+<p>So if you ran 3,600,000 minutes per month, that'd be $28,800 USD per month on GitHub's smallest 2vCPU machines, and $57600 USD per month with a 4 vCPU runners.</p>
+<p>Now clearly, if you also needed around 400 concurrent builds - actuated's concurrency based plan would not scale, so we'd work out a factor that lets us both grow together whether that's based upon:</p>
+<ul>
+<li>total minutes,</li>
+<li>total servers,</li>
+<li>or a graduated concurrency-based pricing model.</li>
+</ul>
+<p>Custom Billing is available for any customer that needs more than 50 concurrent builds per month.</p>
+<h2 id="wrapping-up">Wrapping up</h2>
+<p>On top of our previous announcement this month <a href="/blog/actuated-for-jenkins">Actuated for Jenkins</a>, we're excited to be able to offer you a more flexible and scalable way to run your CI/CD workflows.</p>
+<p>You can be running jobs within a few minutes:</p>
+<ul>
+<li>Checkout on the pricing page - either book a call to talk to us, or go 100% self-service (both come with access to Slack during business hours)</li>
+<li>Deploy a bare-metal server on Hetzner Robot for the best price/performance ratio, or launch a VM on GCP, Azure, or Oracle Cloud with Nested Virtualisation enabled</li>
+<li>Obtain your Account API Token, and run the auto-enrollment script</li>
+<li>Change the <code>runs-on:</code> label to i.e. <code>actuated-4cpu-16gb</code> and start running jobs</li>
+</ul>
+<p>Want to learn more? <a href="/pricing">Talk to us on a call</a>.</p>
+<p>You may also like:</p>
+<ul>
+<li><a href="/blog/actuated-for-jenkins">Actuated for Jenkins</a></li>
+<li><a href="blog/egress-filtering">Egress filtering for TLS and DNS</a></li>
+<li><a href="/blog/how-secure-are-containers-vs-microvms-ci">How secure are containers &#x26; Kubernetes vs. microVMs for self-hosted CI?</a></li>
+<li><a href="/blog/actuated-for-gitlab">Actuated for GitLab</a></li>
+</ul>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Fast and Secure Jenkins Builds with Firecracker]]></title>
             <link>https://actuated.com/blog/bringing-firecracker-to-jenkins</link>
