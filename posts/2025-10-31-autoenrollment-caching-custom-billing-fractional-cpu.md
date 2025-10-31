@@ -129,7 +129,24 @@ We're also adding fractional RAM support with 512MB and 750MB being available in
 
 In practical terms, we ran a benchmark on DigitalOcean using a `4vcpu-8gb` machine which is of course much smaller than we'd ever recommend for production use.
 
-Installing `stressng` via apt took 7s with a VM with with `actuated-1cpu-1gb`, but when throttled to `actuated-250mcpu-1gb`, it took 26s.
+Installing `stress-ng` via apt took 7s with a VM with with `actuated-1cpu-1gb`, but when throttled to `actuated-250mcpu-1gb`, it took 26s.
+
+```yaml
+
+name: stress-ng
+
+on:
+    workflow_dispatch:
+
+jobs:
+    stress:
+        runs-on: actuated-250mcpu-1gb
+        steps:
+        - name: Install
+          run: sudo apt install stress-ng -y
+        - name: Stress
+          run: stress-ng --cpu 1 --cpu-load 100 --timeout 2m
+```
 
 We have to remember that this system is configured to be multi-threaded - it uses systemd as its init, and runs the Actions Runner, on top of any other steps you need. So while 0.25 vCPU is not going to be as fast as 1 vCPU, it's still perfectly usable for many workloads.
 
