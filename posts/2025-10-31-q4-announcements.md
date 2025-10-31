@@ -123,7 +123,7 @@ We're also adding fractional RAM support with 512MB and 750MB being available in
 
 ## Custom Billing for large teams with spiky workloads
 
-This year, we revisited the pricing for actuated and now offer two plans:
+This year, we revisited the pricing for actuated and now offer two plans: **Concurrency based plans - from 250 USD / month** and **Custom Billing**.
 
 ### Concurrency based plans
 
