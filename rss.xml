@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 31 Oct 2025 16:00:21 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 31 Oct 2025 16:03:34 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -75,6 +75,10 @@ curl -LSsf https://get.actuated.com | \
 <p>How does it work?</p>
 <p>All requests to GitHub's caching servers (and only those requests) are intercepted and redirected to the local machine. No changes to your workflows are required.</p>
 <p><img src="/images/2025-10-q4-announcements/cache-transparent.png" alt="Transparent cache"></p>
+<blockquote>
+<p>Only caching requests are redirected and intercepted, all other traffic is passed through unmodified. This code runs on your server, and our team has no access to any of your traffic.
+"Super speedy transparent caching" to coin a term, will be opt-in. And the <a href="https://docs.actuated.com/tasks/local-github-cache/">more manual approach</a> (which is just as fast, just less convenient) will still be available.</p>
+</blockquote>
 <p>Rough speed tests:</p>
 <ul>
 <li>GCP c4-standard-4 - Saving cache ~ 100MB/s</li>
