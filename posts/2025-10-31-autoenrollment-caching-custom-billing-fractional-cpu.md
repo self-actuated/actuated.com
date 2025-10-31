@@ -52,7 +52,7 @@ curl -LSsf https://get.actuated.com | \
   HOME="/root" bash -
 ```
 
-The LICENSE is sent via email at checkout, and the TOKEN is available on request after checking out. The TOKEN is known as an Account API Token and is used for onboarding new hosts, and for [gathering Prometheus](https://docs.actuated.com/tasks/monitoring/) metrics
+The `LICENSE` is sent via email at checkout, and the `TOKEN` is available on request after checking out. The TOKEN is known as an Account API Token and is used for onboarding new hosts, and for [gathering Prometheus](https://docs.actuated.com/tasks/monitoring/) metrics
 
 A Docker Registry Mirror/pull-through cache is installed by default, but if you give a `DOCKER_USERNAME` and `DOCKER_PASSWORD` to the script, it'll use your own Docker Hub credentials to pull images to greatly increase the pull limits.
 
@@ -107,6 +107,9 @@ When using a Hosted Cache on a Hosted Runner, cache saves and restores can often
 When using a Hosted Cache with a self-hosted runner, these figures are often much lower.
 
 ## Fractional CPU
+
+![](/public/images/2025-10-q4-announcements/2x0.25.png)
+> A DigitalOcean VM with 2x 0.25 vCPU actuated runners running jobs in parallel.
 
 GitHub recommends a minimum of 2 vCPU and 8GB of RAM for its Runner which is written in C# and undergoes a Just In Time (JIT) compilation step when it starts up.
 
