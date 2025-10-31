@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 31 Oct 2025 13:58:37 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 31 Oct 2025 15:24:13 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -48,7 +48,7 @@ curl -LSsf https://get.actuated.com | \
   LABELS=<span class="hljs-string">"gcp-ssd"</span> \
   HOME=<span class="hljs-string">"/root"</span> bash -
 </code></pre>
-<p>The LICENSE is sent via email at checkout, and the TOKEN is available on request after checking out. The TOKEN is known as an Account API Token and is used for onboarding new hosts, and for <a href="https://docs.actuated.com/tasks/monitoring/">gathering Prometheus</a> metrics</p>
+<p>The <code>LICENSE</code> is sent via email at checkout, and the <code>TOKEN</code> is available on request after checking out. The TOKEN is known as an Account API Token and is used for onboarding new hosts, and for <a href="https://docs.actuated.com/tasks/monitoring/">gathering Prometheus</a> metrics</p>
 <p>A Docker Registry Mirror/pull-through cache is installed by default, but if you give a <code>DOCKER_USERNAME</code> and <code>DOCKER_PASSWORD</code> to the script, it'll use your own Docker Hub credentials to pull images to greatly increase the pull limits.</p>
 <p>When onboarding a recent customer they'd explained they were concerned about the steps to set up a new machine. We're happy to say that this is now a single command and your server is ready to use.</p>
 <p>We're excited by how well the new auto-enrollment works and could see it leading to an autoscaler for GCP.</p>
@@ -85,6 +85,10 @@ curl -LSsf https://get.actuated.com | \
 <p>When using a Hosted Cache on a Hosted Runner, cache saves and restores can often throttled down to 1-10MB/s.</p>
 <p>When using a Hosted Cache with a self-hosted runner, these figures are often much lower.</p>
 <h2 id="fractional-cpu">Fractional CPU</h2>
+<p><img src="/public/images/2025-10-q4-announcements/2x0.25.png" alt=""></p>
+<blockquote>
+<p>A DigitalOcean VM with 2x 0.25 vCPU actuated runners running jobs in parallel.</p>
+</blockquote>
 <p>GitHub recommends a minimum of 2 vCPU and 8GB of RAM for its Runner which is written in C# and undergoes a Just In Time (JIT) compilation step when it starts up.</p>
 <p>That said, since we introduced Profiling in the Actuated Dashboard, customers have noticed they can get away with much less than that, as low as <code>actuated-1cpu-1gb</code>.</p>
 <p>Now, what if you have 100 jobs queued up which all perform basic automation tasks on PRs, issues, and repos?</p>
