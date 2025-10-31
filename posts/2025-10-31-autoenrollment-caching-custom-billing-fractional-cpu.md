@@ -77,7 +77,7 @@ This announcement is a close second favourite for us behind Auto Enrollment.
 
 One of the number one complaints about GitHub's hosted cache is that it's slow, especially from self-hosted runners.
 
-![](/images/2025-10-q4-announcements/cache-speed.png)
+![Screenshot from a workflow showing MB/s](/images/2025-10-q4-announcements/cache-speed.png)
 
 We've always offered the ability for you to [run an S3 cache directly on your servers](https://docs.actuated.com/tasks/local-github-cache/), and instructions on how to use forked caching actions like `testpkg/actions-cache` which can target S3 instead of the proprietary GitHub cache.
 
@@ -101,9 +101,8 @@ All requests to GitHub's caching servers (and only those requests) are intercept
 Rough speed tests:
 
 * GCP c4-standard-4 - Saving cache ~ 100MB/s
-* Hetzner AX102 - Saving/restoring cache ~ 167.6MB/s
-* AMD Ryzen™ 9 9950X3D - 276MB/s
-* Intel N100 - 99MB/s
+* AMD Ryzen™ 9 9950X3D / Hetzner AX102 - 276MB/s read / 478.9MB/s write
+* Intel N100 - 89.9MB/s read / 155.7MB/s write
 
 When using a Hosted Cache on a Hosted Runner, cache saves and restores can often throttled down to 1-10MB/s.
 
@@ -179,7 +178,7 @@ One customer told us they were running 36,000 builds per month on 4 vCPU Hosted 
 
 With [actuated's pricing calculator](/pricing), that works out at roughly 1/2 of the price with a 10 concurrent build plan.
 
-![](/images/2025-10-q4-announcements/vs-gha.png)
+![Pricing on an off-the shelf plan](/images/2025-10-q4-announcements/vs-gha.png)
 
 If they upgraded to 8 vCPU hosted runners their bill would have been 2,880 USD per month with GitHub, and 4x cheaper with actuated.
 
