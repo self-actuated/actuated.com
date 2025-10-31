@@ -95,6 +95,9 @@ All requests to GitHub's caching servers (and only those requests) are intercept
 
 ![Transparent cache](/images/2025-10-q4-announcements/cache-transparent.png)
 
+> Only caching requests are redirected and intercepted, all other traffic is passed through unmodified. This code runs on your server, and our team has no access to any of your traffic.
+> "Super speedy transparent caching" to coin a term, will be opt-in. And the [more manual approach](https://docs.actuated.com/tasks/local-github-cache/) (which is just as fast, just less convenient) will still be available.
+
 Rough speed tests:
 
 * GCP c4-standard-4 - Saving cache ~ 100MB/s
