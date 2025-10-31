@@ -1,12 +1,13 @@
 ---
 title: Auto Enrollment, Super speedy transparent cache, Fractional CPU and Custom Billing
-description: Actuated now offers transparent cache, fractional CPU and custom billing for customers with spiky and unpredictable CI/CD workloads.   
+description: Actuated.com's Q4 announcements - Auto Enrollment, Super speedy transparent cache, Fractional CPU and Custom Billing.
 tags:
 - githubactions
 - cicd
-- cache
-- fractional cpu
-- custom billing
+- caching
+- binpacking
+- billing
+- arc
 author_img: alex
 image: /images/2025-10-q4-announcements/background.png
 date: "2025-10-31"
