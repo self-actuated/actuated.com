@@ -1,7 +1,21 @@
 import Link from 'next/link';
 
+const footerNav = {
+  product: [
+    { name: 'GitLab CI', href: '/gitlab' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Documentation', href: 'https://docs.actuated.com/' },
+    { name: 'Sign in', href: 'https://dashboard.actuated.com' },
+  ],
+  resources: [
+    { name: 'Blog', href: '/blog' },
+    { name: 'Announcement', href: '/blog/blazing-fast-ci-with-microvms' },
+    { name: 'FAQ', href: 'https://docs.actuated.com/faq/' },
+    { name: 'Talk to us', href: 'https://forms.gle/8XmpTTWXbZwWkfqT6' },
+  ],
+}
 
-const navigation = [
+const social = [
   {
     name: 'Twitter',
     href: 'https://twitter.com/selfactuated',
@@ -48,23 +62,52 @@ const navigation = [
 
 export default function Footer() {
   return (
-    <footer className="bg-white">
-      <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-        <div className="flex justify-center space-x-6 md:order-2">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-gray-400 hover:text-gray-500"
-            >
-              <span className="sr-only">{item.name}</span>
-              <item.icon className="h-6 w-6" aria-hidden="true" />
-            </Link>
-          ))}
+    <footer className="bg-gray-50 border-t border-gray-200">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900">Product</h3>
+            <ul className="mt-4 space-y-3">
+              {footerNav.product.map((item) => (
+                <li key={item.name}>
+                  <Link href={item.href} className="text-sm text-gray-600 hover:text-gray-900">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900">Resources</h3>
+            <ul className="mt-4 space-y-3">
+              {footerNav.resources.map((item) => (
+                <li key={item.name}>
+                  <Link href={item.href} className="text-sm text-gray-600 hover:text-gray-900">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="col-span-2 md:col-span-2">
+            <h3 className="text-sm font-semibold text-gray-900">Follow us</h3>
+            <div className="mt-4 flex space-x-6">
+              {social.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">{item.name}</span>
+                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="mt-8 md:order-1 md:mt-0">
-          <p className="text-center text-base text-gray-400">
-            &copy; 2024 <a href="https://openfaas.com">OpenFaaS Ltd</a>. All rights reserved. <a className='hover:underline' href='/terms'>Terms & Conditions.</a>
+        <div className="mt-8 border-t border-gray-200 pt-8">
+          <p className="text-center text-sm text-gray-400">
+            &copy; 2024 <a href="https://openfaas.com" className="hover:underline">OpenFaaS Ltd</a>. All rights reserved. <a className='hover:underline' href='/terms'>Terms & Conditions.</a>
           </p>
         </div>
       </div>

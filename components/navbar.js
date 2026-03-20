@@ -41,8 +41,8 @@ const solutions = [
 ]
 
 const navigation = [
+  { name: 'GitLab', href: '/gitlab' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Announcement', href: '/blog/blazing-fast-ci-with-microvms' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Docs', href: 'https://docs.actuated.com/' },
 ]
