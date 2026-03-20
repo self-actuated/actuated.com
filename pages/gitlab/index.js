@@ -338,34 +338,17 @@ test-e2e:
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
-            {/* Video */}
-            <div>
-              <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-lg">
-                <iframe
-                  src="https://www.youtube.com/embed/PybSPduDT6s"
-                  title="Actuated for GitLab CI demo"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <p className="mt-3 text-sm text-gray-500 text-center">Demo: Actuated for GitLab CI tech preview</p>
+          <div className="mt-12 max-w-3xl mx-auto">
+            <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-lg">
+              <iframe
+                src="https://www.youtube.com/embed/PybSPduDT6s"
+                title="Actuated for GitLab CI demo"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
             </div>
-
-            {/* Tweet */}
-            <div>
-              <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-lg">
-                <iframe
-                  src="https://www.youtube.com/embed/pTQ_jVYhAoc"
-                  title="Containers vs. microVMs for CI/CD"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <p className="mt-3 text-sm text-gray-500 text-center">Talk: Why containers are not enough for CI/CD isolation</p>
-            </div>
+            <p className="mt-3 text-sm text-gray-500 text-center">Demo: Actuated for GitLab CI</p>
           </div>
 
           {/* Embedded tweet */}
