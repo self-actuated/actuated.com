@@ -3,6 +3,7 @@ import Link from 'next/link';
 const footerNav = {
   product: [
     { name: 'GitLab CI', href: '/gitlab' },
+    { name: 'Jenkins', href: '/blog/bringing-firecracker-to-jenkins' },
     { name: 'GitHub Actions Pricing', href: '/pricing' },
     { name: 'Documentation', href: 'https://docs.actuated.com/' },
     { name: 'Sign in', href: 'https://dashboard.actuated.com' },
