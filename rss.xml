@@ -4,7 +4,7 @@
         <title>Actuated - blog</title>
         <link>https://actuated.com</link>
         <description>Keep your team productive &amp; focused with blazing fast CI</description>
-        <lastBuildDate>Fri, 31 Oct 2025 16:03:34 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 20 Mar 2026 14:05:21 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -103,7 +103,23 @@ curl -LSsf https://get.actuated.com | \
 </ul>
 <p>We're also adding fractional RAM support with 512MB and 750MB being available in addition to the existing full numbers of RAM.</p>
 <p>In practical terms, we ran a benchmark on DigitalOcean using a <code>4vcpu-8gb</code> machine which is of course much smaller than we'd ever recommend for production use.</p>
-<p>Installing <code>stressng</code> via apt took 9s with a VM with with 4vCPU and 1GB of RAM, but when throttled to 0.25 vCPU and 1GB of RAM, it took 30s.</p>
+<p>Installing <code>stress-ng</code> via apt took 7s with a VM with with <code>actuated-1cpu-1gb</code>, but when throttled to <code>actuated-250mcpu-1gb</code>, it took 26s.</p>
+<pre><code class="hljs language-yaml">
+<span class="hljs-attr">name:</span> <span class="hljs-string">stress-ng</span>
+
+<span class="hljs-attr">on:</span>
+    <span class="hljs-attr">workflow_dispatch:</span>
+
+<span class="hljs-attr">jobs:</span>
+    <span class="hljs-attr">stress:</span>
+        <span class="hljs-attr">runs-on:</span> <span class="hljs-string">actuated-250mcpu-1gb</span>
+        <span class="hljs-attr">steps:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">sudo</span> <span class="hljs-string">apt</span> <span class="hljs-string">install</span> <span class="hljs-string">stress-ng</span> <span class="hljs-string">-y</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Stress</span>
+          <span class="hljs-attr">run:</span> <span class="hljs-string">stress-ng</span> <span class="hljs-string">--cpu</span> <span class="hljs-number">1</span> <span class="hljs-string">--cpu-load</span> <span class="hljs-number">100</span> <span class="hljs-string">--timeout</span> <span class="hljs-string">2m</span>
+</code></pre>
+<p>We have to remember that this system is configured to be multi-threaded - it uses systemd as its init, and runs the Actions Runner, on top of any other steps you need. So while 0.25 vCPU is not going to be as fast as 1 vCPU, it's still perfectly usable for many workloads.</p>
 <p>What does this mean?</p>
 <p>You get bin packing - the ability to run many more concurrent jobs, but at the cost of lower performance for those jobs.</p>
 <p>Should you use it for a production build or a critical Terraform deployment? Probably not.</p>
