@@ -11,9 +11,9 @@ date: "2026-03-26"
 
 Everyone's been there. Builds start off fast and get slower over time, until you're staring at a 30-minute job and wondering what went wrong. That's no different with GitLab, where hosted and Kubernetes-based runners are the default option.
 
-We recently took a call with a team at an online trading platform. Their average build time was about 10 minutes, and they wanted to claw back at least 2 minutes. Whilst we didn't have access to their proprietary code, we did find and build the canonical [nopCommerce](https://github.com/nopsolutions/nopcommerce) example developed by Microsoft.
+We recently took a call with a team at an online trading platform. Their average build time was about 10 minutes, and they wanted to claw back at least 2 minutes. Whilst we didn't have access to their proprietary code, we did find and build a real-world e-commerce project called [nopCommerce](https://github.com/nopsolutions/nopcommerce).
 
-On GitLab.com's hosted medium-sized runners, the build took 9m50s, which made it a reasonable proxy for the kind of build they were dealing with. We managed to get that build running in 3m59s, saving roughly 6 minutes.
+On GitLab.com's hosted runners, the build took 9m50s, which made it a reasonable proxy for the kind of build they were dealing with. We managed to get that build running in 3m59s, saving roughly 6 minutes.
 
 Across a team with 250 developers, that's roughly 67 eight-hour working days saved every month.
 
