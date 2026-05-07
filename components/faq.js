@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "What kind of support do you offer?",
     answer:
-      "For the pilot, every customer is invited to a Slack channel for collaboration and support. We have operational experience with GitHub Actions, Docker and Kubernetes and we're making time to help you tune your builds up to get the most out of them.",
+      "Standard plans include community support on a best-effort basis via email. We have operational experience with GitHub Actions, Docker and Kubernetes, and a Custom/Enterprise plan is available with email & Slack support for teams that need it.",
   },
   {
     question: "What kinds of servers do I need?",

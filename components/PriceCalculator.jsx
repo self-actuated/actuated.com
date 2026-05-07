@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CheckIcon } from "@heroicons/react/20/solid";
 
 function Card({ children, borderStyle = "default" }) {
   let borderClass = "ring-1 ring-gray-200";
@@ -140,76 +141,39 @@ function Input({
   );
 }
 
+const FIRST_SERVER_PRICE = 150;
+const ADDITIONAL_SERVER_PRICE = 125;
+const CHECKOUT_URL =
+  "https://subscribe.openfaas.com/checkout/buy/126e705d-7956-430d-a865-78f4696ac715";
+
+function calcPrice(servers) {
+  return FIRST_SERVER_PRICE + (servers - 1) * ADDITIONAL_SERVER_PRICE;
+}
+
 const plans = [
+  ...Array.from({ length: 10 }, (_, i) => {
+    const servers = i + 1;
+    return {
+      name: `${servers} server${servers > 1 ? "s" : ""}`,
+      servers,
+      sliderLabel: String(servers),
+      price: calcPrice(servers),
+    };
+  }),
   {
-    name: "Basic",
-    description: "Small team (5-10)",
-    concurrency: "5x",
-    price: 5*50,
-    serverLimit: 1,
-    orgLimit: 1,
-    prometheus: false,
-  },
-  {
-    name: "Pro",
-    description: "Average team (10-20)",
-    concurrency: "10x",
-    price: 10*50,
-    serverLimit: 2,
-    orgLimit: 2,
-    prometheus: true,
-  },
-  {
-    name: "Pro Plus",
-    description: "Average+ team (20-30)",
-    concurrency: "15x",
-    price: 15*50,
-    serverLimit: 3,
-    orgLimit: 2,
-    prometheus: true,
-  },
-  {
-    name: "Team",
-    description: "Scale-up (30-40)",
-    concurrency: "20x",
-    price: 20*50,
-    serverLimit:  4,
-    orgLimit: 3,
-    prometheus: true,
-  },
-  {
-    name: "Team Plus",
-    description: "Expanding team (40+)",
-    concurrency: "35x",
-    price: 35*50,
-      serverLimit: 5,
-    orgLimit: 5,
-    prometheus: true,
-  },
-  {
-    name: "Turbo",
-    description: "Heavy concurrent usage",
-    concurrency: "50x",
-    price: 50*50,
-    serverLimit: 10,
-    orgLimit: 10,
-    prometheus: true,
-  },
-  {
-    name: "Enterprise",
-    description: "Built for central IT / DevOps teams",
-    concurrency: "Custom",
-    price: 0, // Custom pricing
-    serverLimit: "Unlimited",
-    orgLimit: "Unlimited",
+    name: "Custom",
+    description: "Larger fleets or bespoke requirements",
+    servers: "Custom",
+    sliderLabel: "Custom",
+    price: 0,
     isEnterprise: true,
     enterpriseFeatures: [
-      "Low management, self-service onboarding for internal teams",
+      "Unlimited servers across multiple GitHub organizations",
       "Gain visibility and control over all CI/CD jobs",
       "Egress filtering for HTTPS and DNS",
       "Private peering for agents",
-      "Fine-grained access GitHub API",
-      "Support via email & Slack"
+      "Fine-grained access to the GitHub API",
+      "Support via email & Slack",
     ],
     enterpriseOptional: [
       "Dedicated Actuated control-plane",
@@ -218,28 +182,30 @@ const plans = [
 ];
 
 function Slider({ value, onChange, steps, labels }) {
+  const max = steps.length - 1;
   return (
     <div className="w-full">
       <div className="relative">
         <input
           type="range"
           min="0"
-          max={steps.length - 1}
+          max={max}
           value={value}
           onChange={(e) => onChange(steps[parseInt(e.target.value)])}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-gray-200 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:ring-1 [&::-moz-range-thumb]:ring-gray-200"
           style={{
             background: `linear-gradient(to right, #4f46e5 0%, #4f46e5 ${
-              (value / (steps.length - 1)) * 100
-            }%, #e5e7eb ${(value / (steps.length - 1)) * 100}%, #e5e7eb 100%)`,
+              (value / max) * 100
+            }%, #e5e7eb ${(value / max) * 100}%, #e5e7eb 100%)`,
           }}
         />
-        <div className="flex justify-between mt-2 px-1">
+        <div className="relative h-5 mt-2">
           {labels.map((label, index) => (
             <button
               key={index}
               onClick={() => onChange(steps[index])}
-              className="text-xs text-gray-500 hover:text-gray-900 cursor-pointer"
+              className="absolute -translate-x-1/2 text-xs text-gray-500 hover:text-gray-900 cursor-pointer whitespace-nowrap"
+              style={{ left: `${(index / max) * 100}%` }}
             >
               {label}
             </button>
@@ -261,22 +227,43 @@ function PlanSelection({ plans, onSelect }) {
 
   return (
     <div>
-      <p className="flex flex-col">
-        <span className="text-sm/6 font-semibold text-gray-900">
-          Select an Actuated plan
-        </span>
-        <span className="text-sm text-gray-500">
-          Select the concurrency level for your actuated plan.
-        </span>
-      </p>
-      <div className="mt-4">
+      <p className="text-sm/6 font-semibold text-gray-900">How many servers?</p>
+      <div className="mt-3">
         <Slider
           value={selectedIndex}
           onChange={handleChange}
           steps={plans}
-          labels={plans.map((plan) => plan.concurrency)}
+          labels={plans.map((plan) => plan.sliderLabel)}
         />
       </div>
+    </div>
+  );
+}
+
+const globalPerks = [
+  "Unlimited build minutes",
+  "Unlimited RAM/CPUs",
+  "Unlimited concurrency",
+];
+
+function TrulyUnlimited() {
+  return (
+    <div>
+      <p className="text-sm/6 font-semibold text-gray-900">Truly unlimited</p>
+      <ul className="mt-2 space-y-1">
+        {globalPerks.map((perk) => (
+          <li
+            key={perk}
+            className="flex items-center gap-x-2 text-sm text-gray-600"
+          >
+            <CheckIcon
+              className="h-4 w-4 flex-none text-indigo-400"
+              aria-hidden="true"
+            />
+            {perk}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -290,13 +277,11 @@ function GitHubLogo() {
 }
 
 function PricingSummary({ summary }) {
-  const dailyPrice = summary.plan.isEnterprise ? 0 : (summary.price / 30).toFixed(2);
-
   return (
     <div className="rounded-2xl bg-gray-50 py-6 px-6 ring-1 ring-inset ring-gray-900/5">
       <div className="max-w-xs">
         <p className="text-base font-semibold text-indigo-600">
-          Actuated {summary.plan.name}
+          {summary.plan.isEnterprise ? "Actuated Custom" : "Actuated Self-Service"}
         </p>
         <div className="mt-4">
           <ul className="list-disc pl-5 space-y-2">
@@ -308,16 +293,19 @@ function PricingSummary({ summary }) {
             {!summary.plan.isEnterprise && (
               <>
                 <li className="text-sm text-gray-600">
-                  {summary.plan.concurrency} concurrent jobs
+                  {summary.plan.servers}x Server
+                  {summary.plan.servers > 1 ? "s" : ""}
                 </li>
-                <li className="text-sm text-gray-600">Unmetered build minutes</li>
-                <li className="text-sm text-gray-600">Add up to {summary.servers} VM host(s)</li>
-                {summary.plan.orgLimit == 1 && <li className="text-sm text-gray-600">Single GitHub organization</li>}
-                {summary.plan.orgLimit >1 && <li className="text-sm text-gray-600">GitHub organizations: {summary.plan.orgLimit}</li>}
-                <li className="text-sm text-gray-600">Reports across organisation, repos, & users</li>
+                <li className="text-sm text-gray-600">
+                  Reports across organisation, repos, & users
+                </li>
                 <li className="text-sm text-gray-600">Debug jobs via SSH</li>
-                {summary.plan.prometheus && <li className="text-sm text-gray-600">Prometheus metrics for servers and jobs</li>}
-                <li className="text-sm text-gray-600">Expert support via Slack</li>
+                <li className="text-sm text-gray-600">
+                  Prometheus metrics for servers and jobs
+                </li>
+                <li className="text-sm text-gray-600">
+                  Community support, best-effort via email
+                </li>
               </>
             )}
             {summary.plan.isEnterprise && summary.plan.enterpriseFeatures && (
@@ -369,25 +357,24 @@ function PricingSummary({ summary }) {
                   / month
                 </span>
               </p>
-              <p className="mt-1 text-sm text-gray-500">${dailyPrice} USD / day</p>
             </>
           )}
-          {summary.costPerMinute > 0 && !summary.plan.isEnterprise && (
-            <p className="mt-2 text-xs text-gray-500">
-              or <span className="font-bold">{summary.costPerMinute}</span> USD
-              per minute for your current usage
-            </p>
-          )}
           <div className="mt-6 flex items-baseline gap-x-2">
-            <a
-              href="https://subscribe.openfaas.com/buy/6869822f-d5bd-40be-9b93-c45c25dcf2f1"
-              className="inline w-48 mr-8 rounded-md bg-indigo-600 px-6 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Checkout
-            </a>
+            {!summary.plan.isEnterprise && (
+              <a
+                href={`${CHECKOUT_URL}?quantity=${summary.plan.servers}`}
+                className="inline w-48 mr-8 rounded-md bg-indigo-600 px-6 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Checkout
+              </a>
+            )}
             <a
               href="https://forms.gle/8XmpTTWXbZwWkfqT6"
-              className="inline-block w-48 text-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8"
+              className={
+                summary.plan.isEnterprise
+                  ? "inline w-48 rounded-md bg-indigo-600 px-6 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  : "inline-block w-48 text-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 sm:px-8"
+              }
             >
               Talk to us
             </a>
@@ -451,152 +438,25 @@ function calculateRunnerPricing(minutesTotal, actuatedPlanPrice) {
   });
 }
 
-function Calculator({ onChange }) {
-  const [selectedPlan, setSelectedPlan] = useState(plans[0]);
-  const [jobs, setJobs] = useState(undefined);
-  const [minutes, setMinutes] = useState(undefined);
-  const [minutesTotal, setMinutesTotal] = useState(30000);
-
-  const [summary, setSummary] = useState({
-    plan: selectedPlan,
-    orgLimit: 1,
-    servers: 1,
-    jobs: 100,
-    minutes: 50,
-    costPerMinute: 0,
-    price: 5*50,
-  });
-
-  useEffect(() => {
-    let costPerMinute = 0;
-
-    if (jobs && jobs != 0 && minutes && minutes != 0 && !selectedPlan.isEnterprise) {
-      costPerMinute = (selectedPlan.price / (jobs * minutes)).toFixed(3);
-    }
-
-    setSummary({
-      orgLimit: selectedPlan.orgLimit,
-      servers: selectedPlan.serverLimit,
-      plan: selectedPlan,
-      jobs: jobs,
-      minutes: minutes,
-      costPerMinute: costPerMinute,
-      price: selectedPlan.price,
-    });
-  }, [selectedPlan, jobs, minutes]);
-
-  useEffect(() => {
-    let costPerMinute = 0;
-
-    if (minutesTotal != 0 && !selectedPlan.isEnterprise) {
-      costPerMinute = (selectedPlan.price / minutesTotal).toFixed(3);
-    }
-
-    setSummary({
-      orgLimit: selectedPlan.orgLimit,
-      servers: selectedPlan.serverLimit,
-      plan: selectedPlan,
-      jobs: jobs,
-      minutes: minutes,
-      costPerMinute: costPerMinute,
-      price: selectedPlan.price,
-    });
-
-    onChange &&
-      onChange({
-        plan: selectedPlan,
-        minutesTotal: minutesTotal,
-        numJobs: jobs,
-        avgJobMinutes: minutes,
-      });
-  }, [minutesTotal, selectedPlan]);
-
-  useEffect(() => {
-    if (minutes && minutes != 0 && jobs && jobs != 0) {
-      setMinutesTotal(minutes * jobs);
-    }
-  }, [jobs, minutes]);
-
+function PlanCard({ plans, selectedPlan, onSelectPlan, summary }) {
+  const heading = selectedPlan.isEnterprise ? "Enterprise Plan" : "Self-Service Plan";
+  const tagline = selectedPlan.isEnterprise
+    ? "Enterprise-grade security and scalability with custom pricing."
+    : "Flat rate per server: $150 for the first, $125 for each additional.";
   return (
     <Card>
       <div className="flex flex-col lg:flex-row gap-4 justify-between">
         <div className="lg:max-w-xl">
           <h3 className="text-xl font-semibold tracking-tight text-gray-900">
-            {selectedPlan.isEnterprise ? "Enterprise Plan" : "Pricing comparison"}
+            {heading}
           </h3>
-          <p className="mt-1 text-base leading-7 text-gray-600">
-            {selectedPlan.isEnterprise 
-              ? "Enterprise-grade security and scalability with custom pricing."
-              : "Compare actuated pricing with GitHub Actions."
-            }
-          </p>
-          <div className="mt-4 pb-2 border-b border-gray-100">
-            <PlanSelection plans={plans} onSelect={setSelectedPlan} />
+          <p className="mt-1 text-base leading-7 text-gray-600">{tagline}</p>
+          <div className="mt-4">
+            <TrulyUnlimited />
           </div>
-
-          {!selectedPlan.isEnterprise && (
-            <div className="mt-4 space-y-3">
-              <div>
-                <div className="max-w-xs">
-                  <Input
-                    id="minutes-total"
-                    label="Build minutes per month"
-                    trailingAddon="min"
-                    value={minutesTotal}
-                    onChange={setMinutesTotal}
-                    disabled={jobs && minutes}
-                  />
-                </div>
-              </div>
-
-              <div className="relative">
-                <div
-                  className="absolute inset-0 flex items-center"
-                  aria-hidden="true"
-                >
-                  <div className="w-full border-t border-gray-200" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-white px-2 text-sm text-gray-500">or</span>
-                </div>
-              </div>
-
-              <div>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Input
-                    id="job-num"
-                    label="Number of jobs"
-                    trailingAddon="/month"
-                    value={jobs}
-                    onChange={setJobs}
-                  />
-                  <Input
-                    id="job-duration"
-                    label="Average job duration"
-                    trailingAddon="min"
-                    value={minutes}
-                    onChange={setMinutes}
-                  />
-                </div>
-              </div>
-              <p className="text-sm text-gray-500 mt-4 pt-4 max-w-lg">
-                Get a detailed report of your total usage with {" "}
-                <a
-                  href="https://github.com/self-actuated/actions-usage"
-                  className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
-                >
-                  our free actions-usage tool
-                </a>{" "}
-                or view only paid minutes for {" "}
-                <a
-                  href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/viewing-github-actions-metrics-for-your-organization"
-                  className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
-                >
-                  your organisation on GitHub
-                </a>
-              </p>
-            </div>
-          )}
+          <div className="mt-4">
+            <PlanSelection plans={plans} onSelect={onSelectPlan} />
+          </div>
         </div>
         <div className="mt-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0 flex-1">
           <PricingSummary summary={summary} />
@@ -620,54 +480,163 @@ function PricingCard({ title, prices, logo, borderStyle = "default" }) {
   );
 }
 
-function PriceCalculator() {
-  const [runnerPricing, setRunnerPrices] = useState(null);
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    if (data && data.minutesTotal != 0 && !data.plan.isEnterprise) {
-      setRunnerPrices(
-        calculateRunnerPricing(data.minutesTotal, data.plan.price)
-      );
-    } else {
-      setRunnerPrices(null);
-    }
-  }, [data]);
-
+function ComparisonSection({
+  servers,
+  jobs,
+  setJobs,
+  minutes,
+  setMinutes,
+  minutesTotal,
+  setMinutesTotal,
+  runnerPricing,
+}) {
   return (
-    <div>
-      <Calculator onChange={setData} />
-      {runnerPricing && !data?.plan?.isEnterprise && (
+    <div className="mt-4 space-y-4">
+      <Card>
+        <h3 className="text-xl font-semibold tracking-tight text-gray-900">
+          How does this compare to GitHub's Hosted Runners?
+        </h3>
+        <p className="mt-1 text-base leading-7 text-gray-600">
+          Most teams know roughly how often CI runs and how long their builds
+          take. Tweak the numbers to match your workload.
+        </p>
+        <div className="mt-4 space-y-3">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Input
+              id="job-num"
+              label="Number of jobs"
+              trailingAddon="/month"
+              value={jobs}
+              onChange={setJobs}
+            />
+            <Input
+              id="job-duration"
+              label="Average job duration"
+              trailingAddon="min"
+              value={minutes}
+              onChange={setMinutes}
+            />
+          </div>
+
+          <div className="max-w-xs">
+            <Input
+              id="minutes-total"
+              label="Build minutes per month"
+              trailingAddon="min"
+              value={minutesTotal}
+              onChange={(value) => {
+                setMinutesTotal(value);
+                setJobs(undefined);
+                setMinutes(undefined);
+              }}
+            />
+            {(!jobs || !minutes) && (
+              <p className="mt-1 text-xs text-gray-500">
+                Set both jobs and duration above to use the estimator instead.
+              </p>
+            )}
+          </div>
+
+          <p className="text-sm text-gray-500 max-w-lg">
+            Get your exact number with{" "}
+            <a
+              href="https://github.com/self-actuated/actions-usage"
+              className="text-indigo-600 hover:text-indigo-500 underline decoration-1 hover:decoration-2"
+            >
+              our free actions-usage tool
+            </a>{" "}
+            — takes 30 seconds.
+          </p>
+        </div>
+      </Card>
+
+      {runnerPricing && (
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <PricingCard
-              title="Self-hosted with actuated"
+              title={`Self-hosted with ${servers}x actuated server${servers > 1 ? "s" : ""}`}
               borderStyle="highlight"
-              prices={runnerPricing.map((price) => {
-                return {
-                  runnerSize: price.runnerSize,
-                  costPerMinute: price.actuated.costPerMinute,
-                  costPerMonth: price.actuated.costPerMonth,
-                  highlight: price.actuated.highlight,
-                };
-              })}
+              prices={runnerPricing.map((price) => ({
+                runnerSize: price.runnerSize,
+                costPerMinute: price.actuated.costPerMinute,
+                costPerMonth: price.actuated.costPerMonth,
+                highlight: price.actuated.highlight,
+              }))}
               logo={<ActuatedLogo />}
             />
           </div>
           <div className="flex-1">
             <PricingCard
               title="GitHub Actions hosted runners"
-              prices={runnerPricing.map((price) => {
-                return {
-                  runnerSize: price.runnerSize,
-                  costPerMinute: price.github.costPerMinute,
-                  costPerMonth: price.github.costPerMonth,
-                };
-              })}
+              prices={runnerPricing.map((price) => ({
+                runnerSize: price.runnerSize,
+                costPerMinute: price.github.costPerMinute,
+                costPerMonth: price.github.costPerMonth,
+              }))}
               logo={<GitHubLogo />}
             />
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+const DEFAULT_JOBS = 3000;
+const DEFAULT_AVG_MINUTES = 10;
+
+function PriceCalculator() {
+  const [selectedPlan, setSelectedPlan] = useState(plans[0]);
+  const [jobs, setJobs] = useState(DEFAULT_JOBS);
+  const [minutes, setMinutes] = useState(DEFAULT_AVG_MINUTES);
+  const [minutesTotal, setMinutesTotal] = useState(
+    DEFAULT_JOBS * DEFAULT_AVG_MINUTES
+  );
+
+  useEffect(() => {
+    if (minutes && minutes != 0 && jobs && jobs != 0) {
+      setMinutesTotal(minutes * jobs);
+    }
+  }, [jobs, minutes]);
+
+  let costPerMinute = 0;
+  if (minutesTotal && minutesTotal != 0 && !selectedPlan.isEnterprise) {
+    costPerMinute = (selectedPlan.price / minutesTotal).toFixed(3);
+  }
+
+  const summary = {
+    servers: selectedPlan.servers,
+    plan: selectedPlan,
+    jobs,
+    minutes,
+    costPerMinute,
+    price: selectedPlan.price,
+  };
+
+  const runnerPricing =
+    minutesTotal && minutesTotal != 0 && !selectedPlan.isEnterprise
+      ? calculateRunnerPricing(minutesTotal, selectedPlan.price)
+      : null;
+
+  return (
+    <div>
+      <PlanCard
+        plans={plans}
+        selectedPlan={selectedPlan}
+        onSelectPlan={setSelectedPlan}
+        summary={summary}
+      />
+      {!selectedPlan.isEnterprise && (
+        <ComparisonSection
+          servers={selectedPlan.servers}
+          jobs={jobs}
+          setJobs={setJobs}
+          minutes={minutes}
+          setMinutes={setMinutes}
+          minutesTotal={minutesTotal}
+          setMinutesTotal={setMinutesTotal}
+          runnerPricing={runnerPricing}
+        />
       )}
     </div>
   );

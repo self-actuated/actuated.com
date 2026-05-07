@@ -4,7 +4,7 @@ import PriceCalculator from '../../components/PriceCalculator'
 const basePlatformFeatures = [
   'Fully managed control-plane, just add servers',
   'Fast microVM isolation & security with Firecracker',
-  'Expert support via Slack 9-5pm UTC',
+  'Community support, best-effort via email',
   'Minimal GitHub permissions needed - no access to code',
   'Linux x86_64 & Arm supported',
   'Managed base images with Over The Air (OTA) updates',
