@@ -53,17 +53,11 @@ export default function GitLab() {
               Secure, ephemeral Firecracker microVMs for every job. No Kubernetes to manage. No Docker In Docker security nightmares. Just fast, isolated builds on your own infrastructure.
             </p>
             <div className="mt-10 flex justify-center gap-x-6">
-              <Link
-                href="/pricing"
-                className="rounded-md bg-white px-6 py-3 text-base font-semibold text-indigo-700 shadow-sm hover:bg-indigo-50"
-              >
-                Get started
-              </Link>
               <a
                 href="https://forms.gle/8XmpTTWXbZwWkfqT6"
-                className="rounded-md bg-indigo-500 bg-opacity-60 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-opacity-70"
+                className="rounded-md bg-white px-6 py-3 text-base font-semibold text-indigo-700 shadow-sm hover:bg-indigo-50"
               >
-                Talk to us
+                Get in touch
               </a>
             </div>
           </div>

@@ -281,7 +281,7 @@ function PricingSummary({ summary }) {
     <div className="rounded-2xl bg-gray-50 py-6 px-6 ring-1 ring-inset ring-gray-900/5">
       <div className="max-w-xs">
         <p className="text-base font-semibold text-indigo-600">
-          {summary.plan.isEnterprise ? "Actuated Custom" : "Actuated Self-Service"}
+          {summary.plan.isEnterprise ? "Actuated Custom" : "Actuated + GitHub.com"}
         </p>
         <div className="mt-4">
           <ul className="list-disc pl-5 space-y-2">
@@ -439,7 +439,7 @@ function calculateRunnerPricing(minutesTotal, actuatedPlanPrice) {
 }
 
 function PlanCard({ plans, selectedPlan, onSelectPlan, summary }) {
-  const heading = selectedPlan.isEnterprise ? "Enterprise Plan" : "Self-Service Plan";
+  const heading = selectedPlan.isEnterprise ? "Enterprise Plan" : "Self-Service Plan for GitHub.com";
   const tagline = selectedPlan.isEnterprise
     ? "Enterprise-grade security and scalability with custom pricing."
     : "Flat rate per server: $150 for the first, $125 for each additional.";

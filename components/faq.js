@@ -64,9 +64,9 @@ const faqs = [
   {
     question: "Is GitLab CI supported?",
     answer:
-      "Self-hosted GitLab is supported.",
-      link: "/blog/secure-microvm-ci-gitlab",
-      action: "Read the announcement"
+      "Both GitLab.com and self-hosted GitLab are supported.",
+      link: "/gitlab",
+      action: "Learn more"
   },
   {
     question: "Where can I find detailed information about actuated?",
